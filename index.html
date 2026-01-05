@@ -1,0 +1,3355 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HF Factory - Ваш личный хедж-фонд под ключ</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg: #0a0a0a;
+            --text: #e5e5e5;
+            --muted: #6b7280;
+            --accent: #00ff88;
+            --accent-dim: rgba(0, 255, 136, 0.1);
+            --bitcoin: #f7931a;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* ==================== BITCOIN CURSOR ==================== */
+        .cursor-btc {
+            position: fixed;
+            width: 48px;
+            height: 48px;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.2s ease, opacity 0.2s;
+        }
+
+        .cursor-btc-inner {
+            width: 100%;
+            height: 100%;
+            background: var(--bitcoin);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Arial Black', Arial, sans-serif;
+            font-weight: 900;
+            font-size: 28px;
+            color: white;
+            box-shadow: 
+                0 0 20px rgba(247, 147, 26, 0.6),
+                0 0 40px rgba(247, 147, 26, 0.3),
+                inset 0 2px 4px rgba(255,255,255,0.3);
+            animation: pulseBtc 2s ease-in-out infinite;
+            position: relative;
+        }
+
+        /* Вертикальные линии биткоина */
+        .cursor-btc-inner::before,
+        .cursor-btc-inner::after {
+            content: '';
+            position: absolute;
+            width: 3px;
+            height: 8px;
+            background: white;
+            border-radius: 2px;
+        }
+
+        .cursor-btc-inner::before {
+            top: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .cursor-btc-inner::after {
+            bottom: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        @keyframes pulseBtc {
+            0%, 100% { 
+                box-shadow: 
+                    0 0 20px rgba(247, 147, 26, 0.6),
+                    0 0 40px rgba(247, 147, 26, 0.3);
+            }
+            50% { 
+                box-shadow: 
+                    0 0 30px rgba(247, 147, 26, 0.8),
+                    0 0 60px rgba(247, 147, 26, 0.5);
+            }
+        }
+
+        .cursor-btc.hover {
+            transform: translate(-50%, -50%) scale(1.3);
+        }
+
+        .cursor-btc.hover .cursor-btc-inner {
+            animation: spinBtc 0.8s linear infinite;
+            box-shadow: 
+                0 0 40px rgba(247, 147, 26, 1),
+                0 0 80px rgba(247, 147, 26, 0.6);
+        }
+
+        @keyframes spinBtc {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(360deg); }
+        }
+
+        .cursor-trail {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            background: var(--bitcoin);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px rgba(247, 147, 26, 0.5);
+        }
+
+        /* ==================== MAGNETIC BUTTONS ==================== */
+        .magnetic {
+            position: relative;
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: none !important;
+        }
+
+        a, button, [role="button"] {
+            cursor: none !important;
+        }
+
+        .btn {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* ==================== MATRIX RAIN ==================== */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.08;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* ==================== HEADER ==================== */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+        }
+
+        .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            background: var(--accent);
+            color: var(--bg);
+            padding: 0.3rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 800;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-family: 'JetBrains Mono', monospace;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        nav a:hover { 
+            color: var(--accent); 
+        }
+
+        .header-btn {
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 0.6rem 1.25rem;
+            text-decoration: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--accent);
+            transform: translateX(-100%);
+            transition: transform 0.3s;
+            z-index: 0;
+        }
+
+        .header-btn:hover::before {
+            transform: translateX(0);
+        }
+
+        .header-btn span {
+            position: relative;
+            z-index: 1;
+            transition: color 0.3s;
+        }
+
+        .header-btn:hover span {
+            color: var(--bg);
+        }
+
+        /* ==================== HERO ==================== */
+        #hero {
+            min-height: calc(100vh - 80px);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            padding: 3rem 0;
+        }
+
+        .hero-left {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hero-right {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeIn 0.5s ease 0.2s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .tag-line {
+            width: 40px;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .scramble-text {
+            display: inline-block;
+            color: var(--accent);
+            font-family: 'JetBrains Mono', monospace;
+            text-shadow: 0 0 20px var(--accent-dim);
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text);
+            line-height: 1.4;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .subtitle-desc {
+            font-size: 0.95rem;
+            color: var(--muted);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            max-width: 450px;
+        }
+
+        .cta-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            border-radius: 4px;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--bg);
+            box-shadow: 0 0 0 0 var(--accent);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 0 40px var(--accent-dim), 0 10px 30px rgba(0,0,0,0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--text);
+            background: transparent;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-dim);
+        }
+
+        /* ==================== STRATEGY TABS ==================== */
+        .strategy-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .strategy-tab {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: var(--muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            cursor: none;
+            transition: all 0.3s ease;
+        }
+
+        .strategy-tab:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.2);
+            color: var(--text);
+        }
+
+        .strategy-tab.active {
+            background: rgba(247, 147, 26, 0.1);
+            border-color: var(--accent);
+            color: var(--accent);
+            box-shadow: 0 0 20px rgba(247, 147, 26, 0.2);
+        }
+
+        .tab-icon {
+            font-size: 1rem;
+        }
+
+        /* ==================== TERMINAL ==================== */
+        .terminal {
+            background: rgba(10, 10, 10, 0.9);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            font-family: 'JetBrains Mono', monospace;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+        }
+
+        .terminal:hover {
+            transform: perspective(1000px) rotateY(-2deg) rotateX(2deg);
+        }
+
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: rgba(255,255,255,0.03);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .terminal-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #333;
+        }
+
+        .terminal-dot:nth-child(1) { background: #ff5f57; }
+        .terminal-dot:nth-child(2) { background: #febc2e; }
+        .terminal-dot:nth-child(3) { background: #28c840; }
+
+        .terminal-title {
+            margin-left: 1rem;
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+
+        .terminal-body {
+            padding: 1rem 1.25rem;
+            font-size: 0.8rem;
+            line-height: 1.7;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .terminal-line {
+            opacity: 0;
+            animation: typeLine 0.3s ease forwards;
+        }
+
+        @keyframes typeLine {
+            to { opacity: 1; }
+        }
+
+        .cmd { color: var(--accent); }
+        .str { color: #feca57; }
+        .num { color: #48dbfb; }
+        .btc { color: var(--bitcoin); }
+        .comment { color: var(--muted); }
+
+        .cursor-blink {
+            display: inline-block;
+            width: 10px;
+            height: 1.2em;
+            background: var(--accent);
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* ==================== EQUITY CHART ==================== */
+        .equity-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease;
+        }
+
+        .equity-section.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .equity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .equity-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: livePulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes livePulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.5); }
+            50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(0, 255, 136, 0); }
+        }
+
+        .equity-stats {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .equity-stat {
+            text-align: right;
+        }
+
+        .equity-stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .equity-stat-value.positive { color: var(--accent); }
+        .equity-stat-value.negative { color: #ef4444; }
+        .equity-stat-value.btc { color: var(--bitcoin); }
+
+        .equity-stat-label {
+            font-size: 0.7rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .equity-chart-container {
+            position: relative;
+            height: 120px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        #equity-canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .equity-chart-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60%;
+            background: linear-gradient(to top, var(--bg), transparent);
+            pointer-events: none;
+        }
+
+        /* Bottom stats row */
+        .stats-row {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .stat-item {
+            flex: 1;
+        }
+
+        .stat-item-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .stat-item-value.accent { color: var(--accent); }
+        .stat-item-value.btc { color: var(--bitcoin); }
+
+        .stat-item-label {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-top: 0.25rem;
+        }
+
+        /* ==================== FEATURES SECTION ==================== */
+        #features {
+            padding: 6rem 0;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+
+        .section-tag::before,
+        .section-tag::after {
+            content: '';
+            width: 20px;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            color: var(--muted);
+            font-size: 1.1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .feature-card:hover {
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(0, 255, 136, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--accent-dim);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover .feature-icon {
+            background: rgba(0, 255, 136, 0.2);
+            border-color: var(--accent);
+            box-shadow: 0 0 30px var(--accent-dim);
+        }
+
+        .feature-icon svg {
+            width: 28px;
+            height: 28px;
+            stroke: var(--accent);
+        }
+
+        .feature-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feature-badge {
+            font-size: 0.65rem;
+            padding: 0.2rem 0.5rem;
+            background: var(--accent);
+            color: var(--bg);
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .feature-desc {
+            color: var(--muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text);
+            padding: 0.4rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .feature-list li::before {
+            content: '→';
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .feature-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .feature-code-line {
+            display: block;
+            padding: 0.15rem 0;
+        }
+
+        /* Large feature card */
+        .feature-card.large {
+            grid-column: span 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .feature-card.large .feature-visual {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+        }
+
+        .vps-status {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .vps-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .vps-row:last-child {
+            border-bottom: none;
+        }
+
+        .vps-label {
+            color: var(--muted);
+        }
+
+        .vps-value {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .vps-value.btc {
+            color: var(--bitcoin);
+        }
+
+        /* ==================== HOW IT WORKS ==================== */
+        #how-it-works {
+            padding: 6rem 0;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            position: relative;
+            margin-top: 3rem;
+        }
+
+        /* Connecting line */
+        .steps-container::before {
+            content: '';
+            position: absolute;
+            top: 48px;
+            left: 60px;
+            right: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                var(--accent) 0%, 
+                rgba(0, 255, 136, 0.3) 50%, 
+                var(--accent) 100%);
+            z-index: 0;
+        }
+
+        .step-card {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-number {
+            width: 96px;
+            height: 96px;
+            margin: 0 auto 1.5rem;
+            background: var(--bg);
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--muted);
+            position: relative;
+            transition: all 0.4s ease;
+        }
+
+        .step-card:hover .step-number {
+            border-color: var(--accent);
+            color: var(--accent);
+            box-shadow: 0 0 40px var(--accent-dim);
+            transform: scale(1.1);
+        }
+
+        .step-number::after {
+            content: '';
+            position: absolute;
+            inset: 4px;
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+
+        .step-icon {
+            position: absolute;
+            bottom: -8px;
+            right: -8px;
+            width: 36px;
+            height: 36px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+        }
+
+        .step-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text);
+        }
+
+        .step-desc {
+            font-size: 0.9rem;
+            color: var(--muted);
+            line-height: 1.5;
+            max-width: 200px;
+            margin: 0 auto;
+        }
+
+        .step-highlight {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .step-highlight.you {
+            color: var(--bitcoin);
+        }
+
+        /* Responsibility badges */
+        .responsibility-row {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .responsibility-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 2rem;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .responsibility-item:hover {
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(255,255,255,0.15);
+        }
+
+        .responsibility-item.us {
+            border-color: rgba(0, 255, 136, 0.2);
+        }
+
+        .responsibility-item.you {
+            border-color: rgba(247, 147, 26, 0.2);
+        }
+
+        .responsibility-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .responsibility-icon.us {
+            background: var(--accent-dim);
+            color: var(--accent);
+        }
+
+        .responsibility-icon.you {
+            background: rgba(247, 147, 26, 0.1);
+            color: var(--bitcoin);
+        }
+
+        .responsibility-text {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .responsibility-label {
+            font-size: 0.75rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .responsibility-value {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .responsibility-value.us { color: var(--accent); }
+        .responsibility-value.you { color: var(--bitcoin); }
+
+        /* ==================== PRICING ==================== */
+        #pricing {
+            padding: 6rem 0;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .promo-banner {
+            background: linear-gradient(135deg, rgba(247, 147, 26, 0.15), rgba(247, 147, 26, 0.05));
+            border: 1px solid rgba(247, 147, 26, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .promo-icon {
+            font-size: 2rem;
+        }
+
+        .promo-text {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .promo-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--bitcoin);
+            margin-bottom: 0.25rem;
+        }
+
+        .promo-desc {
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        .promo-slots {
+            background: var(--bitcoin);
+            color: var(--bg);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .product-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 1.5rem;
+            position: relative;
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+            border-radius: 16px 16px 0 0;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .product-card:hover {
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(0, 255, 136, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .product-card:hover::before {
+            opacity: 1;
+        }
+
+        .product-badge {
+            position: absolute;
+            top: -10px;
+            right: 1rem;
+            background: var(--accent);
+            color: var(--bg);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .product-badge.crypto {
+            background: var(--bitcoin);
+        }
+
+        .product-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--accent-dim);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .product-icon.crypto {
+            background: rgba(247, 147, 26, 0.1);
+        }
+
+        .product-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-platform {
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .product-platform-tag {
+            background: rgba(255,255,255,0.05);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+        }
+
+        .product-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .product-features li {
+            font-size: 0.8rem;
+            color: var(--muted);
+            padding: 0.3rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .product-features li::before {
+            content: '✓';
+            color: var(--accent);
+            font-size: 0.7rem;
+        }
+
+        .product-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            cursor: none;
+            transition: all 0.3s;
+        }
+
+        .product-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg);
+        }
+
+        /* Pricing summary */
+        .pricing-summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .price-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .price-card.highlight {
+            border-color: var(--accent);
+            box-shadow: 0 0 40px var(--accent-dim);
+        }
+
+        .price-card.highlight::before {
+            content: 'РЕКОМЕНДУЕМ';
+            position: absolute;
+            top: 1rem;
+            right: -2rem;
+            background: var(--accent);
+            color: var(--bg);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 0.3rem 2.5rem;
+            transform: rotate(45deg);
+        }
+
+        .price-type {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .price-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        .price-value .currency {
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        .price-value .period {
+            font-size: 1rem;
+            color: var(--muted);
+            font-weight: 400;
+        }
+
+        .price-old {
+            font-size: 1rem;
+            color: var(--muted);
+            text-decoration: line-through;
+            margin-top: 0.5rem;
+        }
+
+        .price-desc {
+            font-size: 0.9rem;
+            color: var(--muted);
+            margin-top: 1rem;
+            line-height: 1.5;
+        }
+
+        .price-includes {
+            list-style: none;
+            text-align: left;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .price-includes li {
+            font-size: 0.85rem;
+            color: var(--text);
+            padding: 0.4rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .price-includes li::before {
+            content: '→';
+            color: var(--accent);
+        }
+
+        /* ==================== COMPARISON ==================== */
+        #comparison {
+            padding: 6rem 0;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .comparison-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .comparison-card.others {
+            opacity: 0.7;
+        }
+
+        .comparison-card.us {
+            border-color: var(--accent);
+            box-shadow: 0 0 40px var(--accent-dim);
+        }
+
+        .comparison-card.us::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 16px 16px 0 0;
+        }
+
+        .comparison-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .comparison-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .comparison-card.others .comparison-icon {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .comparison-card.us .comparison-icon {
+            background: var(--accent-dim);
+        }
+
+        .comparison-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .comparison-subtitle {
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        .comparison-list {
+            list-style: none;
+        }
+
+        .comparison-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem 0;
+            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .comparison-list li:last-child {
+            border-bottom: none;
+        }
+
+        .comparison-list .icon-no {
+            color: #ef4444;
+        }
+
+        .comparison-list .icon-yes {
+            color: var(--accent);
+        }
+
+        .comparison-list .text-muted {
+            color: var(--muted);
+        }
+
+        /* Ownership notice */
+        .ownership-notice {
+            margin-top: 3rem;
+            background: rgba(0, 255, 136, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .ownership-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .ownership-text {
+            flex: 1;
+        }
+
+        .ownership-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .ownership-desc {
+            font-size: 0.9rem;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        /* ==================== FAQ ==================== */
+        #faq {
+            padding: 6rem 0;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .faq-item {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: rgba(255,255,255,0.15);
+        }
+
+        .faq-question {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 1.5rem;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .faq-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--accent-dim);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .faq-q-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .faq-toggle {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--muted);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.open .faq-toggle {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 300px;
+        }
+
+        .faq-a-content {
+            padding: 0 1.5rem 1.5rem 1.5rem;
+            padding-left: calc(1.5rem + 32px + 1rem);
+            font-size: 0.9rem;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .faq-highlight {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .faq-highlight.warning {
+            color: var(--bitcoin);
+        }
+
+        /* Disclaimer */
+        .disclaimer {
+            margin-top: 4rem;
+            background: rgba(239, 68, 68, 0.05);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .disclaimer-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .disclaimer-icon {
+            font-size: 1.5rem;
+        }
+
+        .disclaimer-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #ef4444;
+        }
+
+        .disclaimer-text {
+            font-size: 0.85rem;
+            color: var(--muted);
+            line-height: 1.8;
+        }
+
+        .disclaimer-text strong {
+            color: var(--text);
+        }
+
+        .disclaimer-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .disclaimer-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            padding: 0.4rem 0;
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        .disclaimer-list li::before {
+            content: '⚠️';
+            font-size: 0.75rem;
+        }
+
+        /* ==================== FOOTER ==================== */
+        .footer {
+            background: linear-gradient(180deg, var(--bg) 0%, #050505 100%);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 6rem 2rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+        }
+
+        .footer-cta {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, rgba(247, 147, 26, 0.1) 0%, rgba(247, 147, 26, 0.02) 100%);
+            border: 1px solid rgba(247, 147, 26, 0.2);
+            border-radius: 20px;
+        }
+
+        .cta-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.75rem;
+        }
+
+        .cta-subtitle {
+            font-size: 1rem;
+            color: var(--muted);
+            margin-bottom: 2rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: none !important;
+        }
+
+        .cta-btn.primary {
+            background: linear-gradient(135deg, #f7931a 0%, #d4790f 100%);
+            color: #000;
+            box-shadow: 0 4px 20px rgba(247, 147, 26, 0.3);
+        }
+
+        .cta-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(247, 147, 26, 0.5);
+        }
+
+        .cta-btn.secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cta-btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .cta-btn .btn-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 3rem;
+        }
+
+        .footer-brand {}
+
+        .footer-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-logo .logo-badge {
+            background: var(--bitcoin);
+            color: #000;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-weight: 800;
+        }
+
+        .footer-desc {
+            font-size: 0.9rem;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .footer-heading {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            font-size: 0.9rem;
+            color: var(--muted);
+            text-decoration: none;
+            transition: color 0.2s;
+            cursor: none !important;
+        }
+
+        .footer-links a:hover {
+            color: var(--bitcoin);
+        }
+
+        .footer-contact {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+            color: var(--muted);
+            text-decoration: none;
+            transition: color 0.2s;
+            cursor: none !important;
+        }
+
+        .contact-link:hover {
+            color: var(--bitcoin);
+        }
+
+        .contact-link svg {
+            width: 18px;
+            height: 18px;
+            opacity: 0.7;
+        }
+
+        .footer-bottom {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-copy {
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        .footer-legal {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.3);
+            max-width: 400px;
+            text-align: right;
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 1024px) {
+            #hero { grid-template-columns: 1fr; }
+            .hero-right { margin-top: 2rem; min-height: 400px; }
+            nav { display: none; }
+            body { cursor: auto; }
+            .cursor-btc, .cursor-trail { display: none; }
+            .features-grid { grid-template-columns: 1fr; }
+            .feature-card.large { grid-column: span 1; grid-template-columns: 1fr; }
+            .steps-container { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+            .steps-container::before { display: none; }
+            .responsibility-row { flex-direction: column; gap: 1rem; }
+            .products-grid { grid-template-columns: repeat(2, 1fr); }
+            .pricing-summary { grid-template-columns: repeat(2, 1fr); }
+            .promo-banner { flex-direction: column; text-align: center; }
+            .faq-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 600px) {
+            .steps-container { grid-template-columns: 1fr; }
+            .products-grid { grid-template-columns: 1fr; }
+            .pricing-summary { grid-template-columns: 1fr; }
+            .comparison-grid { grid-template-columns: 1fr; }
+            .ownership-notice { flex-direction: column; text-align: center; }
+            .faq-grid { grid-template-columns: 1fr; }
+            .disclaimer { padding: 1.5rem; }
+            .footer { padding: 3rem 1rem 1.5rem; }
+            .footer-cta { padding: 2rem 1rem; }
+            .cta-buttons { flex-direction: column; }
+            .cta-btn { width: 100%; justify-content: center; }
+            .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+            .footer-legal { text-align: center; max-width: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Bitcoin Cursor -->
+    <div class="cursor-btc">
+        <div class="cursor-btc-inner">₿</div>
+    </div>
+    <div class="cursor-trail" id="trail-1"></div>
+    <div class="cursor-trail" id="trail-2"></div>
+    <div class="cursor-trail" id="trail-3"></div>
+
+    <canvas id="matrix-canvas"></canvas>
+
+    <div class="container">
+        <header>
+            <div class="logo magnetic">
+                <span class="logo-icon">HF</span>
+                Factory
+            </div>
+            <nav>
+                <a href="#" class="magnetic">solutions</a>
+                <a href="#" class="magnetic">pricing</a>
+                <a href="#" class="magnetic">docs</a>
+            </nav>
+            <a href="#" class="header-btn magnetic"><span>START</span></a>
+        </header>
+
+        <section id="hero">
+            <!-- Left column: Title + Description + Equity -->
+            <div class="hero-left">
+                <div class="tag">
+                    <span class="tag-line"></span>
+                    -20% на установку
+                </div>
+
+                <h1>
+                    Ваш личный<br>
+                    <span class="scramble-text" id="scramble">хедж-фонд</span>
+                </h1>
+
+                <p class="subtitle">Автоматизации для трейдинга и инвестиций</p>
+                <p class="subtitle-desc">Техническая часть под ключ. Без управления вашими деньгами.</p>
+                
+                <div class="cta-row">
+                    <a href="#" class="btn btn-primary magnetic">
+                        <span class="btn-content">
+                            Рассчитать
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </span>
+                    </a>
+                    <a href="#" class="btn btn-secondary magnetic">
+                        <span class="btn-content">Демо</span>
+                    </a>
+                </div>
+
+                <div class="equity-section" id="equity-section">
+                    <div class="equity-header">
+                        <div class="equity-title">
+                            <span class="live-dot"></span>
+                            EQUITY CURVE
+                        </div>
+                        <div class="equity-stats">
+                            <div class="equity-stat">
+                                <div class="equity-stat-value positive" id="roi-value">+0.0%</div>
+                                <div class="equity-stat-label">ROI</div>
+                            </div>
+                            <div class="equity-stat">
+                                <div class="equity-stat-value negative" id="dd-value">-0.0%</div>
+                                <div class="equity-stat-label">Max DD</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="equity-chart-container">
+                        <canvas id="equity-canvas"></canvas>
+                    </div>
+                    <div class="stats-row">
+                        <div class="stat-item">
+                            <div class="stat-item-value accent" id="uptime-value">0%</div>
+                            <div class="stat-item-label">Uptime</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-item-value">24/7</div>
+                            <div class="stat-item-label">Мониторинг</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-item-value btc" id="balance-value">$10,000</div>
+                            <div class="stat-item-label">Баланс</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right column: Strategy Selector + Terminal -->
+            <div class="hero-right">
+                <div class="strategy-tabs">
+                    <button class="strategy-tab magnetic" data-strategy="trend">
+                        <span class="tab-icon">📈</span>
+                        TrendBot
+                    </button>
+                    <button class="strategy-tab magnetic active" data-strategy="grid">
+                        <span class="tab-icon">📊</span>
+                        GridBot
+                    </button>
+                </div>
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <div class="terminal-dot"></div>
+                        <div class="terminal-dot"></div>
+                        <div class="terminal-dot"></div>
+                        <span class="terminal-title">hf-factory@server:~</span>
+                    </div>
+                    <div class="terminal-body" id="terminal-output">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== FEATURES SECTION ==================== -->
+        <section id="features">
+            <div class="section-header">
+                <div class="section-tag">Что входит</div>
+                <h2 class="section-title">Полный технологический стек</h2>
+                <p class="section-subtitle">Всё необходимое для запуска алгоритмической торговли</p>
+            </div>
+
+            <div class="features-grid">
+                <!-- Роботы -->
+                <div class="feature-card magnetic">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 8V4H8M12 8l4-4M12 8L8 4"/>
+                            <path d="M12 16v4h4M12 16l-4 4M12 16l4 4"/>
+                            <rect x="4" y="8" width="16" height="8" rx="2"/>
+                            <circle cx="8" cy="12" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="12" r="1.5" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <div class="feature-title">
+                        Торговые роботы
+                        <span class="feature-badge">2+</span>
+                    </div>
+                    <p class="feature-desc">Протестированные алгоритмы с историей сделок. Выбирайте стратегию под ваш стиль.</p>
+                    <ul class="feature-list">
+                        <li>GridBot — заработок на боковике</li>
+                        <li>TrendBot — ловим движения</li>
+                        <li>Бектесты на реальных данных</li>
+                        <li>Walk-forward оптимизация</li>
+                    </ul>
+                </div>
+
+                <!-- Платформы -->
+                <div class="feature-card magnetic">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="2" y="3" width="20" height="14" rx="2"/>
+                            <path d="M8 21h8"/>
+                            <path d="M12 17v4"/>
+                            <path d="M6 8h4M6 11h3"/>
+                            <path d="M14 8h4M14 11h4"/>
+                        </svg>
+                    </div>
+                    <div class="feature-title">
+                        Торговые платформы
+                    </div>
+                    <p class="feature-desc">Интеграция с проверенными платформами для крипты и форекса.</p>
+                    <div class="feature-code">
+                        <span class="feature-code-line"><span class="cmd">platforms:</span></span>
+                        <span class="feature-code-line">  - <span class="str">MetaTrader 4/5</span></span>
+                        <span class="feature-code-line">  - <span class="str">OsEngine</span></span>
+                        <span class="feature-code-line">  - <span class="btc">Binance API</span></span>
+                        <span class="feature-code-line">  - <span class="btc">ByBit API</span></span>
+                    </div>
+                </div>
+
+                <!-- VPS -->
+                <div class="feature-card large magnetic">
+                    <div class="feature-content">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <rect x="2" y="2" width="20" height="8" rx="2"/>
+                                <rect x="2" y="14" width="20" height="8" rx="2"/>
+                                <circle cx="6" cy="6" r="1.5" fill="currentColor"/>
+                                <circle cx="6" cy="18" r="1.5" fill="currentColor"/>
+                                <path d="M18 5h-6M18 7h-4"/>
+                                <path d="M18 17h-6M18 19h-4"/>
+                            </svg>
+                        </div>
+                        <div class="feature-title">
+                            VPS 24/7
+                            <span class="feature-badge">UPTIME 99.9%</span>
+                        </div>
+                        <p class="feature-desc">Выделенный сервер в дата-центре рядом с биржей. Минимальная задержка, максимальная стабильность.</p>
+                        <ul class="feature-list">
+                            <li>Низкая латентность до биржи</li>
+                            <li>Автоматический перезапуск</li>
+                            <li>Ежедневные бэкапы</li>
+                        </ul>
+                    </div>
+                    <div class="feature-visual">
+                        <div class="vps-status">
+                            <div class="vps-row">
+                                <span class="vps-label">Status</span>
+                                <span class="vps-value">● RUNNING</span>
+                            </div>
+                            <div class="vps-row">
+                                <span class="vps-label">Location</span>
+                                <span class="vps-value">Frankfurt, DE</span>
+                            </div>
+                            <div class="vps-row">
+                                <span class="vps-label">Ping to Binance</span>
+                                <span class="vps-value btc">2.3 ms</span>
+                            </div>
+                            <div class="vps-row">
+                                <span class="vps-label">CPU</span>
+                                <span class="vps-value">4 vCPU</span>
+                            </div>
+                            <div class="vps-row">
+                                <span class="vps-label">RAM</span>
+                                <span class="vps-value">8 GB</span>
+                            </div>
+                            <div class="vps-row">
+                                <span class="vps-label">Uptime</span>
+                                <span class="vps-value">47d 12h 33m</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Техподдержка -->
+                <div class="feature-card magnetic">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                            <path d="M8 9h8M8 13h6"/>
+                        </svg>
+                    </div>
+                    <div class="feature-title">
+                        Техническая поддержка
+                    </div>
+                    <p class="feature-desc">Помогаем с настройкой, оптимизацией и решением технических вопросов.</p>
+                    <ul class="feature-list">
+                        <li>Telegram-чат с разработчиком</li>
+                        <li>Настройка параметров</li>
+                        <li>Помощь при сбоях</li>
+                        <li>Обновления стратегий</li>
+                    </ul>
+                </div>
+
+                <!-- Документация -->
+                <div class="feature-card magnetic">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14,2 14,8 20,8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                            <line x1="10" y1="9" x2="8" y2="9"/>
+                        </svg>
+                    </div>
+                    <div class="feature-title">
+                        Документация
+                    </div>
+                    <p class="feature-desc">Подробные инструкции по каждой стратегии и платформе.</p>
+                    <ul class="feature-list">
+                        <li>Видео-туториалы</li>
+                        <li>FAQ по частым вопросам</li>
+                        <li>Руководства по настройке</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== HOW IT WORKS ==================== -->
+        <section id="how-it-works">
+            <div class="section-header">
+                <div class="section-tag">Как это работает</div>
+                <h2 class="section-title">4 шага к автоматизации</h2>
+                <p class="section-subtitle">Простой процесс запуска вашей торговой инфраструктуры</p>
+            </div>
+
+            <div class="steps-container">
+                <!-- Step 1 -->
+                <div class="step-card magnetic">
+                    <div class="step-number">
+                        01
+                        <span class="step-icon">📋</span>
+                    </div>
+                    <div class="step-title">Выбираете стратегии</div>
+                    <p class="step-desc">
+                        <span class="step-highlight you">Вы</span> выбираете роботов из каталога под ваш стиль торговли
+                    </p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="step-card magnetic">
+                    <div class="step-number">
+                        02
+                        <span class="step-icon">⚙️</span>
+                    </div>
+                    <div class="step-title">Устанавливаем инфраструктуру</div>
+                    <p class="step-desc">
+                        <span class="step-highlight">Мы</span> разворачиваем VPS, платформы и настраиваем роботов
+                    </p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="step-card magnetic">
+                    <div class="step-number">
+                        03
+                        <span class="step-icon">💰</span>
+                    </div>
+                    <div class="step-title">Контролируете капитал</div>
+                    <p class="step-desc">
+                        <span class="step-highlight you">Вы</span> решаете сколько вложить и управляете своими деньгами
+                    </p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="step-card magnetic">
+                    <div class="step-number">
+                        04
+                        <span class="step-icon">🔧</span>
+                    </div>
+                    <div class="step-title">Поддерживаем технику</div>
+                    <p class="step-desc">
+                        <span class="step-highlight">Мы</span> мониторим, обновляем и оптимизируем систему
+                    </p>
+                </div>
+            </div>
+
+            <!-- Responsibility summary -->
+            <div class="responsibility-row">
+                <div class="responsibility-item us magnetic">
+                    <div class="responsibility-icon us">🛠️</div>
+                    <div class="responsibility-text">
+                        <div class="responsibility-label">Наша зона</div>
+                        <div class="responsibility-value us">100% техническая</div>
+                    </div>
+                </div>
+                <div class="responsibility-item you magnetic">
+                    <div class="responsibility-icon you">₿</div>
+                    <div class="responsibility-text">
+                        <div class="responsibility-label">Ваша зона</div>
+                        <div class="responsibility-value you">100% финансовая</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PRICING ==================== -->
+        <section id="pricing">
+            <div class="section-header">
+                <div class="section-tag">Тарифы</div>
+                <h2 class="section-title">Выберите своего робота</h2>
+                <p class="section-subtitle">Готовые решения для форекса и криптовалют</p>
+            </div>
+
+            <!-- Promo Banner -->
+            <div class="promo-banner magnetic">
+                <span class="promo-icon">🔥</span>
+                <div class="promo-text">
+                    <div class="promo-title">Акция для первых клиентов</div>
+                    <div class="promo-desc">Специальные цены на запуск инфраструктуры</div>
+                </div>
+                <span class="promo-slots">Осталось 10 мест</span>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="products-grid">
+                <!-- Product 1: GridBot Forex -->
+                <div class="product-card magnetic">
+                    <span class="product-badge">Forex</span>
+                    <div class="product-icon">📊</div>
+                    <div class="product-name">GridBot Forex</div>
+                    <div class="product-platform">
+                        <span class="product-platform-tag">MT4/MT5</span>
+                    </div>
+                    <ul class="product-features">
+                        <li>Торговля на боковике</li>
+                        <li>EUR/USD, GBP/USD</li>
+                        <li>Автоматическая сетка</li>
+                        <li>Risk-management</li>
+                    </ul>
+                    <button class="product-btn magnetic">Подробнее</button>
+                </div>
+
+                <!-- Product 2: GridBot Crypto -->
+                <div class="product-card magnetic">
+                    <span class="product-badge crypto">Crypto</span>
+                    <div class="product-icon crypto">📊</div>
+                    <div class="product-name">GridBot Crypto</div>
+                    <div class="product-platform">
+                        <span class="product-platform-tag">Binance</span>
+                        <span class="product-platform-tag">ByBit</span>
+                    </div>
+                    <ul class="product-features">
+                        <li>BTC/USDT, ETH/USDT</li>
+                        <li>Спот + фьючерсы</li>
+                        <li>25+ уровней сетки</li>
+                        <li>API интеграция</li>
+                    </ul>
+                    <button class="product-btn magnetic">Подробнее</button>
+                </div>
+
+                <!-- Product 3: TrendBot MT5 -->
+                <div class="product-card magnetic">
+                    <span class="product-badge crypto">Crypto</span>
+                    <div class="product-icon crypto">📈</div>
+                    <div class="product-name">TrendBot MT5</div>
+                    <div class="product-platform">
+                        <span class="product-platform-tag">MetaTrader 5</span>
+                    </div>
+                    <ul class="product-features">
+                        <li>Ловит тренды</li>
+                        <li>Криптовалюты CFD</li>
+                        <li>Trailing stop</li>
+                        <li>Multi-timeframe</li>
+                    </ul>
+                    <button class="product-btn magnetic">Подробнее</button>
+                </div>
+
+                <!-- Product 4: TrendBot OsEngine -->
+                <div class="product-card magnetic">
+                    <span class="product-badge crypto">Crypto</span>
+                    <div class="product-icon crypto">📈</div>
+                    <div class="product-name">TrendBot OsEngine</div>
+                    <div class="product-platform">
+                        <span class="product-platform-tag">OsEngine</span>
+                        <span class="product-platform-tag">ByBit</span>
+                    </div>
+                    <ul class="product-features">
+                        <li>Прямое подключение</li>
+                        <li>Минимальные задержки</li>
+                        <li>Walk-forward ready</li>
+                        <li>Открытый код</li>
+                    </ul>
+                    <button class="product-btn magnetic">Подробнее</button>
+                </div>
+            </div>
+
+            <!-- Pricing Summary -->
+            <div class="pricing-summary">
+                <div class="price-card magnetic">
+                    <div class="price-type">Установка</div>
+                    <div class="price-value">
+                        <span class="currency">₽</span>10 000
+                    </div>
+                    <div class="price-old">15 000 ₽</div>
+                    <p class="price-desc">Разовый платёж за настройку инфраструктуры</p>
+                    <ul class="price-includes">
+                        <li>Настройка VPS</li>
+                        <li>Установка платформы</li>
+                        <li>Конфигурация робота</li>
+                        <li>Подключение к бирже</li>
+                        <li>Первичное тестирование</li>
+                    </ul>
+                </div>
+
+                <div class="price-card highlight magnetic">
+                    <div class="price-type">Сопровождение</div>
+                    <div class="price-value">
+                        <span class="currency">₽</span>2 000<span class="period">/мес</span>
+                    </div>
+                    <div class="price-old">3 500 ₽/мес</div>
+                    <p class="price-desc">Ежемесячная техническая поддержка</p>
+                    <ul class="price-includes">
+                        <li>Мониторинг 24/7</li>
+                        <li>Оптимизация параметров</li>
+                        <li>Обновления стратегий</li>
+                        <li>Telegram-поддержка</li>
+                        <li>Аренда VPS включена</li>
+                    </ul>
+                </div>
+
+                <div class="price-card magnetic">
+                    <div class="price-type">Разработка по ТЗ</div>
+                    <div class="price-value">
+                        <span class="currency">от ₽</span>20 000
+                    </div>
+                    <p class="price-desc">Создание автоматизации под ваши требования</p>
+                    <ul class="price-includes">
+                        <li>Анализ вашего ТЗ</li>
+                        <li>Разработка робота</li>
+                        <li>Бектестирование</li>
+                        <li>Walk-forward тесты</li>
+                        <li>Документация</li>
+                    </ul>
+                </div>
+
+                <div class="price-card magnetic">
+                    <div class="price-type">Консультация</div>
+                    <div class="price-value">
+                        <span class="currency">от ₽</span>2 000
+                    </div>
+                    <p class="price-desc">Помощь в составлении технического задания</p>
+                    <ul class="price-includes">
+                        <li>Анализ вашей идеи</li>
+                        <li>Выбор платформы</li>
+                        <li>Оценка реализуемости</li>
+                        <li>Составление ТЗ</li>
+                        <li>Рекомендации</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== COMPARISON ==================== -->
+        <section id="comparison">
+            <div class="section-header">
+                <div class="section-tag">Почему мы</div>
+                <h2 class="section-title">Не продаём роботов. Продаём услуги.</h2>
+                <p class="section-subtitle">Полный цикл технической поддержки алготрейдинга</p>
+            </div>
+
+            <div class="comparison-grid">
+                <!-- Others -->
+                <div class="comparison-card others">
+                    <div class="comparison-header">
+                        <div class="comparison-icon">📦</div>
+                        <div>
+                            <div class="comparison-title">Типичные предложения</div>
+                            <div class="comparison-subtitle">Что обычно продают</div>
+                        </div>
+                    </div>
+                    <ul class="comparison-list">
+                        <li>
+                            <span class="icon-no">✗</span>
+                            <span class="text-muted">Только торговые боты (без инфраструктуры)</span>
+                        </li>
+                        <li>
+                            <span class="icon-no">✗</span>
+                            <span class="text-muted">Только VPS (без настройки)</span>
+                        </li>
+                        <li>
+                            <span class="icon-no">✗</span>
+                            <span class="text-muted">Только сигналы (без автоматизации)</span>
+                        </li>
+                        <li>
+                            <span class="icon-no">✗</span>
+                            <span class="text-muted">Доверительное управление (риски на вас)</span>
+                        </li>
+                        <li>
+                            <span class="icon-no">✗</span>
+                            <span class="text-muted">Закрытый код (зависимость от продавца)</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Us -->
+                <div class="comparison-card us magnetic">
+                    <div class="comparison-header">
+                        <div class="comparison-icon">🛠️</div>
+                        <div>
+                            <div class="comparison-title">HF Factory</div>
+                            <div class="comparison-subtitle">Что предлагаем мы</div>
+                        </div>
+                    </div>
+                    <ul class="comparison-list">
+                        <li>
+                            <span class="icon-yes">✓</span>
+                            <span>Установка и настройка роботов</span>
+                        </li>
+                        <li>
+                            <span class="icon-yes">✓</span>
+                            <span>VPS + платформы + интеграция</span>
+                        </li>
+                        <li>
+                            <span class="icon-yes">✓</span>
+                            <span>Бектесты и walk-forward оптимизация</span>
+                        </li>
+                        <li>
+                            <span class="icon-yes">✓</span>
+                            <span>Техническое сопровождение 24/7</span>
+                        </li>
+                        <li>
+                            <span class="icon-yes">✓</span>
+                            <span>Открытый код — роботы ваши навсегда</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Ownership Notice -->
+            <div class="ownership-notice magnetic">
+                <div class="ownership-icon">🔓</div>
+                <div class="ownership-text">
+                    <div class="ownership-title">Роботы остаются у вас</div>
+                    <div class="ownership-desc">
+                        Все торговые роботы — с открытым кодом или без защиты от копирования. 
+                        Даже после прекращения сопровождения они остаются в вашем распоряжении. 
+                        Вы можете продолжать использовать их самостоятельно, на свой страх и риск.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== FAQ ==================== -->
+        <section id="faq">
+            <div class="section-header">
+                <div class="section-tag">Вопросы</div>
+                <h2 class="section-title">Частые вопросы</h2>
+                <p class="section-subtitle">Разделение ответственности и зон влияния</p>
+            </div>
+
+            <div class="faq-grid">
+                <!-- Q1 -->
+                <div class="faq-item open">
+                    <div class="faq-question">
+                        <div class="faq-icon">💰</div>
+                        <div class="faq-q-text">Вы управляете моими деньгами?</div>
+                        <div class="faq-toggle">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-a-content">
+                            <span class="faq-highlight warning">Нет, никогда.</span> Мы не имеем доступа к вашему капиталу. 
+                            Вы сами подключаете биржу через API с ограниченными правами (только торговля, без вывода). 
+                            Решения о размере депозита, рисках и включении торговли — только ваши.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <div class="faq-icon">🛠️</div>
+                        <div class="faq-q-text">Что именно вы делаете?</div>
+                        <div class="faq-toggle">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-a-content">
+                            <span class="faq-highlight">100% техническая работа:</span> разворачиваем VPS, устанавливаем платформы (MT4/5, OsEngine), 
+                            настраиваем роботов, проводим бектесты, оптимизируем параметры, мониторим работу 24/7 и решаем технические проблемы.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <div class="faq-icon">📊</div>
+                        <div class="faq-q-text">Гарантируете ли вы прибыль?</div>
+                        <div class="faq-toggle">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-a-content">
+                            <span class="faq-highlight warning">Нет, и никто не может.</span> Торговля на финансовых рынках всегда сопряжена с рисками. 
+                            Мы гарантируем качественную техническую реализацию, но результаты торговли зависят от рынка, выбранной стратегии и ваших настроек.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q4 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <div class="faq-icon">🔓</div>
+                        <div class="faq-q-text">Что будет, если я перестану платить?</div>
+                        <div class="faq-toggle">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-a-content">
+                            <span class="faq-highlight">Роботы остаются у вас.</span> Весь код с открытым исходным кодом или без защиты. 
+                            Вы можете продолжить использовать их самостоятельно. Мы просто перестанем оказывать техническую поддержку и мониторинг.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q5 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <div class="faq-icon">⚖️</div>
+                        <div class="faq-q-text">Кто несёт ответственность за убытки?</div>
+                        <div class="faq-toggle">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-a-content">
+                            <span class="faq-highlight warning">Вы, как владелец капитала.</span> Мы отвечаем за техническую исправность системы. 
+                            Финансовые решения и связанные с ними риски — ваша зона ответственности. Это ключевое отличие от доверительного управления.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q6 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <div class="faq-icon">🎯</div>
+                        <div class="faq-q-text">Для кого это подходит?</div>
+                        <div class="faq-toggle">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-a-content">
+                            Для тех, кто хочет автоматизировать торговлю, но <span class="faq-highlight">не готов отдавать деньги в управление</span>. 
+                            Вы сохраняете полный контроль над капиталом, а мы берём на себя всю техническую сложность.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Disclaimer -->
+            <div class="disclaimer">
+                <div class="disclaimer-header">
+                    <span class="disclaimer-icon">⚠️</span>
+                    <span class="disclaimer-title">ВАЖНЫЙ ДИСКЛЕЙМЕР</span>
+                </div>
+                <div class="disclaimer-text">
+                    <strong>HF Factory предоставляет исключительно технические услуги</strong> по установке, настройке и сопровождению 
+                    торговой инфраструктуры. Мы не являемся инвестиционной компанией, брокером или управляющей компанией.
+                </div>
+                <ul class="disclaimer-list">
+                    <li>Мы не управляем вашими деньгами и не имеем к ним доступа</li>
+                    <li>Мы не даём инвестиционных рекомендаций</li>
+                    <li>Мы не гарантируем доходность или результаты торговли</li>
+                    <li>Все финансовые решения и риски — ваша ответственность</li>
+                    <li>Торговля на финансовых рынках может привести к потере капитала</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <!-- CTA Section -->
+                <div class="footer-cta">
+                    <h2 class="cta-title">Готовы автоматизировать торговлю?</h2>
+                    <p class="cta-subtitle">Получите консультацию и узнайте, какое решение подходит именно вам</p>
+                    <div class="cta-buttons">
+                        <a href="https://t.me/hffactory" target="_blank" class="cta-btn primary magnetic">
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.359 8.627-.168.9-.5 1.201-.82 1.23-.697.064-1.226-.461-1.901-.903-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.139-5.062 3.345-.479.329-.913.489-1.302.481-.428-.009-1.252-.242-1.865-.442-.752-.244-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.831-2.529 6.998-3.015 3.333-1.386 4.025-1.627 4.477-1.635.099-.002.321.023.465.141.121.1.154.234.169.327.016.093.036.306.02.472z"/>
+                            </svg>
+                            Telegram
+                        </a>
+                        <a href="mailto:info@hf-factory.tech" class="cta-btn secondary magnetic">
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                            </svg>
+                            info@hf-factory.tech
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Footer Links -->
+                <div class="footer-grid">
+                    <div class="footer-brand">
+                        <div class="footer-logo">
+                            <span class="logo-badge">HF</span> Factory
+                        </div>
+                        <p class="footer-desc">
+                            Технические решения для автоматизации трейдинга и инвестиций
+                        </p>
+                    </div>
+                    
+                    <div class="footer-links">
+                        <h4 class="footer-heading">Навигация</h4>
+                        <a href="#features">Возможности</a>
+                        <a href="#pricing">Тарифы</a>
+                        <a href="#comparison">Отличия</a>
+                        <a href="#faq">FAQ</a>
+                    </div>
+
+                    <div class="footer-links">
+                        <h4 class="footer-heading">Услуги</h4>
+                        <a href="#pricing">GridBot</a>
+                        <a href="#pricing">TrendBot</a>
+                        <a href="#pricing">Разработка по ТЗ</a>
+                        <a href="#pricing">Консультация</a>
+                    </div>
+
+                    <div class="footer-contact">
+                        <h4 class="footer-heading">Контакты</h4>
+                        <a href="https://t.me/hffactory" target="_blank" class="contact-link">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.359 8.627-.168.9-.5 1.201-.82 1.23-.697.064-1.226-.461-1.901-.903-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.139-5.062 3.345-.479.329-.913.489-1.302.481-.428-.009-1.252-.242-1.865-.442-.752-.244-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.831-2.529 6.998-3.015 3.333-1.386 4.025-1.627 4.477-1.635.099-.002.321.023.465.141.121.1.154.234.169.327.016.093.036.306.02.472z"/></svg>
+                            @hffactory
+                        </a>
+                        <a href="mailto:info@hf-factory.tech" class="contact-link">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                            info@hf-factory.tech
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-copy">
+                    © 2025-2026 HF Factory. Технические услуги для трейдинга.
+                </div>
+                <div class="footer-legal">
+                    Мы не управляем деньгами клиентов и не даём инвестиционных рекомендаций.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ==================== BITCOIN CURSOR ====================
+        const cursorBtc = document.querySelector('.cursor-btc');
+        const trails = document.querySelectorAll('.cursor-trail');
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+        const trailPositions = [];
+
+        // Initialize trail positions
+        for (let i = 0; i < trails.length; i++) {
+            trailPositions.push({ x: 0, y: 0 });
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateCursor() {
+            // Smooth cursor follow
+            cursorX += (mouseX - cursorX) * 0.15;
+            cursorY += (mouseY - cursorY) * 0.15;
+            cursorBtc.style.left = cursorX + 'px';
+            cursorBtc.style.top = cursorY + 'px';
+
+            // Trail effect
+            let prevX = cursorX;
+            let prevY = cursorY;
+
+            trails.forEach((trail, i) => {
+                const pos = trailPositions[i];
+                pos.x += (prevX - pos.x) * (0.3 - i * 0.08);
+                pos.y += (prevY - pos.y) * (0.3 - i * 0.08);
+                
+                trail.style.left = pos.x + 'px';
+                trail.style.top = pos.y + 'px';
+                trail.style.opacity = 0.5 - i * 0.15;
+                trail.style.transform = `translate(-50%, -50%) scale(${1 - i * 0.2})`;
+                
+                prevX = pos.x;
+                prevY = pos.y;
+            });
+
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Cursor hover effect on magnetic elements
+        document.querySelectorAll('.magnetic').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorBtc.classList.add('hover');
+            });
+            el.addEventListener('mouseleave', () => {
+                cursorBtc.classList.remove('hover');
+            });
+        });
+
+        // ==================== MAGNETIC EFFECT ====================
+        document.querySelectorAll('.magnetic').forEach(el => {
+            el.addEventListener('mousemove', (e) => {
+                const rect = el.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                el.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+            });
+            
+            el.addEventListener('mouseleave', () => {
+                el.style.transform = 'translate(0, 0)';
+            });
+        });
+
+        // ==================== MATRIX RAIN ====================
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const chars = '₿01アイウエオカキクケコサシスセソ$€£¥%#@&';
+        const fontSize = 14;
+        let columns = Math.floor(canvas.width / fontSize);
+        let drops = Array(columns).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(10, 10, 10, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < drops.length; i++) {
+                const char = chars[Math.floor(Math.random() * chars.length)];
+                
+                // Bitcoin symbol gets orange color
+                if (char === '₿') {
+                    ctx.fillStyle = '#f7931a';
+                } else {
+                    ctx.fillStyle = '#00ff88';
+                }
+                
+                ctx.font = `${fontSize}px monospace`;
+                ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 50);
+
+        // ==================== TEXT SCRAMBLE ====================
+        class TextScramble {
+            constructor(el) {
+                this.el = el;
+                this.chars = '₿$€£¥!<>-_\\/[]{}—=+*^?#';
+                this.update = this.update.bind(this);
+            }
+
+            setText(newText) {
+                const oldText = this.el.innerText;
+                const length = Math.max(oldText.length, newText.length);
+                const promise = new Promise(resolve => this.resolve = resolve);
+                this.queue = [];
+
+                for (let i = 0; i < length; i++) {
+                    const from = oldText[i] || '';
+                    const to = newText[i] || '';
+                    const start = Math.floor(Math.random() * 40);
+                    const end = start + Math.floor(Math.random() * 40);
+                    this.queue.push({ from, to, start, end });
+                }
+
+                cancelAnimationFrame(this.frameRequest);
+                this.frame = 0;
+                this.update();
+                return promise;
+            }
+
+            update() {
+                let output = '';
+                let complete = 0;
+
+                for (let i = 0; i < this.queue.length; i++) {
+                    let { from, to, start, end, char } = this.queue[i];
+
+                    if (this.frame >= end) {
+                        complete++;
+                        output += to;
+                    } else if (this.frame >= start) {
+                        if (!char || Math.random() < 0.28) {
+                            char = this.chars[Math.floor(Math.random() * this.chars.length)];
+                            this.queue[i].char = char;
+                        }
+                        output += char;
+                    } else {
+                        output += from;
+                    }
+                }
+
+                this.el.innerText = output;
+
+                if (complete === this.queue.length) {
+                    this.resolve();
+                } else {
+                    this.frameRequest = requestAnimationFrame(this.update);
+                    this.frame++;
+                }
+            }
+        }
+
+        // Initialize scramble
+        const phrases = ['хедж-фонд', 'HF FACTORY', '₿itcoin Bot', 'TRADING', 'хедж-фонд'];
+        const el = document.getElementById('scramble');
+        const fx = new TextScramble(el);
+        let counter = 0;
+
+        const next = () => {
+            fx.setText(phrases[counter]).then(() => {
+                setTimeout(next, 2000);
+            });
+            counter = (counter + 1) % phrases.length;
+        };
+
+        setTimeout(next, 1000);
+
+        // ==================== TERMINAL TYPING ====================
+        const terminalLines = [
+            { text: '<span class="cmd">$</span> hf-factory init', delay: 400 },
+            { text: '<span class="comment"># HF Factory v3.2.1 - Hedge Fund Infrastructure</span>', delay: 300 },
+            { text: '<span class="comment"># Licensed to: hf-factory.tech</span>', delay: 300 },
+            { text: '', delay: 200 },
+            { text: '<span class="cmd">$</span> hf config --strategy=<span class="btc">bitcoin-grid</span>', delay: 500 },
+            { text: '→ Loading strategy configuration...', delay: 400 },
+            { text: '  ├── Strategy: <span class="str">Grid Bot v2.1</span>', delay: 250 },
+            { text: '  ├── Pair: <span class="btc">BTC/USDT</span>', delay: 250 },
+            { text: '  ├── Grid levels: <span class="num">25</span>', delay: 250 },
+            { text: '  ├── Grid spacing: <span class="num">0.5%</span>', delay: 250 },
+            { text: '  └── Position size: <span class="num">$500</span>/level', delay: 250 },
+            { text: '', delay: 200 },
+            { text: '<span class="cmd">$</span> hf backtest --period=<span class="num">365d</span>', delay: 500 },
+            { text: '→ Running backtest on historical data...', delay: 600 },
+            { text: '  ├── Annual ROI: <span class="num">+24.5%</span>', delay: 300 },
+            { text: '  ├── Max drawdown: <span class="num">-15.2%</span>', delay: 300 },
+            { text: '  ├── Sharpe ratio: <span class="num">1.85</span>', delay: 300 },
+            { text: '  ├── Win rate: <span class="num">67%</span>', delay: 300 },
+            { text: '  └── Total trades: <span class="num">1,247</span>', delay: 300 },
+            { text: '', delay: 200 },
+            { text: '<span class="cmd">$</span> hf deploy --env=<span class="str">production</span>', delay: 500 },
+            { text: '→ Connecting to exchanges...', delay: 400 },
+            { text: '  ✓ <span class="btc">Binance</span>: <span class="str">connected</span> (API v3)', delay: 250 },
+            { text: '  ✓ <span class="btc">ByBit</span>: <span class="str">connected</span> (API v5)', delay: 250 },
+            { text: '  ✓ <span class="btc">OKX</span>: <span class="str">connected</span> (API v5)', delay: 250 },
+            { text: '', delay: 200 },
+            { text: '→ Setting up monitoring...', delay: 400 },
+            { text: '  ✓ Telegram alerts: <span class="str">enabled</span>', delay: 200 },
+            { text: '  ✓ Email notifications: <span class="str">enabled</span>', delay: 200 },
+            { text: '  ✓ Dashboard: <span class="str">https://app.hf-factory.tech</span>', delay: 200 },
+            { text: '', delay: 200 },
+            { text: '<span style="color: #00ff88">✓ DEPLOYMENT SUCCESSFUL</span>', delay: 400 },
+            { text: '<span style="color: #00ff88">✓ Live trading: ACTIVE</span> <span class="btc">₿</span>', delay: 300 },
+            { text: '', delay: 200 },
+            { text: '<span class="cmd">$</span> <span class="cursor-blink"></span>', delay: 0 }
+        ];
+
+        const terminalOutput = document.getElementById('terminal-output');
+        let lineIndex = 0;
+
+        function typeLine() {
+            if (lineIndex < terminalLines.length) {
+                const line = terminalLines[lineIndex];
+                const div = document.createElement('div');
+                div.className = 'terminal-line';
+                div.innerHTML = line.text;
+                div.style.animationDelay = `${lineIndex * 0.1}s`;
+                terminalOutput.appendChild(div);
+                lineIndex++;
+                setTimeout(typeLine, line.delay);
+            }
+        }
+
+        setTimeout(typeLine, 1000);
+
+        // Resize handler for matrix
+        window.addEventListener('resize', () => {
+            columns = Math.floor(canvas.width / fontSize);
+            drops = Array(columns).fill(1);
+        });
+
+        // ==================== EQUITY CHART ANIMATION ====================
+        class EquityChart {
+            constructor(strategy = 'grid') {
+                this.canvas = document.getElementById('equity-canvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.roiEl = document.getElementById('roi-value');
+                this.ddEl = document.getElementById('dd-value');
+                this.uptimeEl = document.getElementById('uptime-value');
+                this.balanceEl = document.getElementById('balance-value');
+                this.section = document.getElementById('equity-section');
+                
+                this.strategy = strategy; // 'grid' or 'trend'
+                this.initialBalance = 10000;
+                this.balance = this.initialBalance;
+                this.equity = [];
+                this.maxEquity = this.initialBalance;
+                this.maxDrawdown = 0;
+                this.currentDrawdown = 0;
+                this.tick = 0; // Track simulation progress for grid pattern
+                
+                this.isRunning = false;
+                this.animationSpeed = 60; // ms per tick
+                
+                this.resizeCanvas();
+                window.addEventListener('resize', () => this.resizeCanvas());
+            }
+
+            resizeCanvas() {
+                const rect = this.canvas.parentElement.getBoundingClientRect();
+                this.canvas.width = rect.width * 2;
+                this.canvas.height = rect.height * 2;
+                this.ctx.scale(2, 2);
+                this.width = rect.width;
+                this.height = rect.height;
+            }
+
+            start() {
+                this.section.classList.add('active');
+                this.isRunning = true;
+                this.equity = [this.initialBalance];
+                this.balance = this.initialBalance;
+                this.maxEquity = this.initialBalance;
+                this.maxDrawdown = 0;
+                
+                // Animate uptime
+                this.animateUptime();
+                
+                // Start equity simulation
+                this.simulate();
+            }
+
+            animateUptime() {
+                let uptime = 0;
+                const targetUptime = 99.9;
+                const duration = 2000;
+                const startTime = Date.now();
+                
+                const animate = () => {
+                    const elapsed = Date.now() - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    uptime = targetUptime * this.easeOutExpo(progress);
+                    this.uptimeEl.textContent = uptime.toFixed(1) + '%';
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    }
+                };
+                animate();
+            }
+
+            easeOutExpo(x) {
+                return x === 1 ? 1 : 1 - Math.pow(2, -10 * x);
+            }
+
+            simulate() {
+                if (!this.isRunning) return;
+                
+                this.tick++;
+                
+                if (this.strategy === 'grid') {
+                    this.simulateGrid();
+                } else {
+                    this.simulateTrend();
+                }
+                
+                this.equity.push(this.balance);
+                
+                // Keep array size manageable
+                const maxPoints = Math.floor(this.width / 2);
+                if (this.equity.length > maxPoints) {
+                    this.equity.shift();
+                }
+                
+                // Calculate metrics
+                this.maxEquity = Math.max(this.maxEquity, this.balance);
+                this.currentDrawdown = ((this.maxEquity - this.balance) / this.maxEquity) * 100;
+                this.maxDrawdown = Math.max(this.maxDrawdown, this.currentDrawdown);
+                
+                const roi = ((this.balance - this.initialBalance) / this.initialBalance) * 100;
+                
+                // Update display
+                this.updateStats(roi);
+                this.draw();
+                
+                setTimeout(() => this.simulate(), this.animationSpeed);
+            }
+
+            // TrendBot: Smooth uptrend with occasional pullbacks
+            simulateTrend() {
+                const trend = 0.15;
+                const volatility = 0.8;
+                
+                const change = (Math.random() - 0.5 + trend * 0.1) * volatility;
+                const percentChange = change / 100;
+                
+                let multiplier = 1;
+                if (Math.random() > 0.95) {
+                    multiplier = Math.random() > 0.5 ? 2.5 : -1.5;
+                }
+                
+                this.balance += this.balance * percentChange * multiplier;
+                
+                if (this.balance < this.initialBalance * 0.7) {
+                    this.balance += this.initialBalance * 0.02;
+                }
+            }
+
+            // GridBot: Steady growth → Sharp drawdown → INSTANT full recovery → Continue growth
+            simulateGrid() {
+                const cycleLength = 350; // Ticks per full cycle
+                const cyclePhase = this.tick % cycleLength;
+                const cycleProgress = cyclePhase / cycleLength;
+                
+                // Track peak before drawdown for full recovery
+                if (!this.gridPeakBalance || cycleProgress < 0.02) {
+                    this.gridPeakBalance = this.balance;
+                }
+                
+                // Phase 1: Steady smooth growth (0-65%)
+                if (cycleProgress < 0.65) {
+                    // Consistent small gains from grid profits
+                    const gain = 0.0003 + Math.random() * 0.0004;
+                    this.balance *= (1 + gain);
+                    // Very small oscillations
+                    this.balance *= (1 + (Math.random() - 0.5) * 0.001);
+                    // Update peak
+                    this.gridPeakBalance = Math.max(this.gridPeakBalance, this.balance);
+                }
+                // Phase 2: Sharp accelerating drawdown (65-80%)
+                else if (cycleProgress < 0.80) {
+                    const drawdownPhase = (cycleProgress - 0.65) / 0.15; // 0 to 1
+                    // Accelerating losses - gets worse as it goes
+                    const loss = 0.003 + Math.pow(drawdownPhase, 2) * 0.015;
+                    this.balance *= (1 - loss);
+                }
+                // Phase 3: INSTANT full recovery (80-82%) - just 2% of cycle = very fast
+                else if (cycleProgress < 0.82) {
+                    // Snap back to peak + small profit (grid closes all positions at once)
+                    const targetBalance = this.gridPeakBalance * 1.02; // Even slightly above peak
+                    const recoveryPhase = (cycleProgress - 0.80) / 0.02;
+                    this.balance = this.balance + (targetBalance - this.balance) * (0.5 + recoveryPhase * 0.5);
+                }
+                // Phase 4: Resume smooth growth (82-100%)
+                else {
+                    const gain = 0.0003 + Math.random() * 0.0004;
+                    this.balance *= (1 + gain);
+                    this.balance *= (1 + (Math.random() - 0.5) * 0.001);
+                    // Update peak for next cycle
+                    this.gridPeakBalance = this.balance;
+                }
+            }
+
+            updateStats(roi) {
+                // ROI
+                const roiFormatted = (roi >= 0 ? '+' : '') + roi.toFixed(1) + '%';
+                this.roiEl.textContent = roiFormatted;
+                this.roiEl.className = 'equity-stat-value ' + (roi >= 0 ? 'positive' : 'negative');
+                
+                // Max Drawdown
+                this.ddEl.textContent = '-' + this.maxDrawdown.toFixed(1) + '%';
+                
+                // Balance
+                this.balanceEl.textContent = '$' + Math.floor(this.balance).toLocaleString();
+            }
+
+            draw() {
+                const ctx = this.ctx;
+                const w = this.width;
+                const h = this.height;
+                
+                // Clear
+                ctx.clearRect(0, 0, w, h);
+                
+                if (this.equity.length < 2) return;
+                
+                // Find min/max for scaling
+                const min = Math.min(...this.equity) * 0.995;
+                const max = Math.max(...this.equity) * 1.005;
+                const range = max - min || 1;
+                
+                // Draw grid lines
+                ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+                ctx.lineWidth = 1;
+                for (let i = 0; i < 4; i++) {
+                    const y = (h / 4) * i;
+                    ctx.beginPath();
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(w, y);
+                    ctx.stroke();
+                }
+                
+                // Draw initial balance line
+                const initialY = h - ((this.initialBalance - min) / range) * h;
+                ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+                ctx.setLineDash([4, 4]);
+                ctx.beginPath();
+                ctx.moveTo(0, initialY);
+                ctx.lineTo(w, initialY);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                
+                // Create gradient for fill
+                const lastValue = this.equity[this.equity.length - 1];
+                const isProfit = lastValue >= this.initialBalance;
+                const color = isProfit ? '0, 255, 136' : '239, 68, 68';
+                
+                const gradient = ctx.createLinearGradient(0, 0, 0, h);
+                gradient.addColorStop(0, `rgba(${color}, 0.3)`);
+                gradient.addColorStop(1, `rgba(${color}, 0)`);
+                
+                // Draw filled area
+                ctx.beginPath();
+                const pointSpacing = w / (this.equity.length - 1);
+                
+                this.equity.forEach((val, i) => {
+                    const x = i * pointSpacing;
+                    const y = h - ((val - min) / range) * h;
+                    
+                    if (i === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                });
+                
+                // Complete the fill path
+                ctx.lineTo(w, h);
+                ctx.lineTo(0, h);
+                ctx.closePath();
+                ctx.fillStyle = gradient;
+                ctx.fill();
+                
+                // Draw the line
+                ctx.beginPath();
+                this.equity.forEach((val, i) => {
+                    const x = i * pointSpacing;
+                    const y = h - ((val - min) / range) * h;
+                    
+                    if (i === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                });
+                
+                ctx.strokeStyle = isProfit ? '#00ff88' : '#ef4444';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                // Draw current point
+                const lastX = (this.equity.length - 1) * pointSpacing;
+                const lastY = h - ((lastValue - min) / range) * h;
+                
+                ctx.beginPath();
+                ctx.arc(lastX, lastY, 4, 0, Math.PI * 2);
+                ctx.fillStyle = isProfit ? '#00ff88' : '#ef4444';
+                ctx.fill();
+                
+                // Glow effect on current point
+                ctx.beginPath();
+                ctx.arc(lastX, lastY, 8, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${color}, 0.3)`;
+                ctx.fill();
+            }
+        }
+
+        // ==================== STRATEGY SWITCHING ====================
+        let currentStrategy = 'grid';
+        let equityChart = null;
+        let terminalComplete = false;
+
+        // Terminal lines for each strategy
+        const terminalLinesGrid = [
+            { text: '<span class="cmd">$</span> hf-factory init', delay: 400 },
+            { text: '<span class="comment"># HF Factory v3.2.1 - Hedge Fund Infrastructure</span>', delay: 300 },
+            { text: '<span class="comment"># Licensed to: hf-factory.tech</span>', delay: 300 },
+            { text: '', delay: 200 },
+            { text: '<span class="cmd">$</span> hf config --strategy=<span class="btc">GridBot</span>', delay: 500 },
+            { text: '→ Loading strategy configuration...', delay: 400 },
+            { text: '  ├── Strategy: <span class="str">Grid Bot v2.1</span>', delay: 250 },
+            { text: '  ├── Pair: <span class="btc">BTC/USDT</span>', delay: 250 },
+            { text: '  ├── Grid levels: <span class="num">25</span>', delay: 250 },
+            { text: '  ├── Grid spacing: <span class="num">0.5%</span>', delay: 250 },
+            { text: '  └── Position size: <span class="num">$500</span>/level', delay: 250 },
+            { text: '', delay: 200 },
+            { text: '<span class="cmd">$</span> hf backtest --period=<span class="num">365d</span>', delay: 500 },
+            { text: '→ Running backtest on historical data...', delay: 600 },
+            { text: '  ├── Annual ROI: <span class="num">+18.2%</span>', delay: 300 },
+            { text: '  ├── Max drawdown: <span class="num">-22.5%</span>', delay: 300 },
+            { text: '  ├── Sharpe ratio: <span class="num">1.45</span>', delay: 300 },
+            { text: '  ├── Win rate: <span class="num">72%</span>', delay: 300 },
+            { text: '  └── Total trades: <span class="num">3,847</span>', delay: 300 },
+            { text: '', delay: 200 },
+            { text: '<span class="cmd">$</span> hf deploy --env=<span class="str">production</span>', delay: 500 },
+            { text: '→ Connecting to exchanges...', delay: 400 },
+            { text: '  ✓ <span class="btc">Binance</span>: <span class="str">connected</span> (API v3)', delay: 250 },
+            { text: '  ✓ <span class="btc">ByBit</span>: <span class="str">connected</span> (API v5)', delay: 250 },
+            { text: '  ✓ <span class="btc">OKX</span>: <span class="str">connected</span> (API v5)', delay: 250 },
+            { text: '', delay: 200 },
+            { text: '→ Setting up monitoring...', delay: 400 },
+            { text: '  ✓ Telegram alerts: <span class="str">enabled</span>', delay: 200 },
+            { text: '  ✓ Email notifications: <span class="str">enabled</span>', delay: 200 },
+            { text: '  ✓ Dashboard: <span class="str">https://app.hf-factory.tech</span>', delay: 200 },
+            { text: '', delay: 200 },
+            { text: '<span style="color: #00ff88">✓ DEPLOYMENT SUCCESSFUL</span>', delay: 400 },
+            { text: '<span style="color: #00ff88">✓ GridBot: ACTIVE</span> <span class="btc">₿</span>', delay: 300 },
+            { text: '', delay: 200 },
+            { text: '<span class="cmd">$</span> <span class="cursor-blink"></span>', delay: 0 }
+        ];
+
+        const terminalLinesTrend = [
+            { text: '<span class="cmd">$</span> hf-factory init', delay: 400 },
+            { text: '<span class="comment"># HF Factory v3.2.1 - Hedge Fund Infrastructure</span>', delay: 300 },
+            { text: '<span class="comment"># Licensed to: hf-factory.tech</span>', delay: 300 },
+            { text: '', delay: 200 },
+            { text: '<span class="cmd">$</span> hf config --strategy=<span class="btc">TrendBot</span>', delay: 500 },
+            { text: '→ Loading strategy configuration...', delay: 400 },
+            { text: '  ├── Strategy: <span class="str">Trend Following v3.0</span>', delay: 250 },
+            { text: '  ├── Pairs: <span class="btc">BTC, ETH, SOL</span>', delay: 250 },
+            { text: '  ├── Timeframe: <span class="num">4H</span>', delay: 250 },
+            { text: '  ├── Risk per trade: <span class="num">1%</span>', delay: 250 },
+            { text: '  └── Max positions: <span class="num">5</span>', delay: 250 },
+            { text: '', delay: 200 },
+            { text: '<span class="cmd">$</span> hf backtest --period=<span class="num">365d</span>', delay: 500 },
+            { text: '→ Running backtest on historical data...', delay: 600 },
+            { text: '  ├── Annual ROI: <span class="num">+42.8%</span>', delay: 300 },
+            { text: '  ├── Max drawdown: <span class="num">-12.3%</span>', delay: 300 },
+            { text: '  ├── Sharpe ratio: <span class="num">2.15</span>', delay: 300 },
+            { text: '  ├── Win rate: <span class="num">45%</span>', delay: 300 },
+            { text: '  └── Profit factor: <span class="num">2.3</span>', delay: 300 },
+            { text: '', delay: 200 },
+            { text: '<span class="cmd">$</span> hf deploy --env=<span class="str">production</span>', delay: 500 },
+            { text: '→ Connecting to exchanges...', delay: 400 },
+            { text: '  ✓ <span class="btc">Binance</span>: <span class="str">connected</span> (API v3)', delay: 250 },
+            { text: '  ✓ <span class="btc">ByBit</span>: <span class="str">connected</span> (API v5)', delay: 250 },
+            { text: '  ✓ <span class="btc">OKX</span>: <span class="str">connected</span> (API v5)', delay: 250 },
+            { text: '', delay: 200 },
+            { text: '→ Setting up monitoring...', delay: 400 },
+            { text: '  ✓ Telegram alerts: <span class="str">enabled</span>', delay: 200 },
+            { text: '  ✓ Email notifications: <span class="str">enabled</span>', delay: 200 },
+            { text: '  ✓ Dashboard: <span class="str">https://app.hf-factory.tech</span>', delay: 200 },
+            { text: '', delay: 200 },
+            { text: '<span style="color: #00ff88">✓ DEPLOYMENT SUCCESSFUL</span>', delay: 400 },
+            { text: '<span style="color: #00ff88">✓ TrendBot: ACTIVE</span> <span class="btc">₿</span>', delay: 300 },
+            { text: '', delay: 200 },
+            { text: '<span class="cmd">$</span> <span class="cursor-blink"></span>', delay: 0 }
+        ];
+
+        function switchStrategy(strategy) {
+            if (strategy === currentStrategy) return;
+            currentStrategy = strategy;
+            
+            // Update tab states
+            document.querySelectorAll('.strategy-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.strategy === strategy);
+            });
+            
+            // Stop current chart
+            if (equityChart) {
+                equityChart.isRunning = false;
+            }
+            
+            // Clear terminal
+            terminalOutput.innerHTML = '';
+            lineIndex = 0;
+            terminalComplete = false;
+            
+            // Reset equity display
+            document.getElementById('roi-value').textContent = '+0.0%';
+            document.getElementById('roi-value').className = 'equity-stat-value positive';
+            document.getElementById('dd-value').textContent = '-0.0%';
+            document.getElementById('uptime-value').textContent = '0%';
+            document.getElementById('balance-value').textContent = '$10,000';
+            
+            // Clear canvas
+            const canvas = document.getElementById('equity-canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Start new terminal animation
+            const lines = strategy === 'grid' ? terminalLinesGrid : terminalLinesTrend;
+            typeLineWithStrategy(lines);
+        }
+
+        function typeLineWithStrategy(lines) {
+            if (lineIndex < lines.length) {
+                const line = lines[lineIndex];
+                const div = document.createElement('div');
+                div.className = 'terminal-line';
+                div.innerHTML = line.text;
+                div.style.animationDelay = `${lineIndex * 0.1}s`;
+                terminalOutput.appendChild(div);
+                
+                // Auto-scroll terminal
+                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                
+                lineIndex++;
+                
+                if (lineIndex >= lines.length) {
+                    terminalComplete = true;
+                    setTimeout(() => {
+                        equityChart = new EquityChart(currentStrategy);
+                        equityChart.start();
+                    }, 500);
+                } else {
+                    setTimeout(() => typeLineWithStrategy(lines), line.delay);
+                }
+            }
+        }
+
+        // Add click handlers for strategy tabs
+        document.querySelectorAll('.strategy-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                switchStrategy(tab.dataset.strategy);
+            });
+        });
+
+        // Initial terminal animation (GridBot by default)
+        const startEquityChart = () => {
+            equityChart = new EquityChart(currentStrategy);
+            equityChart.start();
+        };
+
+        const originalTerminalLines = terminalLines.length;
+        
+        const checkTerminalComplete = setInterval(() => {
+            if (lineIndex >= originalTerminalLines && !terminalComplete) {
+                terminalComplete = true;
+                clearInterval(checkTerminalComplete);
+                setTimeout(startEquityChart, 500);
+            }
+        }, 100);
+
+        // ==================== FAQ TOGGLE ====================
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                const wasOpen = item.classList.contains('open');
+                
+                // Close all items
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+                
+                // Toggle current item
+                if (!wasOpen) {
+                    item.classList.add('open');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
