@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HedgeFund - Holographic Interface</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <style>
+        :root {
+            --bg: #030308;
+            --cyan: #00f0ff;
+            --magenta: #ff00aa;
+            --purple: #7b2cbf;
+            --gold: #ffd700;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: white;
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated grid floor */
+        .perspective-grid {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background: 
+                linear-gradient(transparent 0%, var(--bg) 100%),
+                repeating-linear-gradient(90deg, var(--cyan) 0px, transparent 1px, transparent 80px),
+                repeating-linear-gradient(0deg, var(--cyan) 0px, transparent 1px, transparent 80px);
+            background-size: 100% 100%, 80px 80px, 80px 80px;
+            transform: perspective(500px) rotateX(60deg);
+            transform-origin: center top;
+            opacity: 0.15;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { background-position: 0 0, 0 0, 0 0; }
+            100% { background-position: 0 0, 0 80px, 0 80px; }
+        }
+
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--cyan);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: float 15s infinite;
+            box-shadow: 0 0 10px var(--cyan);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100px) scale(1); opacity: 0; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 0;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--cyan), var(--magenta));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 3px;
+            text-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
+        }
+
+        nav {
+            display: flex;
+            gap: 3rem;
+        }
+
+        nav a {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--cyan), var(--magenta));
+            transition: width 0.3s;
+        }
+
+        nav a:hover {
+            color: white;
+            text-shadow: 0 0 20px var(--cyan);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .header-cta {
+            background: transparent;
+            border: 1px solid var(--cyan);
+            color: var(--cyan);
+            padding: 0.8rem 2rem;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .header-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0,240,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .header-cta:hover::before {
+            left: 100%;
+        }
+
+        .header-cta:hover {
+            box-shadow: 0 0 30px rgba(0,240,255,0.5), inset 0 0 30px rgba(0,240,255,0.1);
+        }
+
+        /* Hero */
+        #hero {
+            padding: 8rem 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            min-height: 85vh;
+        }
+
+        .hero-content {
+            position: relative;
+        }
+
+        .glitch-badge {
+            display: inline-block;
+            background: rgba(255,0,170,0.1);
+            border: 1px solid var(--magenta);
+            color: var(--magenta);
+            padding: 0.5rem 1.5rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            margin-bottom: 2rem;
+            position: relative;
+            animation: glitch 3s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 90%, 100% { transform: translate(0); }
+            92% { transform: translate(-2px, 1px); }
+            94% { transform: translate(2px, -1px); }
+            96% { transform: translate(-1px, -1px); }
+            98% { transform: translate(1px, 1px); }
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4.5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            letter-spacing: -1px;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        h1 .line {
+            display: block;
+            position: relative;
+        }
+
+        h1 .highlight {
+            background: linear-gradient(135deg, var(--cyan), var(--magenta));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+
+        h1 .highlight::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 2px;
+            top: 2px;
+            background: linear-gradient(135deg, var(--magenta), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0.5;
+            z-index: -1;
+        }
+
+        .description {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.6);
+            max-width: 500px;
+            line-height: 1.8;
+            margin-bottom: 3rem;
+            letter-spacing: 0.5px;
+        }
+
+        .cta-row {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .btn-holo {
+            background: linear-gradient(135deg, var(--cyan), var(--magenta));
+            color: white;
+            padding: 1.2rem 3rem;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            position: relative;
+            clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
+            transition: all 0.3s;
+        }
+
+        .btn-holo:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px rgba(0,240,255,0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 1.2rem 2rem;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--cyan);
+            color: var(--cyan);
+        }
+
+        /* Holographic Card Visual */
+        .hero-visual {
+            position: relative;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .holo-card {
+            width: 380px;
+            height: 480px;
+            background: linear-gradient(135deg, 
+                rgba(0,240,255,0.1) 0%,
+                rgba(123,44,191,0.1) 50%,
+                rgba(255,0,170,0.1) 100%
+            );
+            border: 1px solid rgba(0,240,255,0.3);
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            position: relative;
+            transform: perspective(1000px) rotateY(-15deg) rotateX(5deg);
+            animation: cardFloat 6s ease-in-out infinite;
+            overflow: hidden;
+        }
+
+        @keyframes cardFloat {
+            0%, 100% { transform: perspective(1000px) rotateY(-15deg) rotateX(5deg) translateY(0); }
+            50% { transform: perspective(1000px) rotateY(-10deg) rotateX(8deg) translateY(-20px); }
+        }
+
+        .holo-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(0,240,255,0.1) 40%,
+                rgba(255,0,170,0.1) 50%,
+                transparent 60%
+            );
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        .card-content {
+            padding: 2rem;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0,240,255,0.2);
+        }
+
+        .card-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            color: var(--cyan);
+            letter-spacing: 3px;
+        }
+
+        .card-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            color: #10b981;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(16,185,129,0.7); }
+            50% { opacity: 0.8; box-shadow: 0 0 0 10px rgba(16,185,129,0); }
+        }
+
+        .stat-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-item {
+            background: rgba(0,0,0,0.3);
+            padding: 1rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .stat-value.green { color: #10b981; }
+        .stat-value.cyan { color: var(--cyan); }
+
+        .chart-area {
+            flex: 1;
+            position: relative;
+            margin-top: 1rem;
+        }
+
+        .chart-line {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .chart-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .chart-path {
+            fill: none;
+            stroke: url(#chartGradient);
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawLine 2s ease forwards;
+        }
+
+        @keyframes drawLine {
+            to { stroke-dashoffset: 0; }
+        }
+
+        .chart-fill {
+            fill: url(#fillGradient);
+            opacity: 0.3;
+        }
+
+        /* Orbiting elements */
+        .orbit {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border: 1px dashed rgba(0,240,255,0.1);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: orbit 30s linear infinite;
+        }
+
+        @keyframes orbit {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .orbit-dot {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--magenta);
+            border-radius: 50%;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 20px var(--magenta);
+        }
+
+        @media (max-width: 1024px) {
+            #hero { grid-template-columns: 1fr; text-align: center; }
+            h1 { font-size: 3rem; }
+            .hero-visual { display: none; }
+            .cta-row { justify-content: center; }
+            nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="perspective-grid"></div>
+    
+    <div class="particles">
+        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 35%; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 50%; animation-delay: 1s;"></div>
+        <div class="particle" style="left: 65%; animation-delay: 3s;"></div>
+        <div class="particle" style="left: 80%; animation-delay: 5s;"></div>
+        <div class="particle" style="left: 90%; animation-delay: 2.5s;"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="logo">HEDGEFUND</div>
+            <nav>
+                <a href="#">Решения</a>
+                <a href="#">Тарифы</a>
+                <a href="#">Технологии</a>
+                <a href="#">Контакты</a>
+            </nav>
+            <a href="#" class="header-cta">ЗАПУСК</a>
+        </header>
+
+        <main>
+            <section id="hero">
+                <div class="hero-content">
+                    <div class="glitch-badge">// ЛИМИТ: -20% НА УСТАНОВКУ</div>
+                    
+                    <h1>
+                        <span class="line">ВАШ ЛИЧНЫЙ</span>
+                        <span class="line highlight" data-text="ХЕДЖ-ФОНД">ХЕДЖ-ФОНД</span>
+                    </h1>
+
+                    <p class="description">
+                        Техническая часть под ключ. Автоматизированная торговая инфраструктура нового поколения. Полный контроль — без управления вашими активами.
+                    </p>
+
+                    <div class="cta-row">
+                        <a href="#" class="btn-holo">РАССЧИТАТЬ</a>
+                        <a href="#" class="btn-outline">
+                            <iconify-icon icon="solar:play-circle-linear"></iconify-icon>
+                            ДЕМО
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="orbit">
+                        <div class="orbit-dot"></div>
+                    </div>
+                    
+                    <div class="holo-card">
+                        <div class="card-content">
+                            <div class="card-header">
+                                <div class="card-logo">HF.TECH</div>
+                                <div class="card-status">
+                                    <div class="status-dot"></div>
+                                    ACTIVE
+                                </div>
+                            </div>
+
+                            <div class="stat-row">
+                                <div class="stat-item">
+                                    <div class="stat-label">Profit 24h</div>
+                                    <div class="stat-value green">+$2,847</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-label">Uptime</div>
+                                    <div class="stat-value cyan">99.9%</div>
+                                </div>
+                            </div>
+
+                            <div class="stat-row">
+                                <div class="stat-item">
+                                    <div class="stat-label">Active Bots</div>
+                                    <div class="stat-value">12</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-label">Total ROI</div>
+                                    <div class="stat-value green">+24.5%</div>
+                                </div>
+                            </div>
+
+                            <div class="chart-area">
+                                <svg class="chart-svg" viewBox="0 0 300 120" preserveAspectRatio="none">
+                                    <defs>
+                                        <linearGradient id="chartGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                            <stop offset="0%" style="stop-color:#00f0ff"/>
+                                            <stop offset="100%" style="stop-color:#ff00aa"/>
+                                        </linearGradient>
+                                        <linearGradient id="fillGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#00f0ff;stop-opacity:0.3"/>
+                                            <stop offset="100%" style="stop-color:#00f0ff;stop-opacity:0"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <path class="chart-fill" d="M0,100 L0,80 Q30,70 60,60 T120,50 T180,30 T240,40 T300,20 L300,100 Z"/>
+                                    <path class="chart-path" d="M0,80 Q30,70 60,60 T120,50 T180,30 T240,40 T300,20"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>
+

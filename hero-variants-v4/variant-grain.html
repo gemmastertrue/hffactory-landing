@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HedgeFund - Grain Texture</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <style>
+        :root {
+            --bg: #1a1a1a;
+            --surface: #242424;
+            --cream: #f5f0e8;
+            --orange: #ff6b35;
+            --text: #e8e8e8;
+            --muted: #888;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Instrument Sans', sans-serif;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Grain overlay */
+        .grain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0.4;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 0;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: -0.5px;
+        }
+
+        nav {
+            display: flex;
+            gap: 3rem;
+        }
+
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--text);
+        }
+
+        .header-cta {
+            background: var(--cream);
+            color: var(--bg);
+            padding: 0.75rem 1.5rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: transform 0.2s;
+        }
+
+        .header-cta:hover {
+            transform: scale(1.05);
+        }
+
+        /* Hero */
+        #hero {
+            padding: 6rem 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+        }
+
+        .hero-content {
+            padding-right: 2rem;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 107, 53, 0.1);
+            color: var(--orange);
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 4.5rem;
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 .italic {
+            font-family: 'Newsreader', serif;
+            font-style: italic;
+            font-weight: 400;
+            color: var(--orange);
+        }
+
+        .description {
+            font-size: 1.2rem;
+            color: var(--muted);
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+            max-width: 480px;
+        }
+
+        .cta-row {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn-primary {
+            background: var(--orange);
+            color: white;
+            padding: 1.1rem 2.5rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+        }
+
+        .btn-text {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+        }
+
+        .btn-text:hover {
+            color: var(--orange);
+        }
+
+        /* Metrics */
+        .metrics {
+            display: flex;
+            gap: 3rem;
+            margin-top: 4rem;
+            padding-top: 3rem;
+            border-top: 1px solid #333;
+        }
+
+        .metric {
+            text-align: left;
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-value.orange { color: var(--orange); }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        /* Visual side */
+        .hero-visual {
+            position: relative;
+        }
+
+        .visual-card {
+            background: var(--surface);
+            border-radius: 24px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .visual-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--orange), #ff9f6b);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            color: #10b981;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .profit-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 2rem;
+        }
+
+        .profit-main {
+            font-size: 4rem;
+            font-weight: 700;
+            color: #10b981;
+            letter-spacing: -0.02em;
+        }
+
+        .profit-change {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            padding: 0.35rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* Wave chart */
+        .chart-container {
+            height: 120px;
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .chart-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .chart-line {
+            fill: none;
+            stroke: var(--orange);
+            stroke-width: 3;
+            stroke-linecap: round;
+        }
+
+        .chart-area {
+            fill: url(#areaGradient);
+        }
+
+        /* Bot cards */
+        .bot-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .bot-card {
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 1.25rem;
+            text-align: center;
+        }
+
+        .bot-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 107, 53, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.75rem;
+            color: var(--orange);
+        }
+
+        .bot-name {
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .bot-profit {
+            font-size: 0.8rem;
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        /* Floating elements */
+        .float-element {
+            position: absolute;
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .float-element-1 {
+            top: -30px;
+            right: -30px;
+        }
+
+        .float-element-2 {
+            bottom: -20px;
+            left: -40px;
+            animation-delay: -3s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .float-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 107, 53, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--orange);
+        }
+
+        .float-text {
+            font-size: 0.85rem;
+        }
+
+        .float-value {
+            font-weight: 700;
+        }
+
+        @media (max-width: 1024px) {
+            #hero { grid-template-columns: 1fr; gap: 4rem; }
+            h1 { font-size: 3.5rem; }
+            nav { display: none; }
+            .float-element { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="grain"></div>
+
+    <div class="container">
+        <header>
+            <div class="logo">HedgeFund.tech</div>
+            <nav>
+                <a href="#">Услуги</a>
+                <a href="#">Тарифы</a>
+                <a href="#">О нас</a>
+                <a href="#">Контакты</a>
+            </nav>
+            <a href="#" class="header-cta">Начать</a>
+        </header>
+
+        <main>
+            <section id="hero">
+                <div class="hero-content">
+                    <div class="tag">
+                        <iconify-icon icon="solar:tag-price-bold"></iconify-icon>
+                        Скидка -20% на установку
+                    </div>
+
+                    <h1>
+                        Ваш личный<br>
+                        <span class="italic">хедж-фонд</span><br>
+                        под ключ
+                    </h1>
+
+                    <p class="description">
+                        Автоматизированная торговая инфраструктура + техсопровождение. 
+                        Без управления вашими деньгами.
+                    </p>
+
+                    <div class="cta-row">
+                        <a href="#" class="btn-primary">
+                            Рассчитать стоимость
+                            <iconify-icon icon="solar:arrow-right-linear"></iconify-icon>
+                        </a>
+                        <a href="#" class="btn-text">
+                            <iconify-icon icon="solar:play-circle-bold"></iconify-icon>
+                            Смотреть демо
+                        </a>
+                    </div>
+
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-value orange">99.9%</div>
+                            <div class="metric-label">Uptime</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">24/7</div>
+                            <div class="metric-label">Мониторинг</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value orange">+24%</div>
+                            <div class="metric-label">Средний ROI</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="float-element float-element-1">
+                        <div class="float-icon">
+                            <iconify-icon icon="solar:shield-check-bold"></iconify-icon>
+                        </div>
+                        <div class="float-text">
+                            <div class="float-value">Защищено</div>
+                            <div style="color: var(--muted); font-size: 0.75rem;">Ваши ключи у вас</div>
+                        </div>
+                    </div>
+
+                    <div class="float-element float-element-2">
+                        <div class="float-icon">
+                            <iconify-icon icon="solar:graph-up-bold"></iconify-icon>
+                        </div>
+                        <div class="float-text">
+                            <div class="float-value">12 ботов</div>
+                            <div style="color: var(--muted); font-size: 0.75rem;">Активны сейчас</div>
+                        </div>
+                    </div>
+
+                    <div class="visual-card">
+                        <div class="card-header">
+                            <span class="card-title">Dashboard</span>
+                            <span class="status-badge">
+                                <span class="status-dot"></span>
+                                Online
+                            </span>
+                        </div>
+
+                        <div class="profit-row">
+                            <div class="profit-main">+$2,847</div>
+                            <div class="profit-change">+12.5%</div>
+                        </div>
+
+                        <div class="chart-container">
+                            <svg class="chart-svg" viewBox="0 0 400 100" preserveAspectRatio="none">
+                                <defs>
+                                    <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#ff6b35;stop-opacity:0.3"/>
+                                        <stop offset="100%" style="stop-color:#ff6b35;stop-opacity:0"/>
+                                    </linearGradient>
+                                </defs>
+                                <path class="chart-area" d="M0,80 Q50,70 100,50 T200,40 T300,30 T400,20 L400,100 L0,100 Z"/>
+                                <path class="chart-line" d="M0,80 Q50,70 100,50 T200,40 T300,30 T400,20"/>
+                            </svg>
+                        </div>
+
+                        <div class="bot-cards">
+                            <div class="bot-card">
+                                <div class="bot-icon">
+                                    <iconify-icon icon="solar:cpu-bolt-bold"></iconify-icon>
+                                </div>
+                                <div class="bot-name">Grid Bot</div>
+                                <div class="bot-profit">+4.2%</div>
+                            </div>
+                            <div class="bot-card">
+                                <div class="bot-icon">
+                                    <iconify-icon icon="solar:refresh-bold"></iconify-icon>
+                                </div>
+                                <div class="bot-name">DCA</div>
+                                <div class="bot-profit">+2.8%</div>
+                            </div>
+                            <div class="bot-card">
+                                <div class="bot-icon">
+                                    <iconify-icon icon="solar:bolt-bold"></iconify-icon>
+                                </div>
+                                <div class="bot-name">Scalper</div>
+                                <div class="bot-profit">+1.5%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>
+

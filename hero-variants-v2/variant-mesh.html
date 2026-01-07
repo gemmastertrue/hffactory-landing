@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero V2 - Mesh Gradient</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --card: #1a1a1a;
+            --border: #2a2a2a;
+            --text: #ffffff;
+            --muted: #888;
+            --green: #34d399;
+            --blue: #60a5fa;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Manrope', sans-serif;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Mesh gradient background */
+        .mesh-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(at 40% 20%, hsla(280, 100%, 50%, 0.15) 0px, transparent 50%),
+                radial-gradient(at 80% 0%, hsla(190, 100%, 50%, 0.15) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, hsla(330, 100%, 50%, 0.1) 0px, transparent 50%),
+                radial-gradient(at 80% 50%, hsla(200, 100%, 50%, 0.1) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, hsla(260, 100%, 50%, 0.1) 0px, transparent 50%),
+                radial-gradient(at 80% 100%, hsla(160, 100%, 50%, 0.15) 0px, transparent 50%);
+            z-index: 0;
+        }
+
+        /* Grid pattern overlay */
+        .grid-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* === HEADER === */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo iconify-icon {
+            color: var(--green);
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+            background: rgba(255,255,255,0.03);
+            padding: 0.8rem 1.5rem;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+        }
+
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--text);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn-ghost {
+            color: var(--text);
+            padding: 0.7rem 1.2rem;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .btn-filled {
+            background: var(--text);
+            color: var(--bg);
+            padding: 0.7rem 1.5rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* === HERO === */
+        #hero {
+            padding: 8rem 0 4rem;
+            text-align: center;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: rgba(52, 211, 153, 0.1);
+            border: 1px solid rgba(52, 211, 153, 0.2);
+            padding: 0.5rem 1rem 0.5rem 0.5rem;
+            border-radius: 100px;
+            margin-bottom: 2rem;
+        }
+
+        .pill-badge {
+            background: var(--green);
+            color: var(--bg);
+            padding: 0.25rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .pill-text {
+            font-size: 0.9rem;
+            color: var(--green);
+        }
+
+        h1 {
+            font-size: 4.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--muted);
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            line-height: 1.6;
+        }
+
+        .cta-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 4rem;
+        }
+
+        .cta-main {
+            background: linear-gradient(135deg, var(--green), var(--blue));
+            color: var(--bg);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .cta-main:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(52, 211, 153, 0.3);
+        }
+
+        .cta-secondary {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Bento grid */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: auto auto;
+            gap: 1rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .bento-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            text-align: left;
+            transition: border-color 0.3s;
+        }
+
+        .bento-card:hover {
+            border-color: #444;
+        }
+
+        .bento-card.wide {
+            grid-column: span 2;
+        }
+
+        .bento-card.tall {
+            grid-row: span 2;
+        }
+
+        .bento-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(52, 211, 153, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            color: var(--green);
+        }
+
+        .bento-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .bento-desc {
+            font-size: 0.9rem;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .bento-stat {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--green), var(--blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .bento-grid { grid-template-columns: 1fr; }
+            .bento-card.wide { grid-column: span 1; }
+            nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mesh-bg"></div>
+    <div class="grid-pattern"></div>
+
+    <div class="container">
+        <!-- === HEADER === -->
+        <header>
+            <div class="logo">
+                <iconify-icon icon="solar:chart-square-bold-duotone"></iconify-icon>
+                HedgeFund
+            </div>
+            <nav>
+                <a href="#">Возможности</a>
+                <a href="#">Тарифы</a>
+                <a href="#">Документация</a>
+                <a href="#">Блог</a>
+            </nav>
+            <div class="header-actions">
+                <a href="#" class="btn-ghost">Войти</a>
+                <a href="#" class="btn-filled">Начать</a>
+            </div>
+        </header>
+
+        <!-- === MAIN === -->
+        <main>
+            <section id="hero">
+                <div class="pill">
+                    <span class="pill-badge">NEW</span>
+                    <span class="pill-text">Скидка -20% на установку</span>
+                </div>
+
+                <h1>Ваш личный хедж-фонд, техническая часть под ключ</h1>
+
+                <p class="subtitle">
+                    Автоматизированная торговая инфраструктура + техсопровождение. 
+                    Без управления вашими деньгами.
+                </p>
+
+                <div class="cta-group">
+                    <a href="#" class="cta-main">
+                        Рассчитать стоимость
+                        <iconify-icon icon="solar:arrow-right-linear"></iconify-icon>
+                    </a>
+                    <a href="#" class="cta-secondary">
+                        <iconify-icon icon="solar:play-circle-linear"></iconify-icon>
+                        Смотреть демо
+                    </a>
+                </div>
+
+                <div class="bento-grid">
+                    <div class="bento-card">
+                        <div class="bento-icon">
+                            <iconify-icon icon="solar:server-bold"></iconify-icon>
+                        </div>
+                        <div class="bento-title">Готовая инфраструктура</div>
+                        <div class="bento-desc">Всё настроено и работает с первого дня</div>
+                    </div>
+
+                    <div class="bento-card wide">
+                        <div class="bento-stat">99.9%</div>
+                        <div class="bento-title">Uptime серверов</div>
+                        <div class="bento-desc">Гарантированная стабильность работы 24/7</div>
+                    </div>
+
+                    <div class="bento-card">
+                        <div class="bento-icon">
+                            <iconify-icon icon="solar:shield-check-bold"></iconify-icon>
+                        </div>
+                        <div class="bento-title">Безопасность</div>
+                        <div class="bento-desc">Ваши ключи остаются у вас</div>
+                    </div>
+
+                    <div class="bento-card">
+                        <div class="bento-icon">
+                            <iconify-icon icon="solar:graph-up-bold"></iconify-icon>
+                        </div>
+                        <div class="bento-title">Аналитика</div>
+                        <div class="bento-desc">Понятные отчёты и статистика</div>
+                    </div>
+
+                    <div class="bento-card">
+                        <div class="bento-icon">
+                            <iconify-icon icon="solar:chat-round-dots-bold"></iconify-icon>
+                        </div>
+                        <div class="bento-title">Поддержка</div>
+                        <div class="bento-desc">Техсопровождение на всех этапах</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>
+

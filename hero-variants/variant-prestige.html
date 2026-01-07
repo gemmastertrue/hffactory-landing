@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Section - Prestige Style</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #050505;
+            --text-color: #ffffff;
+            --accent-color: #1E3A8A; /* Dark Blue from TZ */
+            --highlight: #10B981;
+            --secondary-text: #888888;
+            --border-color: #222;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid transparent;
+        }
+
+        .logo {
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a {
+            color: var(--secondary-text);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--text-color);
+        }
+
+        .btn-header {
+            background: #222;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .btn-header:hover {
+            background: #333;
+        }
+
+        /* Hero */
+        #hero {
+            padding-top: 6rem;
+            padding-bottom: 4rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .new-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--highlight);
+            padding: 0.4rem 1rem;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 600;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-desc {
+            color: var(--secondary-text);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            line-height: 1.6;
+        }
+
+        .cta-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 5rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: white;
+            color: black;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 1px solid #333;
+        }
+
+        .dashboard-preview {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            box-shadow: 0 -20px 80px rgba(0,0,0,0.5);
+            position: relative;
+        }
+        
+        /* Simulating the dashboard look */
+        .dash-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #222;
+            padding-bottom: 1rem;
+        }
+
+        .dash-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .dash-card {
+            background: #1a1a1a;
+            border-radius: 12px;
+            height: 150px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dash-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(to top, rgba(16, 185, 129, 0.1), transparent);
+            border-top: 2px solid var(--highlight);
+            border-radius: 0 0 12px 12px;
+            /* Simple curve simulation */
+            clip-path: polygon(0% 100%, 0% 40%, 20% 60%, 40% 30%, 60% 50%, 80% 20%, 100% 40%, 100% 100%);
+        }
+
+        @media(max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .dash-grid { grid-template-columns: 1fr; }
+            nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- === HEADER === -->
+        <header>
+            <div class="logo">
+                <iconify-icon icon="solar:shield-check-bold" style="color:white;"></iconify-icon>
+                HedgeFund
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#">Решения</a></li>
+                    <li><a href="#">Интеграции</a></li>
+                    <li><a href="#">Цены</a></li>
+                </ul>
+            </nav>
+            <a href="#" class="btn-header">Войти</a>
+        </header>
+
+        <!-- === MAIN === -->
+        <main>
+            <!-- --- Hero Section --- -->
+            <section id="hero">
+                <div class="new-badge">
+                    <span>Лимитированное предложение -20%</span>
+                    <iconify-icon icon="solar:arrow-right-linear"></iconify-icon>
+                </div>
+
+                <h1>
+                    Ваш личный хедж-фонд<br>
+                    Техническая часть под ключ
+                </h1>
+
+                <p class="hero-desc">
+                    Автоматизированная торговая инфраструктура + техсопровождение.
+                    Без управления вашими деньгами. Полный контроль.
+                </p>
+
+                <div class="cta-group">
+                    <a href="#" class="btn btn-primary">Рассчитать стоимость</a>
+                    <a href="#" class="btn btn-secondary">
+                        Узнать больше <iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon>
+                    </a>
+                </div>
+
+                <div class="dashboard-preview">
+                    <div class="dash-header">
+                        <span>Dashboard</span>
+                        <div style="display:flex; gap:10px;">
+                            <iconify-icon icon="solar:bell-linear"></iconify-icon>
+                            <iconify-icon icon="solar:user-circle-linear"></iconify-icon>
+                        </div>
+                    </div>
+                    <div class="dash-grid">
+                        <div class="dash-card" style="padding:1rem;">
+                            <span style="color:#666; font-size:0.8rem;">Прибыль</span>
+                            <div style="font-size:1.5rem; font-weight:600; margin-top:0.5rem;">+24.5%</div>
+                        </div>
+                        <div class="dash-card" style="padding:1rem;">
+                             <span style="color:#666; font-size:0.8rem;">Аптайм</span>
+                             <div style="font-size:1.5rem; font-weight:600; margin-top:0.5rem;">99.9%</div>
+                        </div>
+                        <div class="dash-card" style="padding:1rem;">
+                             <span style="color:#666; font-size:0.8rem;">Активные боты</span>
+                             <div style="font-size:1.5rem; font-weight:600; margin-top:0.5rem;">12</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>
+

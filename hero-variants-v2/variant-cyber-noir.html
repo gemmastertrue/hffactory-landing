@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero V2 - Cyber Noir</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <style>
+        :root {
+            --bg: #0d0d0d;
+            --surface: #161616;
+            --accent: #00ff88;
+            --accent-dim: #00ff8833;
+            --text: #e8e8e8;
+            --muted: #5a5a5a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Syne', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Scanlines effect */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0,0,0,0.03) 2px,
+                rgba(0,0,0,0.03) 4px
+            );
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+        }
+
+        /* === HEADER === */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 0;
+            border-bottom: 1px solid #222;
+        }
+
+        .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--accent);
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: var(--muted);
+        }
+
+        nav {
+            display: flex;
+            gap: 3rem;
+        }
+
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        .header-cta {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 0.6rem 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .header-cta:hover {
+            background: var(--accent);
+            color: var(--bg);
+        }
+
+        /* === HERO === */
+        #hero {
+            padding: 8rem 0;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            min-height: 80vh;
+        }
+
+        .hero-left {
+            position: relative;
+        }
+
+        .tag-line {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .tag-line::before {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        h1 {
+            font-size: 5.5rem;
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -0.04em;
+            margin-bottom: 2rem;
+        }
+
+        h1 .highlight {
+            display: block;
+            color: var(--accent);
+            text-shadow: 0 0 40px var(--accent-dim);
+        }
+
+        .description {
+            font-size: 1.1rem;
+            color: var(--muted);
+            max-width: 500px;
+            line-height: 1.7;
+            margin-bottom: 3rem;
+        }
+
+        .cta-row {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .btn-main {
+            background: var(--accent);
+            color: var(--bg);
+            padding: 1.2rem 2.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+
+        .btn-main:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-ghost {
+            color: var(--text);
+            text-decoration: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Terminal-style visual */
+        .hero-visual {
+            background: var(--surface);
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            overflow: hidden;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .terminal-bar {
+            background: #1a1a1a;
+            padding: 0.8rem 1rem;
+            display: flex;
+            gap: 0.5rem;
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #333;
+        }
+
+        .dot:nth-child(1) { background: #ff5f56; }
+        .dot:nth-child(2) { background: #ffbd2e; }
+        .dot:nth-child(3) { background: #27ca40; }
+
+        .terminal-content {
+            padding: 1.5rem;
+            font-size: 0.85rem;
+            line-height: 2;
+        }
+
+        .line {
+            color: var(--muted);
+        }
+
+        .line .cmd {
+            color: var(--accent);
+        }
+
+        .line .str {
+            color: #ff9f43;
+        }
+
+        .line .num {
+            color: #74b9ff;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 5rem;
+            padding-top: 3rem;
+            border-top: 1px solid #222;
+        }
+
+        .stat {
+            text-align: left;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            #hero { grid-template-columns: 1fr; }
+            h1 { font-size: 3.5rem; }
+            .hero-visual { display: none; }
+            nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- === HEADER === -->
+        <header>
+            <div class="logo">HF<span>.tech</span></div>
+            <nav>
+                <a href="#">Решения</a>
+                <a href="#">Тарифы</a>
+                <a href="#">Документация</a>
+                <a href="#">Контакты</a>
+            </nav>
+            <a href="#" class="header-cta">Консультация</a>
+        </header>
+
+        <!-- === MAIN === -->
+        <main>
+            <section id="hero">
+                <div class="hero-left">
+                    <div class="tag-line">Лимитированное предложение</div>
+                    
+                    <h1>
+                        Ваш личный
+                        <span class="highlight">хедж-фонд</span>
+                    </h1>
+                    
+                    <p class="description">
+                        Техническая часть под ключ. Автоматизированная торговая инфраструктура + техсопровождение. Без управления вашими деньгами.
+                    </p>
+
+                    <div class="cta-row">
+                        <a href="#" class="btn-main">Рассчитать стоимость</a>
+                        <a href="#" class="btn-ghost">
+                            <iconify-icon icon="solar:play-circle-linear"></iconify-icon>
+                            Смотреть демо
+                        </a>
+                    </div>
+
+                    <div class="stats-row">
+                        <div class="stat">
+                            <div class="stat-value">99.9%</div>
+                            <div class="stat-label">Uptime серверов</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">24/7</div>
+                            <div class="stat-label">Мониторинг</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">-20%</div>
+                            <div class="stat-label">На установку</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="terminal-bar">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                    <div class="terminal-content">
+                        <div class="line"><span class="cmd">$</span> hf init --strategy=grid</div>
+                        <div class="line">✓ Strategy loaded</div>
+                        <div class="line">✓ Backtest complete: <span class="num">+24.5%</span> annual</div>
+                        <div class="line">✓ Max drawdown: <span class="num">15%</span></div>
+                        <div class="line">&nbsp;</div>
+                        <div class="line"><span class="cmd">$</span> hf deploy --env=<span class="str">production</span></div>
+                        <div class="line">Deploying to 3 exchanges...</div>
+                        <div class="line" style="color: var(--accent);">✓ Live trading active</div>
+                        <div class="line">&nbsp;</div>
+                        <div class="line"><span class="cmd">$</span> hf status</div>
+                        <div class="line">Active bots: <span class="num">12</span></div>
+                        <div class="line">Total profit: <span class="num">$24,507</span></div>
+                        <div class="line">System health: <span style="color: var(--accent);">●</span> Optimal</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>
+

@@ -270,6 +270,7 @@
             grid-template-columns: 1fr 1fr;
             gap: 3rem;
             padding: 3rem 0;
+            align-items: start;
         }
 
         .hero-left {
@@ -1478,8 +1479,9 @@
             align-items: center;
             gap: 1rem;
             padding: 1.25rem 1.5rem;
-            cursor: pointer;
+            cursor: none !important;
             user-select: none;
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         .faq-icon {
@@ -1854,21 +1856,17 @@
                 Factory
             </div>
             <nav>
-                <a href="#" class="magnetic">solutions</a>
-                <a href="#" class="magnetic">pricing</a>
-                <a href="#" class="magnetic">docs</a>
+                <a href="#features" class="magnetic">Возможности</a>
+                <a href="#pricing" class="magnetic">Тарифы</a>
+                <a href="#comparison" class="magnetic">Отличия</a>
+                <a href="#faq" class="magnetic">FAQ</a>
             </nav>
-            <a href="#" class="header-btn magnetic"><span>START</span></a>
+            <a href="#contacts" class="header-btn magnetic"><span>Связаться</span></a>
         </header>
 
         <section id="hero">
             <!-- Left column: Title + Description + Equity -->
             <div class="hero-left">
-                <div class="tag">
-                    <span class="tag-line"></span>
-                    -20% на установку
-                </div>
-
                 <h1>
                     Ваш личный<br>
                     <span class="scramble-text" id="scramble">хедж-фонд</span>
@@ -1878,16 +1876,16 @@
                 <p class="subtitle-desc">Техническая часть под ключ. Без управления вашими деньгами.</p>
                 
                 <div class="cta-row">
-                    <a href="#" class="btn btn-primary magnetic">
+                    <a href="#contacts" class="btn btn-primary magnetic">
                         <span class="btn-content">
-                            Рассчитать
+                            Начать
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M5 12h14M12 5l7 7-7 7"/>
                             </svg>
                         </span>
                     </a>
-                    <a href="#" class="btn btn-secondary magnetic">
-                        <span class="btn-content">Демо</span>
+                    <a href="#pricing" class="btn btn-secondary magnetic">
+                        <span class="btn-content">Тарифы</span>
                     </a>
                 </div>
 
@@ -2443,7 +2441,7 @@
             <div class="faq-grid">
                 <!-- Q1 -->
                 <div class="faq-item open">
-                    <div class="faq-question">
+                    <div class="faq-question magnetic">
                         <div class="faq-icon">💰</div>
                         <div class="faq-q-text">Вы управляете моими деньгами?</div>
                         <div class="faq-toggle">+</div>
@@ -2459,7 +2457,7 @@
 
                 <!-- Q2 -->
                 <div class="faq-item">
-                    <div class="faq-question">
+                    <div class="faq-question magnetic">
                         <div class="faq-icon">🛠️</div>
                         <div class="faq-q-text">Что именно вы делаете?</div>
                         <div class="faq-toggle">+</div>
@@ -2474,7 +2472,7 @@
 
                 <!-- Q3 -->
                 <div class="faq-item">
-                    <div class="faq-question">
+                    <div class="faq-question magnetic">
                         <div class="faq-icon">📊</div>
                         <div class="faq-q-text">Гарантируете ли вы прибыль?</div>
                         <div class="faq-toggle">+</div>
@@ -2489,7 +2487,7 @@
 
                 <!-- Q4 -->
                 <div class="faq-item">
-                    <div class="faq-question">
+                    <div class="faq-question magnetic">
                         <div class="faq-icon">🔓</div>
                         <div class="faq-q-text">Что будет, если я перестану платить?</div>
                         <div class="faq-toggle">+</div>
@@ -2504,7 +2502,7 @@
 
                 <!-- Q5 -->
                 <div class="faq-item">
-                    <div class="faq-question">
+                    <div class="faq-question magnetic">
                         <div class="faq-icon">⚖️</div>
                         <div class="faq-q-text">Кто несёт ответственность за убытки?</div>
                         <div class="faq-toggle">+</div>
@@ -2519,7 +2517,7 @@
 
                 <!-- Q6 -->
                 <div class="faq-item">
-                    <div class="faq-question">
+                    <div class="faq-question magnetic">
                         <div class="faq-icon">🎯</div>
                         <div class="faq-q-text">Для кого это подходит?</div>
                         <div class="faq-toggle">+</div>
@@ -2559,11 +2557,11 @@
         <div class="footer-container">
             <div class="footer-content">
                 <!-- CTA Section -->
-                <div class="footer-cta">
+                <div class="footer-cta" id="contacts">
                     <h2 class="cta-title">Готовы автоматизировать торговлю?</h2>
                     <p class="cta-subtitle">Получите консультацию и узнайте, какое решение подходит именно вам</p>
                     <div class="cta-buttons">
-                        <a href="https://t.me/hffactory" target="_blank" class="cta-btn primary magnetic">
+                        <a href="https://t.me/hf_factory" target="_blank" class="cta-btn primary magnetic">
                             <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.359 8.627-.168.9-.5 1.201-.82 1.23-.697.064-1.226-.461-1.901-.903-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.139-5.062 3.345-.479.329-.913.489-1.302.481-.428-.009-1.252-.242-1.865-.442-.752-.244-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.831-2.529 6.998-3.015 3.333-1.386 4.025-1.627 4.477-1.635.099-.002.321.023.465.141.121.1.154.234.169.327.016.093.036.306.02.472z"/>
                             </svg>
@@ -2607,9 +2605,9 @@
 
                     <div class="footer-contact">
                         <h4 class="footer-heading">Контакты</h4>
-                        <a href="https://t.me/hffactory" target="_blank" class="contact-link">
+                        <a href="https://t.me/hf_factory" target="_blank" class="contact-link">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.359 8.627-.168.9-.5 1.201-.82 1.23-.697.064-1.226-.461-1.901-.903-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.139-5.062 3.345-.479.329-.913.489-1.302.481-.428-.009-1.252-.242-1.865-.442-.752-.244-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.831-2.529 6.998-3.015 3.333-1.386 4.025-1.627 4.477-1.635.099-.002.321.023.465.141.121.1.154.234.169.327.016.093.036.306.02.472z"/></svg>
-                            @hffactory
+                            @hf_factory
                         </a>
                         <a href="mailto:info@hf-factory.tech" class="contact-link">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>

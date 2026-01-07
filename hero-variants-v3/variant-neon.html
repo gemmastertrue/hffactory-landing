@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HedgeFund - Neon Pulse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <style>
+        :root {
+            --bg: #000000;
+            --neon-green: #39ff14;
+            --neon-blue: #00d4ff;
+            --neon-pink: #ff0080;
+            --text: #ffffff;
+            --dim: #333;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Mono', monospace;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated background grid */
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(57, 255, 20, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(57, 255, 20, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 0;
+        }
+
+        /* Glowing orbs */
+        .glow-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .glow-orb-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--neon-green);
+            opacity: 0.1;
+            top: -100px;
+            left: -100px;
+            animation: pulse1 8s ease-in-out infinite;
+        }
+
+        .glow-orb-2 {
+            width: 300px;
+            height: 300px;
+            background: var(--neon-pink);
+            opacity: 0.08;
+            bottom: -50px;
+            right: -50px;
+            animation: pulse2 10s ease-in-out infinite;
+        }
+
+        @keyframes pulse1 {
+            0%, 100% { transform: scale(1); opacity: 0.1; }
+            50% { transform: scale(1.2); opacity: 0.15; }
+        }
+
+        @keyframes pulse2 {
+            0%, 100% { transform: scale(1); opacity: 0.08; }
+            50% { transform: scale(1.3); opacity: 0.12; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--dim);
+        }
+
+        .logo {
+            font-family: 'Unbounded', sans-serif;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--neon-green);
+            text-shadow: 0 0 20px var(--neon-green);
+            letter-spacing: 2px;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #666;
+            text-decoration: none;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--neon-green);
+            text-shadow: 0 0 10px var(--neon-green);
+        }
+
+        .header-cta {
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            padding: 0.7rem 1.5rem;
+            text-decoration: none;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .header-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--neon-green);
+            transform: translateX(-100%);
+            transition: transform 0.3s;
+            z-index: -1;
+        }
+
+        .header-cta:hover {
+            color: var(--bg);
+        }
+
+        .header-cta:hover::before {
+            transform: translateX(0);
+        }
+
+        /* Hero */
+        #hero {
+            padding: 8rem 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .ticker {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 4rem;
+            padding: 1rem 0;
+            border-top: 1px solid var(--dim);
+            border-bottom: 1px solid var(--dim);
+        }
+
+        .ticker-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .ticker-value {
+            color: var(--neon-green);
+            font-weight: 500;
+        }
+
+        .ticker-value.pink { color: var(--neon-pink); }
+        .ticker-value.blue { color: var(--neon-blue); }
+
+        h1 {
+            font-family: 'Unbounded', sans-serif;
+            font-size: 6rem;
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: -0.02em;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        h1 .line {
+            display: block;
+            position: relative;
+        }
+
+        h1 .neon {
+            color: var(--neon-green);
+            text-shadow: 
+                0 0 10px var(--neon-green),
+                0 0 20px var(--neon-green),
+                0 0 40px var(--neon-green),
+                0 0 80px var(--neon-green);
+            animation: neonFlicker 3s infinite;
+        }
+
+        @keyframes neonFlicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                text-shadow: 
+                    0 0 10px var(--neon-green),
+                    0 0 20px var(--neon-green),
+                    0 0 40px var(--neon-green),
+                    0 0 80px var(--neon-green);
+            }
+            20%, 24%, 55% {
+                text-shadow: none;
+            }
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto 4rem;
+            line-height: 1.8;
+        }
+
+        .cta-box {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 3rem;
+            background: rgba(57, 255, 20, 0.02);
+            border: 1px solid var(--dim);
+            position: relative;
+        }
+
+        .cta-box::before,
+        .cta-box::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 1px solid var(--neon-green);
+        }
+
+        .cta-box::before {
+            top: -1px;
+            left: -1px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .cta-box::after {
+            bottom: -1px;
+            right: -1px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .discount-banner {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 0, 128, 0.1);
+            border: 1px solid var(--neon-pink);
+        }
+
+        .discount-text {
+            color: var(--neon-pink);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-neon {
+            background: var(--neon-green);
+            color: var(--bg);
+            padding: 1.2rem 3rem;
+            text-decoration: none;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            transition: all 0.3s;
+            box-shadow: 
+                0 0 20px rgba(57, 255, 20, 0.3),
+                0 0 40px rgba(57, 255, 20, 0.2);
+        }
+
+        .btn-neon:hover {
+            box-shadow: 
+                0 0 30px rgba(57, 255, 20, 0.5),
+                0 0 60px rgba(57, 255, 20, 0.3),
+                0 0 100px rgba(57, 255, 20, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            border: 1px solid #444;
+            color: #888;
+            padding: 1.2rem 2rem;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--neon-blue);
+            color: var(--neon-blue);
+        }
+
+        /* Stats display */
+        .stats-display {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            margin-top: 6rem;
+            background: var(--dim);
+            border: 1px solid var(--dim);
+        }
+
+        .stat-cell {
+            background: var(--bg);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .stat-cell::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 1px;
+            height: 20px;
+            background: linear-gradient(to bottom, var(--neon-green), transparent);
+        }
+
+        .stat-number {
+            font-family: 'Unbounded', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-number.green { 
+            color: var(--neon-green);
+            text-shadow: 0 0 20px rgba(57, 255, 20, 0.5);
+        }
+
+        .stat-number.pink { 
+            color: var(--neon-pink);
+            text-shadow: 0 0 20px rgba(255, 0, 128, 0.5);
+        }
+
+        .stat-number.blue { 
+            color: var(--neon-blue);
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Terminal section */
+        .terminal-preview {
+            margin-top: 4rem;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--dim);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border-bottom: 1px solid var(--dim);
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1px solid #333;
+        }
+
+        .terminal-body {
+            padding: 1.5rem;
+            font-size: 0.9rem;
+            line-height: 2;
+        }
+
+        .terminal-line {
+            color: #666;
+        }
+
+        .terminal-line .cmd { color: var(--neon-green); }
+        .terminal-line .str { color: var(--neon-pink); }
+        .terminal-line .num { color: var(--neon-blue); }
+
+        .cursor-blink {
+            display: inline-block;
+            width: 10px;
+            height: 1.2em;
+            background: var(--neon-green);
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        @media (max-width: 1024px) {
+            h1 { font-size: 3.5rem; }
+            .stats-display { grid-template-columns: repeat(2, 1fr); }
+            nav { display: none; }
+            .ticker { flex-wrap: wrap; gap: 1rem; }
+        }
+
+        @media (max-width: 640px) {
+            h1 { font-size: 2.5rem; }
+            .stats-display { grid-template-columns: 1fr; }
+            .cta-buttons { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cyber-grid"></div>
+    <div class="glow-orb glow-orb-1"></div>
+    <div class="glow-orb glow-orb-2"></div>
+
+    <div class="container">
+        <header>
+            <div class="logo">HF.TECH</div>
+            <nav>
+                <a href="#">Solutions</a>
+                <a href="#">Pricing</a>
+                <a href="#">Docs</a>
+                <a href="#">Contact</a>
+            </nav>
+            <a href="#" class="header-cta">Launch</a>
+        </header>
+
+        <main>
+            <section id="hero">
+                <div class="ticker">
+                    <div class="ticker-item">
+                        BTC/USDT <span class="ticker-value">+2.4%</span>
+                    </div>
+                    <div class="ticker-item">
+                        ETH/USDT <span class="ticker-value pink">-0.8%</span>
+                    </div>
+                    <div class="ticker-item">
+                        System Status <span class="ticker-value">ONLINE</span>
+                    </div>
+                    <div class="ticker-item">
+                        Active Bots <span class="ticker-value blue">12</span>
+                    </div>
+                </div>
+
+                <h1>
+                    <span class="line">ВАШ ЛИЧНЫЙ</span>
+                    <span class="line neon">ХЕДЖ-ФОНД</span>
+                </h1>
+
+                <p class="subtitle">
+                    Техническая часть под ключ. Автоматизированная торговая инфраструктура + техсопровождение. Без управления вашими деньгами.
+                </p>
+
+                <div class="cta-box">
+                    <div class="discount-banner">
+                        <iconify-icon icon="solar:tag-price-bold" style="color: var(--neon-pink);"></iconify-icon>
+                        <span class="discount-text">Скидка -20% на установку</span>
+                    </div>
+                    <div class="cta-buttons">
+                        <a href="#" class="btn-neon">Рассчитать</a>
+                        <a href="#" class="btn-outline">Демо</a>
+                    </div>
+                </div>
+
+                <div class="stats-display">
+                    <div class="stat-cell">
+                        <div class="stat-number green">99.9%</div>
+                        <div class="stat-label">Uptime</div>
+                    </div>
+                    <div class="stat-cell">
+                        <div class="stat-number pink">24/7</div>
+                        <div class="stat-label">Monitoring</div>
+                    </div>
+                    <div class="stat-cell">
+                        <div class="stat-number blue">12</div>
+                        <div class="stat-label">Active Bots</div>
+                    </div>
+                    <div class="stat-cell">
+                        <div class="stat-number green">+24.5%</div>
+                        <div class="stat-label">Avg. ROI</div>
+                    </div>
+                </div>
+
+                <div class="terminal-preview">
+                    <div class="terminal-header">
+                        <div class="terminal-dot"></div>
+                        <div class="terminal-dot"></div>
+                        <div class="terminal-dot"></div>
+                    </div>
+                    <div class="terminal-body">
+                        <div class="terminal-line"><span class="cmd">$</span> hf status</div>
+                        <div class="terminal-line">System: <span class="num">OPERATIONAL</span></div>
+                        <div class="terminal-line">Profit 24h: <span class="str">+$2,847.50</span></div>
+                        <div class="terminal-line">Active trades: <span class="num">23</span></div>
+                        <div class="terminal-line"><span class="cmd">$</span> <span class="cursor-blink"></span></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>
+

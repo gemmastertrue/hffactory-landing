@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HedgeFund - Neobrutalism</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <style>
+        :root {
+            --bg: #fffef9;
+            --black: #000000;
+            --yellow: #ffe600;
+            --blue: #0066ff;
+            --pink: #ff3366;
+            --green: #00cc66;
+            --shadow: 4px 4px 0 var(--black);
+            --shadow-lg: 8px 8px 0 var(--black);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--black);
+            font-family: 'Work Sans', sans-serif;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-bottom: 3px solid var(--black);
+        }
+
+        .logo {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 1.5rem;
+            background: var(--yellow);
+            padding: 0.5rem 1rem;
+            border: 3px solid var(--black);
+            box-shadow: var(--shadow);
+        }
+
+        nav {
+            display: flex;
+            gap: 0;
+        }
+
+        nav a {
+            color: var(--black);
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            font-weight: 600;
+            border: 3px solid var(--black);
+            border-left: none;
+            transition: all 0.2s;
+        }
+
+        nav a:first-child {
+            border-left: 3px solid var(--black);
+        }
+
+        nav a:hover {
+            background: var(--yellow);
+        }
+
+        .header-cta {
+            background: var(--blue);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            font-weight: 700;
+            border: 3px solid var(--black);
+            box-shadow: var(--shadow);
+            transition: all 0.1s;
+        }
+
+        .header-cta:hover {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 var(--black);
+        }
+
+        /* Hero */
+        #hero {
+            padding: 4rem 0;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .hero-content {
+            padding-top: 2rem;
+        }
+
+        .sale-tag {
+            display: inline-block;
+            background: var(--pink);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            font-weight: 700;
+            font-size: 1rem;
+            border: 3px solid var(--black);
+            box-shadow: var(--shadow);
+            transform: rotate(-2deg);
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 5rem;
+            line-height: 1;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        h1 .highlight {
+            background: var(--yellow);
+            padding: 0 0.5rem;
+            display: inline;
+        }
+
+        .description {
+            font-size: 1.25rem;
+            line-height: 1.6;
+            margin-bottom: 2.5rem;
+            max-width: 500px;
+            font-weight: 500;
+        }
+
+        .cta-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .btn-primary {
+            background: var(--green);
+            color: var(--black);
+            padding: 1.2rem 2.5rem;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border: 3px solid var(--black);
+            box-shadow: var(--shadow-lg);
+            transition: all 0.1s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            transform: translate(4px, 4px);
+            box-shadow: 4px 4px 0 var(--black);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--black);
+            padding: 1.2rem 2rem;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border: 3px solid var(--black);
+            box-shadow: var(--shadow);
+            transition: all 0.1s;
+        }
+
+        .btn-secondary:hover {
+            background: var(--yellow);
+        }
+
+        /* Stats */
+        .stats-row {
+            display: flex;
+            gap: 0;
+        }
+
+        .stat-box {
+            padding: 1.5rem 2rem;
+            border: 3px solid var(--black);
+            border-left: none;
+        }
+
+        .stat-box:first-child {
+            border-left: 3px solid var(--black);
+            background: var(--yellow);
+        }
+
+        .stat-box:nth-child(2) {
+            background: var(--blue);
+            color: white;
+        }
+
+        .stat-box:nth-child(3) {
+            background: var(--pink);
+            color: white;
+        }
+
+        .stat-number {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 2rem;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 0.25rem;
+        }
+
+        /* Visual side */
+        .hero-visual {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .card {
+            background: white;
+            border: 3px solid var(--black);
+            box-shadow: var(--shadow-lg);
+            padding: 1.5rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--black);
+        }
+
+        .card-title {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .card-badge {
+            background: var(--green);
+            padding: 0.25rem 0.75rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border: 2px solid var(--black);
+        }
+
+        .profit-display {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 3rem;
+            color: var(--green);
+            margin-bottom: 0.5rem;
+        }
+
+        .profit-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .chart-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 6px;
+            height: 100px;
+            margin-top: 1.5rem;
+        }
+
+        .bar {
+            flex: 1;
+            background: var(--yellow);
+            border: 2px solid var(--black);
+        }
+
+        .bar:nth-child(even) { background: var(--blue); }
+        .bar:nth-child(3n) { background: var(--pink); }
+
+        .bot-list {
+            list-style: none;
+        }
+
+        .bot-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 2px solid var(--black);
+        }
+
+        .bot-item:last-child {
+            border-bottom: none;
+        }
+
+        .bot-name {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+        }
+
+        .bot-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--yellow);
+            border: 2px solid var(--black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bot-profit {
+            font-weight: 700;
+            color: var(--green);
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .mini-card {
+            background: white;
+            border: 3px solid var(--black);
+            box-shadow: var(--shadow);
+            padding: 1.25rem;
+        }
+
+        .mini-card-value {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 1.75rem;
+        }
+
+        .mini-card-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 0.25rem;
+        }
+
+        .yellow { background: var(--yellow); }
+        .blue { background: var(--blue); color: white; }
+
+        @media (max-width: 1024px) {
+            .hero-grid { grid-template-columns: 1fr; }
+            h1 { font-size: 3rem; }
+            nav { display: none; }
+            .stats-row { flex-wrap: wrap; }
+            .stat-box { flex: 1; min-width: 100px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="logo">HF.TECH</div>
+            <nav>
+                <a href="#">Услуги</a>
+                <a href="#">Тарифы</a>
+                <a href="#">О нас</a>
+                <a href="#">Блог</a>
+            </nav>
+            <a href="#" class="header-cta">НАЧАТЬ →</a>
+        </header>
+
+        <main>
+            <section id="hero">
+                <div class="hero-grid">
+                    <div class="hero-content">
+                        <div class="sale-tag">🔥 СКИДКА -20%</div>
+
+                        <h1>
+                            ВАШ ЛИЧНЫЙ<br>
+                            <span class="highlight">ХЕДЖ-ФОНД</span><br>
+                            ПОД КЛЮЧ
+                        </h1>
+
+                        <p class="description">
+                            Автоматизированная торговая инфраструктура + техсопровождение. 
+                            Без управления вашими деньгами!
+                        </p>
+
+                        <div class="cta-row">
+                            <a href="#" class="btn-primary">
+                                РАССЧИТАТЬ
+                                <iconify-icon icon="solar:arrow-right-bold"></iconify-icon>
+                            </a>
+                            <a href="#" class="btn-secondary">ДЕМО</a>
+                        </div>
+
+                        <div class="stats-row">
+                            <div class="stat-box">
+                                <div class="stat-number">99.9%</div>
+                                <div class="stat-label">UPTIME</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-number">24/7</div>
+                                <div class="stat-label">MONITORING</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-number">+24%</div>
+                                <div class="stat-label">AVG ROI</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hero-visual">
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title">📈 Прибыль сегодня</span>
+                                <span class="card-badge">LIVE</span>
+                            </div>
+                            <div class="profit-display">+$2,847</div>
+                            <div class="profit-label">За последние 24 часа</div>
+                            <div class="chart-bars">
+                                <div class="bar" style="height: 40%;"></div>
+                                <div class="bar" style="height: 65%;"></div>
+                                <div class="bar" style="height: 45%;"></div>
+                                <div class="bar" style="height: 80%;"></div>
+                                <div class="bar" style="height: 55%;"></div>
+                                <div class="bar" style="height: 90%;"></div>
+                                <div class="bar" style="height: 70%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="card-grid">
+                            <div class="mini-card yellow">
+                                <div class="mini-card-value">12</div>
+                                <div class="mini-card-label">Активных ботов</div>
+                            </div>
+                            <div class="mini-card blue">
+                                <div class="mini-card-value">$47K</div>
+                                <div class="mini-card-label">В работе</div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title">🤖 Боты</span>
+                            </div>
+                            <ul class="bot-list">
+                                <li class="bot-item">
+                                    <span class="bot-name">
+                                        <span class="bot-icon">G</span>
+                                        Grid Bot #1
+                                    </span>
+                                    <span class="bot-profit">+4.2%</span>
+                                </li>
+                                <li class="bot-item">
+                                    <span class="bot-name">
+                                        <span class="bot-icon">D</span>
+                                        DCA Strategy
+                                    </span>
+                                    <span class="bot-profit">+2.8%</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>
+

@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HedgeFund - Liquid Morphism</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Satoshi:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <style>
+        @font-face {
+            font-family: 'Clash Display';
+            src: url('https://api.fontshare.com/v2/css?f[]=clash-display@700,600,500,400&display=swap');
+        }
+
+        :root {
+            --bg: #0a0a0f;
+            --surface: #12121a;
+            --accent-1: #6366f1;
+            --accent-2: #ec4899;
+            --accent-3: #14b8a6;
+            --text: #ffffff;
+            --muted: #71717a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Satoshi', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated Gradient Blobs */
+        .blob-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            filter: blur(80px);
+            opacity: 0.6;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            animation: morph 15s ease-in-out infinite;
+        }
+
+        .blob-1 {
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            top: -100px;
+            right: -100px;
+            animation-delay: 0s;
+        }
+
+        .blob-2 {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, var(--accent-2), var(--accent-3));
+            bottom: -100px;
+            left: -100px;
+            animation-delay: -5s;
+        }
+
+        .blob-3 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, var(--accent-3), var(--accent-1));
+            top: 50%;
+            left: 50%;
+            animation-delay: -10s;
+        }
+
+        @keyframes morph {
+            0%, 100% { 
+                border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+                transform: rotate(0deg) scale(1);
+            }
+            25% { 
+                border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+                transform: rotate(90deg) scale(1.1);
+            }
+            50% { 
+                border-radius: 50% 60% 30% 60% / 30% 60% 70% 40%;
+                transform: rotate(180deg) scale(1);
+            }
+            75% { 
+                border-radius: 60% 40% 60% 30% / 70% 30% 50% 60%;
+                transform: rotate(270deg) scale(0.9);
+            }
+        }
+
+        /* Noise texture overlay */
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+        }
+
+        .logo {
+            font-family: 'Clash Display', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        nav {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.03);
+            padding: 0.5rem;
+            border-radius: 100px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 100px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        nav a:hover, nav a.active {
+            color: white;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn-glass {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-glass:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        .btn-gradient {
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(99,102,241,0.3);
+        }
+
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(99,102,241,0.4);
+        }
+
+        /* Hero */
+        #hero {
+            padding: 6rem 0;
+            text-align: center;
+        }
+
+        .announcement {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+            border-radius: 100px;
+            margin-bottom: 3rem;
+            animation: slideDown 0.8s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .announcement-text {
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        .announcement-badge {
+            background: linear-gradient(135deg, var(--accent-3), #10b981);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        h1 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 5.5rem;
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+            animation: fadeUp 1s ease 0.2s both;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 .gradient {
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2), var(--accent-3));
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 5s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--muted);
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            line-height: 1.7;
+            animation: fadeUp 1s ease 0.4s both;
+        }
+
+        .cta-row {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 5rem;
+            animation: fadeUp 1s ease 0.6s both;
+        }
+
+        .cta-main {
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            color: white;
+            padding: 1.2rem 2.5rem;
+            border-radius: 16px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s;
+            box-shadow: 0 20px 50px rgba(99,102,241,0.3);
+        }
+
+        .cta-main:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 25px 60px rgba(99,102,241,0.4);
+        }
+
+        .cta-secondary {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            padding: 1.2rem 2rem;
+            border-radius: 16px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .cta-secondary:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-3px);
+        }
+
+        /* Dashboard Preview */
+        .dashboard-preview {
+            position: relative;
+            max-width: 1100px;
+            margin: 0 auto;
+            animation: fadeUp 1s ease 0.8s both;
+        }
+
+        .dashboard-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            background: radial-gradient(ellipse, rgba(99,102,241,0.2), transparent 70%);
+            filter: blur(60px);
+            z-index: -1;
+        }
+
+        .dashboard-frame {
+            background: var(--surface);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 
+                0 50px 100px rgba(0,0,0,0.5),
+                0 0 0 1px rgba(255,255,255,0.05) inset;
+        }
+
+        .frame-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            background: rgba(0,0,0,0.3);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .frame-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .frame-dot:nth-child(1) { background: #ff5f57; }
+        .frame-dot:nth-child(2) { background: #febc2e; }
+        .frame-dot:nth-child(3) { background: #28c840; }
+
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            min-height: 400px;
+        }
+
+        .sidebar {
+            background: rgba(0,0,0,0.2);
+            padding: 1.5rem;
+            border-right: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+            transition: all 0.2s;
+        }
+
+        .sidebar-item.active {
+            background: rgba(99,102,241,0.1);
+            color: white;
+        }
+
+        .main-area {
+            padding: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 1.25rem;
+        }
+
+        .stat-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .stat-card-label {
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        .stat-card-change {
+            font-size: 0.75rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 100px;
+        }
+
+        .stat-card-change.up {
+            background: rgba(16,185,129,0.1);
+            color: #10b981;
+        }
+
+        .stat-card-value {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        .chart-placeholder {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            height: 180px;
+            display: flex;
+            align-items: flex-end;
+            padding: 1.5rem;
+            gap: 8px;
+        }
+
+        .chart-bar {
+            flex: 1;
+            background: linear-gradient(to top, var(--accent-1), var(--accent-2));
+            border-radius: 6px 6px 0 0;
+            opacity: 0.7;
+            animation: barGrow 1s ease forwards;
+            transform-origin: bottom;
+        }
+
+        @keyframes barGrow {
+            from { transform: scaleY(0); }
+            to { transform: scaleY(1); }
+        }
+
+        @media (max-width: 1024px) {
+            h1 { font-size: 3.5rem; }
+            .dashboard-content { grid-template-columns: 1fr; }
+            .sidebar { display: none; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            nav { display: none; }
+        }
+
+        @media (max-width: 640px) {
+            h1 { font-size: 2.5rem; }
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="blob-container">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+    <div class="noise"></div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">
+                    <iconify-icon icon="solar:chart-2-bold" style="color:white;"></iconify-icon>
+                </div>
+                HedgeFund
+            </div>
+            <nav>
+                <a href="#" class="active">Главная</a>
+                <a href="#">Возможности</a>
+                <a href="#">Тарифы</a>
+                <a href="#">Документация</a>
+            </nav>
+            <div class="header-actions">
+                <a href="#" class="btn-glass">Войти</a>
+                <a href="#" class="btn-gradient">Начать</a>
+            </div>
+        </header>
+
+        <main>
+            <section id="hero">
+                <div class="announcement">
+                    <span class="announcement-text">Лимитированное предложение</span>
+                    <span class="announcement-badge">-20% на установку</span>
+                </div>
+
+                <h1>
+                    Ваш личный хедж-фонд<br>
+                    <span class="gradient">под ключ</span>
+                </h1>
+
+                <p class="subtitle">
+                    Автоматизированная торговая инфраструктура + техсопровождение. 
+                    Без управления вашими деньгами — только технологии.
+                </p>
+
+                <div class="cta-row">
+                    <a href="#" class="cta-main">
+                        Рассчитать стоимость
+                        <iconify-icon icon="solar:arrow-right-linear"></iconify-icon>
+                    </a>
+                    <a href="#" class="cta-secondary">
+                        <iconify-icon icon="solar:play-circle-bold"></iconify-icon>
+                        Смотреть демо
+                    </a>
+                </div>
+
+                <div class="dashboard-preview">
+                    <div class="dashboard-glow"></div>
+                    <div class="dashboard-frame">
+                        <div class="frame-bar">
+                            <div class="frame-dot"></div>
+                            <div class="frame-dot"></div>
+                            <div class="frame-dot"></div>
+                        </div>
+                        <div class="dashboard-content">
+                            <div class="sidebar">
+                                <div class="sidebar-item active">
+                                    <iconify-icon icon="solar:home-2-bold"></iconify-icon>
+                                    Dashboard
+                                </div>
+                                <div class="sidebar-item">
+                                    <iconify-icon icon="solar:graph-new-linear"></iconify-icon>
+                                    Analytics
+                                </div>
+                                <div class="sidebar-item">
+                                    <iconify-icon icon="solar:cpu-bolt-linear"></iconify-icon>
+                                    Bots
+                                </div>
+                                <div class="sidebar-item">
+                                    <iconify-icon icon="solar:settings-linear"></iconify-icon>
+                                    Settings
+                                </div>
+                            </div>
+                            <div class="main-area">
+                                <div class="stats-grid">
+                                    <div class="stat-card">
+                                        <div class="stat-card-header">
+                                            <span class="stat-card-label">Total Profit</span>
+                                            <span class="stat-card-change up">+12.5%</span>
+                                        </div>
+                                        <div class="stat-card-value">$24,507</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-card-header">
+                                            <span class="stat-card-label">Active Bots</span>
+                                            <span class="stat-card-change up">+2</span>
+                                        </div>
+                                        <div class="stat-card-value">12</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-card-header">
+                                            <span class="stat-card-label">Uptime</span>
+                                        </div>
+                                        <div class="stat-card-value">99.9%</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-card-header">
+                                            <span class="stat-card-label">Win Rate</span>
+                                            <span class="stat-card-change up">+3.2%</span>
+                                        </div>
+                                        <div class="stat-card-value">68%</div>
+                                    </div>
+                                </div>
+                                <div class="chart-placeholder">
+                                    <div class="chart-bar" style="height: 40%; animation-delay: 0.1s;"></div>
+                                    <div class="chart-bar" style="height: 65%; animation-delay: 0.2s;"></div>
+                                    <div class="chart-bar" style="height: 45%; animation-delay: 0.3s;"></div>
+                                    <div class="chart-bar" style="height: 80%; animation-delay: 0.4s;"></div>
+                                    <div class="chart-bar" style="height: 55%; animation-delay: 0.5s;"></div>
+                                    <div class="chart-bar" style="height: 90%; animation-delay: 0.6s;"></div>
+                                    <div class="chart-bar" style="height: 70%; animation-delay: 0.7s;"></div>
+                                    <div class="chart-bar" style="height: 60%; animation-delay: 0.8s;"></div>
+                                    <div class="chart-bar" style="height: 85%; animation-delay: 0.9s;"></div>
+                                    <div class="chart-bar" style="height: 75%; animation-delay: 1s;"></div>
+                                    <div class="chart-bar" style="height: 95%; animation-delay: 1.1s;"></div>
+                                    <div class="chart-bar" style="height: 65%; animation-delay: 1.2s;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>
+

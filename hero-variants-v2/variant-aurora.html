@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero V2 - Aurora Gradient</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <style>
+        :root {
+            --bg: #030014;
+            --purple: #8b5cf6;
+            --blue: #3b82f6;
+            --cyan: #06b6d4;
+            --green: #10b981;
+            --text: #ffffff;
+            --muted: #94a3b8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Aurora background */
+        .aurora {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .aurora-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.4;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .aurora-blob:nth-child(1) {
+            width: 600px;
+            height: 600px;
+            background: var(--purple);
+            top: -200px;
+            left: -100px;
+        }
+
+        .aurora-blob:nth-child(2) {
+            width: 500px;
+            height: 500px;
+            background: var(--blue);
+            top: 50%;
+            right: -150px;
+            animation-delay: -5s;
+        }
+
+        .aurora-blob:nth-child(3) {
+            width: 400px;
+            height: 400px;
+            background: var(--cyan);
+            bottom: -100px;
+            left: 30%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.05); }
+            66% { transform: translate(-20px, 20px) scale(0.95); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* === HEADER === */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+        }
+
+        .logo {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--purple), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--text);
+        }
+
+        .header-btn {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text);
+            padding: 0.7rem 1.5rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .header-btn:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        /* === HERO === */
+        #hero {
+            text-align: center;
+            padding: 10rem 0 6rem;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(6,182,212,0.2));
+            border: 1px solid rgba(139,92,246,0.3);
+            padding: 0.5rem 1.2rem;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .badge iconify-icon {
+            color: var(--cyan);
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 5rem;
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 .gradient {
+            background: linear-gradient(135deg, var(--purple), var(--cyan), var(--green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--muted);
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            line-height: 1.6;
+        }
+
+        .cta-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .btn-gradient {
+            background: linear-gradient(135deg, var(--purple), var(--blue));
+            color: white;
+            box-shadow: 0 10px 40px rgba(139,92,246,0.3);
+        }
+
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 50px rgba(139,92,246,0.4);
+        }
+
+        .btn-glass {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .btn-glass:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Floating cards */
+        .floating-elements {
+            position: relative;
+            margin-top: 6rem;
+            height: 400px;
+        }
+
+        .float-card {
+            position: absolute;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 1.5rem;
+            animation: floatCard 6s ease-in-out infinite;
+        }
+
+        .float-card:nth-child(1) {
+            left: 10%;
+            top: 20%;
+            animation-delay: 0s;
+        }
+
+        .float-card:nth-child(2) {
+            right: 10%;
+            top: 10%;
+            animation-delay: -2s;
+        }
+
+        .float-card:nth-child(3) {
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 0;
+            animation-delay: -4s;
+            width: 600px;
+        }
+
+        @keyframes floatCard {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .float-card:nth-child(3) {
+            animation: floatCardCenter 6s ease-in-out infinite;
+        }
+
+        @keyframes floatCardCenter {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-15px); }
+        }
+
+        .card-stat {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .card-label {
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        .mini-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 60px;
+            margin-top: 1rem;
+        }
+
+        .mini-bar {
+            flex: 1;
+            background: linear-gradient(to top, var(--purple), var(--cyan));
+            border-radius: 2px;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 3rem; }
+            .floating-elements { display: none; }
+            nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="aurora">
+        <div class="aurora-blob"></div>
+        <div class="aurora-blob"></div>
+        <div class="aurora-blob"></div>
+    </div>
+
+    <div class="container">
+        <!-- === HEADER === -->
+        <header>
+            <div class="logo">HedgeFund</div>
+            <nav>
+                <a href="#">Возможности</a>
+                <a href="#">Тарифы</a>
+                <a href="#">О нас</a>
+            </nav>
+            <a href="#" class="header-btn">Начать</a>
+        </header>
+
+        <!-- === MAIN === -->
+        <main>
+            <section id="hero">
+                <div class="badge">
+                    <iconify-icon icon="solar:star-bold"></iconify-icon>
+                    Скидка -20% на установку
+                </div>
+
+                <h1>
+                    Ваш личный хедж-фонд<br>
+                    <span class="gradient">под ключ</span>
+                </h1>
+
+                <p class="subtitle">
+                    Автоматизированная торговая инфраструктура + техсопровождение. 
+                    Без управления вашими деньгами — только технологии.
+                </p>
+
+                <div class="cta-group">
+                    <a href="#" class="btn btn-gradient">
+                        Рассчитать стоимость
+                        <iconify-icon icon="solar:arrow-right-linear"></iconify-icon>
+                    </a>
+                    <a href="#" class="btn btn-glass">Консультация</a>
+                </div>
+
+                <div class="floating-elements">
+                    <div class="float-card">
+                        <div class="card-stat" style="color: var(--green);">+24.5%</div>
+                        <div class="card-label">Средняя доходность</div>
+                    </div>
+
+                    <div class="float-card">
+                        <div class="card-stat">99.9%</div>
+                        <div class="card-label">Uptime</div>
+                    </div>
+
+                    <div class="float-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div class="card-label">Активные боты</div>
+                                <div class="card-stat">12</div>
+                            </div>
+                            <div>
+                                <div class="card-label">Прибыль 24ч</div>
+                                <div class="card-stat" style="color: var(--green);">$2,450</div>
+                            </div>
+                        </div>
+                        <div class="mini-chart">
+                            <div class="mini-bar" style="height: 40%;"></div>
+                            <div class="mini-bar" style="height: 60%;"></div>
+                            <div class="mini-bar" style="height: 30%;"></div>
+                            <div class="mini-bar" style="height: 80%;"></div>
+                            <div class="mini-bar" style="height: 55%;"></div>
+                            <div class="mini-bar" style="height: 90%;"></div>
+                            <div class="mini-bar" style="height: 70%;"></div>
+                            <div class="mini-bar" style="height: 45%;"></div>
+                            <div class="mini-bar" style="height: 85%;"></div>
+                            <div class="mini-bar" style="height: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>
+

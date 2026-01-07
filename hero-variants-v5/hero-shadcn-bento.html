@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero - Shadcn Bento</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        border: "hsl(240 3.7% 15.9%)",
+                        background: "hsl(240 10% 3.9%)",
+                        foreground: "hsl(0 0% 98%)",
+                        primary: { DEFAULT: "hsl(0 0% 98%)", foreground: "hsl(240 5.9% 10%)" },
+                        secondary: { DEFAULT: "hsl(240 3.7% 15.9%)", foreground: "hsl(0 0% 98%)" },
+                        muted: { DEFAULT: "hsl(240 3.7% 15.9%)", foreground: "hsl(240 5% 64.9%)" },
+                        card: { DEFAULT: "hsl(240 10% 3.9%)", foreground: "hsl(0 0% 98%)" },
+                    },
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-foreground min-h-screen antialiased">
+
+    <!-- Header -->
+    <header class="border-b border-border">
+        <div class="container mx-auto px-4 h-14 flex items-center justify-between">
+            <div class="font-semibold">HedgeFund</div>
+            <nav class="hidden md:flex items-center gap-1">
+                <a href="#" class="px-4 py-2 text-sm text-muted-foreground hover:text-foreground rounded-md hover:bg-secondary">Возможности</a>
+                <a href="#" class="px-4 py-2 text-sm text-muted-foreground hover:text-foreground rounded-md hover:bg-secondary">Тарифы</a>
+                <a href="#" class="px-4 py-2 text-sm text-muted-foreground hover:text-foreground rounded-md hover:bg-secondary">Документация</a>
+            </nav>
+            <button class="h-9 px-4 rounded-md bg-primary text-primary-foreground text-sm font-medium">
+                Начать
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <main class="container mx-auto px-4 py-12 md:py-20">
+        <!-- Top Section -->
+        <div class="text-center mb-12">
+            <div class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-4 py-1.5 text-sm mb-6">
+                <span class="text-orange-400">✨</span>
+                <span class="text-muted-foreground">Лимитированное предложение</span>
+                <span class="rounded-full bg-orange-500/10 text-orange-400 px-2 py-0.5 text-xs font-medium">-20%</span>
+            </div>
+            
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
+                Ваш личный хедж-фонд<br>
+                <span class="bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">под ключ</span>
+            </h1>
+            
+            <p class="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
+                Автоматизированная торговая инфраструктура + техсопровождение
+            </p>
+
+            <div class="flex justify-center gap-3">
+                <button class="h-10 px-6 rounded-md bg-primary text-primary-foreground font-medium">
+                    Рассчитать стоимость
+                </button>
+                <button class="h-10 px-6 rounded-md border border-border hover:bg-secondary font-medium">
+                    Узнать больше
+                </button>
+            </div>
+        </div>
+
+        <!-- Bento Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
+            
+            <!-- Large Card - Profit -->
+            <div class="md:col-span-2 lg:row-span-2 rounded-xl border border-border bg-card p-6 flex flex-col">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-2">
+                        <div class="h-2 w-2 rounded-full bg-green-500 animate-pulse"></div>
+                        <span class="text-sm text-muted-foreground">Live</span>
+                    </div>
+                    <span class="text-xs text-muted-foreground">Обновлено только что</span>
+                </div>
+                <div class="text-sm text-muted-foreground mb-2">Прибыль за 24 часа</div>
+                <div class="text-5xl font-bold text-green-400 mb-auto">+$2,847</div>
+                <div class="flex gap-1 h-24 mt-6 items-end">
+                    <div class="flex-1 bg-gradient-to-t from-green-500/50 to-green-500/5 rounded" style="height:40%"></div>
+                    <div class="flex-1 bg-gradient-to-t from-green-500/50 to-green-500/5 rounded" style="height:65%"></div>
+                    <div class="flex-1 bg-gradient-to-t from-green-500/50 to-green-500/5 rounded" style="height:45%"></div>
+                    <div class="flex-1 bg-gradient-to-t from-green-500/50 to-green-500/5 rounded" style="height:80%"></div>
+                    <div class="flex-1 bg-gradient-to-t from-green-500/50 to-green-500/5 rounded" style="height:55%"></div>
+                    <div class="flex-1 bg-gradient-to-t from-green-500/50 to-green-500/5 rounded" style="height:90%"></div>
+                    <div class="flex-1 bg-gradient-to-t from-green-500/50 to-green-500/5 rounded" style="height:70%"></div>
+                    <div class="flex-1 bg-gradient-to-t from-green-500/50 to-green-500/5 rounded" style="height:95%"></div>
+                    <div class="flex-1 bg-gradient-to-t from-green-500/50 to-green-500/5 rounded" style="height:85%"></div>
+                    <div class="flex-1 bg-gradient-to-t from-green-500/50 to-green-500/5 rounded" style="height:100%"></div>
+                </div>
+            </div>
+
+            <!-- Uptime -->
+            <div class="rounded-xl border border-border bg-card p-5">
+                <div class="h-10 w-10 rounded-lg bg-green-500/10 flex items-center justify-center mb-4">
+                    <svg class="h-5 w-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                    </svg>
+                </div>
+                <div class="text-3xl font-bold text-green-400">99.9%</div>
+                <div class="text-sm text-muted-foreground mt-1">Uptime серверов</div>
+            </div>
+
+            <!-- Active Bots -->
+            <div class="rounded-xl border border-border bg-card p-5">
+                <div class="h-10 w-10 rounded-lg bg-blue-500/10 flex items-center justify-center mb-4">
+                    <svg class="h-5 w-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <div class="text-3xl font-bold text-blue-400">12</div>
+                <div class="text-sm text-muted-foreground mt-1">Активных ботов</div>
+            </div>
+
+            <!-- ROI -->
+            <div class="rounded-xl border border-border bg-card p-5">
+                <div class="h-10 w-10 rounded-lg bg-violet-500/10 flex items-center justify-center mb-4">
+                    <svg class="h-5 w-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                    </svg>
+                </div>
+                <div class="text-3xl font-bold text-violet-400">+24.5%</div>
+                <div class="text-sm text-muted-foreground mt-1">Средний ROI</div>
+            </div>
+
+            <!-- Support -->
+            <div class="rounded-xl border border-border bg-card p-5">
+                <div class="h-10 w-10 rounded-lg bg-orange-500/10 flex items-center justify-center mb-4">
+                    <svg class="h-5 w-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <div class="text-3xl font-bold">24/7</div>
+                <div class="text-sm text-muted-foreground mt-1">Поддержка</div>
+            </div>
+
+            <!-- Features List -->
+            <div class="md:col-span-2 rounded-xl border border-border bg-card p-6">
+                <h3 class="font-semibold mb-4">Что включено</h3>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="flex items-center gap-2 text-sm">
+                        <svg class="h-4 w-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        Установка инфраструктуры
+                    </div>
+                    <div class="flex items-center gap-2 text-sm">
+                        <svg class="h-4 w-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        Мониторинг 24/7
+                    </div>
+                    <div class="flex items-center gap-2 text-sm">
+                        <svg class="h-4 w-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        Оптимизация стратегий
+                    </div>
+                    <div class="flex items-center gap-2 text-sm">
+                        <svg class="h-4 w-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        Техподдержка
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>
+

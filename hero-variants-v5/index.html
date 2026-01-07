@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Variants V5 - Shadcn Style</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        border: "hsl(240 3.7% 15.9%)",
+                        background: "hsl(240 10% 3.9%)",
+                        foreground: "hsl(0 0% 98%)",
+                        primary: { DEFAULT: "hsl(0 0% 98%)", foreground: "hsl(240 5.9% 10%)" },
+                        secondary: { DEFAULT: "hsl(240 3.7% 15.9%)", foreground: "hsl(0 0% 98%)" },
+                        muted: { DEFAULT: "hsl(240 3.7% 15.9%)", foreground: "hsl(240 5% 64.9%)" },
+                        card: { DEFAULT: "hsl(240 10% 3.9%)", foreground: "hsl(0 0% 98%)" },
+                    },
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Inter', sans-serif; }</style>
+</head>
+<body class="dark bg-background text-foreground min-h-screen p-8 antialiased">
+    
+    <div class="max-w-4xl mx-auto">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold mb-2">Hero Variants V5</h1>
+            <p class="text-muted-foreground">Варианты в стиле shadcn/ui с Tailwind CSS</p>
+            <div class="flex gap-2 mt-4">
+                <span class="inline-flex items-center rounded-md bg-violet-500/10 px-2 py-1 text-xs font-medium text-violet-400 ring-1 ring-inset ring-violet-500/20">
+                    shadcn/ui
+                </span>
+                <span class="inline-flex items-center rounded-md bg-blue-500/10 px-2 py-1 text-xs font-medium text-blue-400 ring-1 ring-inset ring-blue-500/20">
+                    Tailwind CSS
+                </span>
+                <span class="inline-flex items-center rounded-md bg-green-500/10 px-2 py-1 text-xs font-medium text-green-400 ring-1 ring-inset ring-green-500/20">
+                    Dark Mode
+                </span>
+            </div>
+        </div>
+
+        <div class="grid gap-4">
+            <a href="hero-shadcn-minimal.html" class="group rounded-xl border border-border bg-card p-6 hover:border-violet-500/50 transition-colors">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <h2 class="text-xl font-semibold mb-2 group-hover:text-violet-400 transition-colors">Minimal</h2>
+                        <p class="text-muted-foreground text-sm">Чистый минималистичный дизайн с центрированным контентом, градиентным текстом и статистикой</p>
+                    </div>
+                    <svg class="h-5 w-5 text-muted-foreground group-hover:text-violet-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </div>
+            </a>
+
+            <a href="hero-shadcn-cards.html" class="group rounded-xl border border-border bg-card p-6 hover:border-blue-500/50 transition-colors">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <h2 class="text-xl font-semibold mb-2 group-hover:text-blue-400 transition-colors">Cards</h2>
+                        <p class="text-muted-foreground text-sm">Двухколоночный layout с карточками справа: прибыль, статистика, список ботов</p>
+                    </div>
+                    <svg class="h-5 w-5 text-muted-foreground group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </div>
+            </a>
+
+            <a href="hero-shadcn-bento.html" class="group rounded-xl border border-border bg-card p-6 hover:border-green-500/50 transition-colors">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <h2 class="text-xl font-semibold mb-2 group-hover:text-green-400 transition-colors">Bento Grid</h2>
+                        <p class="text-muted-foreground text-sm">Apple-style Bento сетка с карточками разных размеров и Live-индикаторами</p>
+                    </div>
+                    <svg class="h-5 w-5 text-muted-foreground group-hover:text-green-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </div>
+            </a>
+
+            <a href="hero-shadcn-split.html" class="group rounded-xl border border-border bg-card p-6 hover:border-orange-500/50 transition-colors">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <h2 class="text-xl font-semibold mb-2 group-hover:text-orange-400 transition-colors">Split Screen</h2>
+                        <p class="text-muted-foreground text-sm">Разделённый экран: контент слева, превью дашборда справа с анимациями</p>
+                    </div>
+                    <svg class="h-5 w-5 text-muted-foreground group-hover:text-orange-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </div>
+            </a>
+
+            <a href="hero-shadcn-gradient.html" class="group rounded-xl border border-border bg-card p-6 hover:border-pink-500/50 transition-colors">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <h2 class="text-xl font-semibold mb-2 group-hover:text-pink-400 transition-colors">Gradient</h2>
+                        <p class="text-muted-foreground text-sm">Анимированные градиентные блобы на фоне, glassmorphism элементы, floating effects</p>
+                    </div>
+                    <svg class="h-5 w-5 text-muted-foreground group-hover:text-pink-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </div>
+            </a>
+        </div>
+
+        <div class="mt-8 p-4 rounded-lg bg-secondary/50 border border-border">
+            <p class="text-sm text-muted-foreground">
+                💡 Все варианты используют цветовую схему и стилистику shadcn/ui с Tailwind CSS. 
+                Готовы к интеграции в Next.js проект.
+            </p>
+        </div>
+    </div>
+
+</body>
+</html>
+

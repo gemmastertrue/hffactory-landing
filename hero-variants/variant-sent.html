@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Section - Sent Style</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #000000;
+            --text-color: #ffffff;
+            --gray-text: #9CA3AF;
+            --border: #333;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* Stars Background Effect */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
+                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 3px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            background-position: 0 0, 40px 60px, 130px 270px;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .login-btn {
+            background: #1f1f1f;
+            color: white;
+            border: 1px solid #333;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+
+        #hero {
+            text-align: center;
+            padding-top: 5rem;
+        }
+
+        .pill {
+            display: inline-block;
+            background: linear-gradient(90deg, #1f1f1f, #000);
+            border: 1px solid #333;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--gray-text);
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 5rem;
+            line-height: 1;
+            letter-spacing: -0.04em;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(to bottom, #fff 0%, #aaa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtext {
+            color: var(--gray-text);
+            font-size: 1.125rem;
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .main-cta {
+            background: linear-gradient(180deg, #333 0%, #111 100%);
+            border: 1px solid #444;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            box-shadow: 0 0 15px rgba(255,255,255,0.05);
+            transition: transform 0.2s;
+        }
+        
+        .main-cta:hover {
+            transform: translateY(-2px);
+        }
+
+        .app-interface {
+            margin-top: 5rem;
+            border: 1px solid #222;
+            border-radius: 12px;
+            background: #050505;
+            padding: 1rem;
+            box-shadow: 0 0 100px rgba(0,0,0,1);
+        }
+
+        .mock-window {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            height: 500px;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            border-right: 1px solid #222;
+            padding: 1rem;
+        }
+        
+        .sidebar-item {
+            padding: 0.5rem;
+            margin-bottom: 0.25rem;
+            border-radius: 4px;
+            color: #666;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .sidebar-item.active {
+            background: #111;
+            color: #fff;
+        }
+
+        .main-view {
+            padding: 1.5rem;
+        }
+
+        .graph-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            height: 200px;
+            margin-top: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #222;
+        }
+
+        .bar {
+            flex: 1;
+            background: #fff;
+            opacity: 0.1;
+            border-radius: 2px 2px 0 0;
+        }
+
+        .bar:nth-child(even) { height: 60%; }
+        .bar:nth-child(odd) { height: 40%; }
+        .bar:nth-child(3n) { height: 80%; }
+        .bar:nth-child(7n) { height: 95%; opacity: 0.8; }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 3rem; }
+            .mock-window { grid-template-columns: 1fr; }
+            .sidebar { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="container">
+        <!-- === HEADER === -->
+        <header>
+            <div class="logo">
+                <iconify-icon icon="solar:bolt-bold-duotone"></iconify-icon> Sent
+            </div>
+            <a href="#" class="login-btn">Log In</a>
+        </header>
+
+        <!-- === MAIN === -->
+        <main>
+            <!-- --- Hero Section --- -->
+            <section id="hero">
+                <div class="pill">
+                    <iconify-icon icon="solar:star-stars-bold" style="color: #FFD700; margin-right: 4px;"></iconify-icon>
+                    Лимитированное предложение -20%
+                </div>
+                
+                <h1>
+                    Ваш личный<br>
+                    Хедж-Фонд
+                </h1>
+                
+                <p class="subtext">
+                    Техническая часть под ключ. Автоматизированная торговая инфраструктура без управления вашими деньгами.
+                </p>
+
+                <a href="#" class="main-cta">
+                    Рассчитать стоимость 
+                    <iconify-icon icon="solar:arrow-right-linear"></iconify-icon>
+                </a>
+
+                <div class="app-interface">
+                    <div class="mock-window">
+                        <div class="sidebar">
+                            <div class="sidebar-item active"><iconify-icon icon="solar:home-2-linear"></iconify-icon> Overview</div>
+                            <div class="sidebar-item"><iconify-icon icon="solar:graph-new-linear"></iconify-icon> Analytics</div>
+                            <div class="sidebar-item"><iconify-icon icon="solar:settings-linear"></iconify-icon> Settings</div>
+                        </div>
+                        <div class="main-view">
+                            <h3 style="margin-bottom: 2rem;">Total Profit</h3>
+                            <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem;">$24,507</div>
+                            <div style="color: #10B981; font-size: 0.9rem;">+2.1% from last month</div>
+                            
+                            <div class="graph-bars">
+                                <!-- Generating fake bars -->
+                                <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                                <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                                <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                                <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                                <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
+

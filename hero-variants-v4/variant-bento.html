@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HedgeFund - Apple Bento Style</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <style>
+        :root {
+            --bg: #000000;
+            --surface: #1c1c1e;
+            --surface-2: #2c2c2e;
+            --text: #ffffff;
+            --text-secondary: #86868b;
+            --blue: #0a84ff;
+            --green: #30d158;
+            --orange: #ff9f0a;
+            --pink: #ff375f;
+            --purple: #bf5af2;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(20px);
+            z-index: 100;
+        }
+
+        .logo {
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--text);
+        }
+
+        .header-cta {
+            background: var(--blue);
+            color: white;
+            padding: 0.5rem 1.25rem;
+            border-radius: 980px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Hero */
+        #hero {
+            padding: 4rem 0 2rem;
+            text-align: center;
+        }
+
+        .eyebrow {
+            color: var(--orange);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+
+        h1 .gradient {
+            background: linear-gradient(90deg, var(--blue), var(--purple), var(--pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-bottom: 2rem;
+        }
+
+        .cta-row {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 4rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 980px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0077ed;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--blue);
+        }
+
+        /* Bento Grid */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: auto auto auto;
+            gap: 1rem;
+        }
+
+        .bento-card {
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 1.5rem;
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .bento-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .bento-card.large {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        .bento-card.wide {
+            grid-column: span 2;
+        }
+
+        .bento-card.tall {
+            grid-row: span 2;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .icon-blue { background: rgba(10, 132, 255, 0.2); color: var(--blue); }
+        .icon-green { background: rgba(48, 209, 88, 0.2); color: var(--green); }
+        .icon-orange { background: rgba(255, 159, 10, 0.2); color: var(--orange); }
+        .icon-pink { background: rgba(255, 55, 95, 0.2); color: var(--pink); }
+        .icon-purple { background: rgba(191, 90, 242, 0.2); color: var(--purple); }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .card-value {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin: 1rem 0;
+        }
+
+        .card-value.green { color: var(--green); }
+        .card-value.blue { color: var(--blue); }
+        .card-value.orange { color: var(--orange); }
+
+        /* Main profit card */
+        .main-card {
+            background: linear-gradient(135deg, var(--surface) 0%, #2c2c2e 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .main-card .card-value {
+            font-size: 5rem;
+        }
+
+        .sparkline {
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            height: 80px;
+            margin-top: auto;
+        }
+
+        .spark-bar {
+            flex: 1;
+            background: linear-gradient(to top, var(--green), rgba(48, 209, 88, 0.3));
+            border-radius: 4px;
+            transition: height 0.3s;
+        }
+
+        /* Bot grid */
+        .bot-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .bot-item {
+            background: var(--surface-2);
+            padding: 1rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .bot-status {
+            width: 8px;
+            height: 8px;
+            background: var(--green);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--green);
+        }
+
+        .bot-name {
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .bot-profit {
+            margin-left: auto;
+            color: var(--green);
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        /* Live indicator */
+        .live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(48, 209, 88, 0.1);
+            padding: 0.35rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            color: var(--green);
+            margin-bottom: 1rem;
+        }
+
+        .live-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Feature list */
+        .feature-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--surface-2);
+            font-size: 0.95rem;
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .check-icon {
+            color: var(--green);
+        }
+
+        @media (max-width: 1024px) {
+            .bento-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            h1 { font-size: 3rem; }
+            nav { display: none; }
+        }
+
+        @media (max-width: 640px) {
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+            .bento-card.large,
+            .bento-card.wide {
+                grid-column: span 1;
+            }
+            h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="logo">HedgeFund</div>
+            <nav>
+                <a href="#">Возможности</a>
+                <a href="#">Тарифы</a>
+                <a href="#">Документация</a>
+                <a href="#">Поддержка</a>
+            </nav>
+            <a href="#" class="header-cta">Начать</a>
+        </header>
+
+        <main>
+            <section id="hero">
+                <div class="eyebrow">Лимитированное предложение: -20%</div>
+                <h1>
+                    Ваш личный хедж-фонд.<br>
+                    <span class="gradient">Под ключ.</span>
+                </h1>
+                <p class="subtitle">
+                    Автоматизированная торговля без управления вашими деньгами.
+                </p>
+                <div class="cta-row">
+                    <a href="#" class="btn btn-primary">Рассчитать стоимость</a>
+                    <a href="#" class="btn btn-secondary">Узнать больше →</a>
+                </div>
+
+                <div class="bento-grid">
+                    <!-- Main profit card -->
+                    <div class="bento-card large main-card">
+                        <div>
+                            <div class="live-badge">
+                                <span class="live-dot"></span>
+                                LIVE
+                            </div>
+                            <div class="card-title">Прибыль за 24ч</div>
+                        </div>
+                        <div class="card-value green">+$2,847</div>
+                        <div class="sparkline">
+                            <div class="spark-bar" style="height: 40%;"></div>
+                            <div class="spark-bar" style="height: 65%;"></div>
+                            <div class="spark-bar" style="height: 45%;"></div>
+                            <div class="spark-bar" style="height: 80%;"></div>
+                            <div class="spark-bar" style="height: 55%;"></div>
+                            <div class="spark-bar" style="height: 90%;"></div>
+                            <div class="spark-bar" style="height: 70%;"></div>
+                            <div class="spark-bar" style="height: 85%;"></div>
+                            <div class="spark-bar" style="height: 60%;"></div>
+                            <div class="spark-bar" style="height: 95%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Uptime -->
+                    <div class="bento-card">
+                        <div class="card-icon icon-green">
+                            <iconify-icon icon="solar:shield-check-bold"></iconify-icon>
+                        </div>
+                        <div class="card-title">Uptime</div>
+                        <div class="card-value green">99.9%</div>
+                        <div class="card-subtitle">Гарантированная стабильность</div>
+                    </div>
+
+                    <!-- Active bots -->
+                    <div class="bento-card">
+                        <div class="card-icon icon-blue">
+                            <iconify-icon icon="solar:cpu-bolt-bold"></iconify-icon>
+                        </div>
+                        <div class="card-title">Активных ботов</div>
+                        <div class="card-value blue">12</div>
+                        <div class="card-subtitle">Работают сейчас</div>
+                    </div>
+
+                    <!-- Bots list -->
+                    <div class="bento-card wide">
+                        <div class="card-icon icon-purple">
+                            <iconify-icon icon="solar:graph-up-bold"></iconify-icon>
+                        </div>
+                        <div class="card-title">Торговые боты</div>
+                        <div class="bot-grid">
+                            <div class="bot-item">
+                                <span class="bot-status"></span>
+                                <span class="bot-name">Grid Bot</span>
+                                <span class="bot-profit">+4.2%</span>
+                            </div>
+                            <div class="bot-item">
+                                <span class="bot-status"></span>
+                                <span class="bot-name">DCA Bot</span>
+                                <span class="bot-profit">+2.8%</span>
+                            </div>
+                            <div class="bot-item">
+                                <span class="bot-status"></span>
+                                <span class="bot-name">Scalper</span>
+                                <span class="bot-profit">+1.5%</span>
+                            </div>
+                            <div class="bot-item">
+                                <span class="bot-status"></span>
+                                <span class="bot-name">Arbitrage</span>
+                                <span class="bot-profit">+3.1%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Features -->
+                    <div class="bento-card tall">
+                        <div class="card-icon icon-orange">
+                            <iconify-icon icon="solar:checklist-bold"></iconify-icon>
+                        </div>
+                        <div class="card-title">Что включено</div>
+                        <ul class="feature-list">
+                            <li>
+                                <iconify-icon icon="solar:check-circle-bold" class="check-icon"></iconify-icon>
+                                Установка инфраструктуры
+                            </li>
+                            <li>
+                                <iconify-icon icon="solar:check-circle-bold" class="check-icon"></iconify-icon>
+                                Мониторинг 24/7
+                            </li>
+                            <li>
+                                <iconify-icon icon="solar:check-circle-bold" class="check-icon"></iconify-icon>
+                                Оптимизация стратегий
+                            </li>
+                            <li>
+                                <iconify-icon icon="solar:check-circle-bold" class="check-icon"></iconify-icon>
+                                Техподдержка
+                            </li>
+                            <li>
+                                <iconify-icon icon="solar:check-circle-bold" class="check-icon"></iconify-icon>
+                                Отчёты и аналитика
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- ROI -->
+                    <div class="bento-card">
+                        <div class="card-icon icon-pink">
+                            <iconify-icon icon="solar:chart-2-bold"></iconify-icon>
+                        </div>
+                        <div class="card-title">Средний ROI</div>
+                        <div class="card-value orange">24.5%</div>
+                        <div class="card-subtitle">За год</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>
+

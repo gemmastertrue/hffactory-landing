@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Section - SuperEx Style</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #111111;
+            --primary: #FDBA12; /* Gold/Yellow */
+            --text-color: #ffffff;
+            --text-muted: #999;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .nav-center {
+            background: #222;
+            padding: 0.8rem 2rem;
+            border-radius: 100px;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-center a {
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-yellow {
+            background-color: var(--primary);
+            color: #000;
+            padding: 0.6rem 1.2rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+
+        .btn-outline {
+            border: 1px solid #444;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 100px;
+            text-decoration: none;
+        }
+
+        #hero {
+            text-align: center;
+            padding: 8rem 0 4rem;
+            position: relative;
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 5rem;
+            line-height: 1.1;
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin-bottom: 3rem;
+        }
+
+        .main-btn {
+            background: linear-gradient(180deg, #333, #000);
+            border: 1px solid #444;
+            padding: 1rem 3rem;
+            border-radius: 100px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Glowing Portal Effect */
+        .portal-glow {
+            position: absolute;
+            bottom: -150px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(253,186,18,0.4) 0%, rgba(253,186,18,0) 70%);
+            filter: blur(60px);
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .portal-ring {
+            position: absolute;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%) rotateX(70deg);
+            width: 600px;
+            height: 600px;
+            border: 2px solid rgba(253,186,18,0.5);
+            border-radius: 50%;
+            box-shadow: 0 0 50px rgba(253,186,18,0.3);
+        }
+
+        .floating-card {
+            position: absolute;
+            top: 20%;
+            right: 5%;
+            background: rgba(20,20,20,0.8);
+            border: 1px solid #333;
+            padding: 1rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+
+        .badge-new {
+            background: #333;
+            color: var(--primary);
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 3rem; }
+            .nav-center { display: none; }
+            .floating-card { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- === HEADER === -->
+        <header>
+            <div style="display:flex; align-items:center; gap:0.5rem; font-weight:700; font-size:1.2rem;">
+                <iconify-icon icon="solar:diamond-bold" style="color:var(--primary);"></iconify-icon>
+                SUPERFUND
+            </div>
+
+            <nav class="nav-center">
+                <a href="#">Торговля</a>
+                <a href="#">Финансы</a>
+                <a href="#">Роботы</a>
+                <a href="#">Аналитика</a>
+            </nav>
+
+            <div class="header-actions">
+                <a href="#" class="btn-outline">Вход</a>
+                <a href="#" class="btn-yellow">Регистрация</a>
+            </div>
+        </header>
+
+        <!-- === MAIN === -->
+        <main>
+            <!-- --- Hero Section --- -->
+            <section id="hero">
+                <div class="floating-card">
+                    <iconify-icon icon="solar:graph-up-linear" style="font-size:2rem; color:var(--primary);"></iconify-icon>
+                    <div>
+                        <div style="font-size:0.8rem; color:#999;">Прибыль за 24ч</div>
+                        <div style="font-weight:700;">+15.4%</div>
+                    </div>
+                </div>
+
+                <div class="badge-new">
+                    NEW: Доступна интеграция с ByBit
+                </div>
+
+                <h1>
+                    Ваш личный<br>
+                    <span style="color:white;">Хедж-фонд под ключ</span>
+                </h1>
+
+                <p class="subtitle">
+                    Автоматизированная торговая инфраструктура без управления вашими деньгами.
+                    Получите готовую систему за 24 часа.
+                </p>
+
+                <a href="#" class="main-btn">
+                    Рассчитать стоимость →
+                </a>
+                
+                <div class="portal-ring"></div>
+                <div class="portal-glow"></div>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>
+

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Variants V6 - Advanced Animations</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            padding: 3rem; 
+            background: #050505;
+            min-height: 100vh;
+            color: white;
+        }
+        .header {
+            margin-bottom: 3rem;
+        }
+        h1 { 
+            font-size: 3rem;
+            margin-bottom: 0.75rem; 
+            font-weight: 700;
+            background: linear-gradient(135deg, #818cf8, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle {
+            color: #6b7280;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+        .features {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        .feature {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            color: #9ca3af;
+        }
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); 
+            gap: 1.5rem; 
+        }
+        a { 
+            display: block; 
+            padding: 2rem; 
+            background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px; 
+            text-decoration: none; 
+            color: white; 
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--color-1), var(--color-2));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        a:hover { 
+            transform: translateY(-8px); 
+            border-color: rgba(255,255,255,0.12);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+        }
+        a:hover::before { opacity: 1; }
+        .card-1 { --color-1: #818cf8; --color-2: #34d399; }
+        .card-2 { --color-1: #8b5cf6; --color-2: #06b6d4; }
+        .card-3 { --color-1: #f97316; --color-2: #22c55e; }
+        .card-4 { --color-1: #ff6b6b; --color-2: #48dbfb; }
+        .card-5 { --color-1: #00ff88; --color-2: #feca57; }
+        .title { font-size: 1.5rem; margin-bottom: 0.75rem; font-weight: 700; }
+        .desc { font-size: 0.95rem; color: #9ca3af; line-height: 1.6; margin-bottom: 1.5rem; }
+        .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .tag { 
+            padding: 0.4rem 0.9rem; 
+            border-radius: 8px; 
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .tag-violet { color: #818cf8; }
+        .tag-green { color: #34d399; }
+        .tag-orange { color: #f97316; }
+        .tag-pink { color: #ff6b6b; }
+        .tag-cyan { color: #06b6d4; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Hero Variants V6</h1>
+        <p class="subtitle">Продвинутые варианты с JavaScript анимациями и интерактивностью</p>
+        <div class="features">
+            <span class="feature">🎯 Custom Cursor</span>
+            <span class="feature">✨ Particles.js</span>
+            <span class="feature">🎬 GSAP Animations</span>
+            <span class="feature">🌊 Morphing SVG</span>
+            <span class="feature">⌨️ Text Scramble</span>
+            <span class="feature">📊 Counter Animation</span>
+            <span class="feature">🖱️ Magnetic Buttons</span>
+            <span class="feature">💫 3D Card Effect</span>
+        </div>
+    </div>
+    
+    <div class="grid">
+        <a href="hero-interactive-cursor.html" class="card-1">
+            <div class="title">Interactive Cursor</div>
+            <div class="desc">Кастомный курсор с плавным следованием, magnetic-эффект на кнопках, animated counters при появлении в viewport.</div>
+            <div class="tags">
+                <span class="tag tag-violet">Custom Cursor</span>
+                <span class="tag tag-green">Magnetic Effect</span>
+            </div>
+        </a>
+        
+        <a href="hero-particles-3d.html" class="card-2">
+            <div class="title">Particles & 3D Card</div>
+            <div class="desc">Canvas частицы с линиями между ними, 3D трансформация карточки при движении мыши, shine эффект.</div>
+            <div class="tags">
+                <span class="tag tag-violet">Canvas Particles</span>
+                <span class="tag tag-cyan">3D Transform</span>
+            </div>
+        </a>
+        
+        <a href="hero-gsap-scroll.html" class="card-3">
+            <div class="title">GSAP Scroll Animations</div>
+            <div class="desc">Анимации появления с GSAP, ScrollTrigger для анимации при скролле, бегущая строка, parallax фона.</div>
+            <div class="tags">
+                <span class="tag tag-orange">GSAP</span>
+                <span class="tag tag-green">ScrollTrigger</span>
+            </div>
+        </a>
+        
+        <a href="hero-morphing-blobs.html" class="card-4">
+            <div class="title">Morphing SVG Blobs</div>
+            <div class="desc">Живые SVG формы с морфингом через SMIL-анимации, parallax на движение мыши, rainbow градиент текста.</div>
+            <div class="tags">
+                <span class="tag tag-pink">SVG Morphing</span>
+                <span class="tag tag-cyan">Mouse Parallax</span>
+            </div>
+        </a>
+        
+        <a href="hero-text-scramble.html" class="card-5">
+            <div class="title">Text Scramble + Terminal</div>
+            <div class="desc">Matrix rain на canvas, эффект скремблирования текста, терминал с пошаговой печатью команд.</div>
+            <div class="tags">
+                <span class="tag tag-green">Matrix Rain</span>
+                <span class="tag tag-orange">Terminal Effect</span>
+            </div>
+        </a>
+    </div>
+</body>
+</html>
+

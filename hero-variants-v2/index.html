@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Variants V2 Preview</title>
+    <style>
+        body { 
+            font-family: system-ui, sans-serif; 
+            padding: 2rem; 
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            min-height: 100vh;
+            color: white;
+        }
+        h1 { margin-bottom: 0.5rem; }
+        p { color: #888; margin-bottom: 2rem; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+        a { 
+            display: block; 
+            padding: 2rem; 
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px; 
+            text-decoration: none; 
+            color: white; 
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        a:hover { 
+            transform: translateY(-4px); 
+            border-color: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.08);
+        }
+        .tag { 
+            display: inline-block; 
+            padding: 0.3rem 0.7rem; 
+            background: rgba(16, 185, 129, 0.2); 
+            color: #10b981;
+            border-radius: 100px; 
+            font-size: 0.75rem; 
+            margin-top: 0.75rem; 
+        }
+        .title { font-size: 1.25rem; margin-bottom: 0.5rem; }
+        .desc { font-size: 0.9rem; color: #888; }
+    </style>
+</head>
+<body>
+    <h1>Hero Variants V2</h1>
+    <p>Альтернативные варианты с другими стилями</p>
+    <div class="grid">
+        <a href="variant-cyber-noir.html">
+            <div class="title">Cyber Noir</div>
+            <div class="desc">Terminal aesthetic / JetBrains Mono / Зелёный акцент</div>
+            <span class="tag">Developer-focused</span>
+        </a>
+        <a href="variant-aurora.html">
+            <div class="title">Aurora Gradient</div>
+            <div class="desc">Живые градиенты / Плавающие карточки / Мягкие тени</div>
+            <span class="tag">Modern SaaS</span>
+        </a>
+        <a href="variant-brutalist.html">
+            <div class="title">Brutalist</div>
+            <div class="desc">Bebas Neue / Светлый фон / Жёсткие линии</div>
+            <span class="tag">Bold & Contrast</span>
+        </a>
+        <a href="variant-mesh.html">
+            <div class="title">Mesh Gradient</div>
+            <div class="desc">Bento grid / Mesh background / Тонкая сетка</div>
+            <span class="tag">Trendy 2024+</span>
+        </a>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero V2 - Brutalist</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <style>
+        :root {
+            --bg: #f5f5f0;
+            --black: #0a0a0a;
+            --red: #ff3b30;
+            --yellow: #ffd60a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--black);
+            font-family: 'IBM Plex Mono', monospace;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* === HEADER === */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-bottom: 3px solid var(--black);
+        }
+
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            letter-spacing: 2px;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--black);
+            text-decoration: none;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--black);
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .header-cta {
+            background: var(--black);
+            color: var(--bg);
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            border: 3px solid var(--black);
+            transition: all 0.2s;
+        }
+
+        .header-cta:hover {
+            background: transparent;
+            color: var(--black);
+        }
+
+        /* === HERO === */
+        #hero {
+            padding: 6rem 0;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 4rem;
+        }
+
+        .hero-main {
+            border-right: 3px solid var(--black);
+            padding-right: 4rem;
+        }
+
+        .discount-tag {
+            display: inline-block;
+            background: var(--yellow);
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 2rem;
+            transform: rotate(-2deg);
+        }
+
+        h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 10rem;
+            line-height: 0.85;
+            letter-spacing: -2px;
+            margin-bottom: 2rem;
+        }
+
+        h1 span {
+            display: block;
+        }
+
+        h1 .outline {
+            color: transparent;
+            -webkit-text-stroke: 3px var(--black);
+        }
+
+        .description {
+            font-size: 1rem;
+            max-width: 500px;
+            line-height: 1.8;
+            margin-bottom: 3rem;
+            border-left: 3px solid var(--red);
+            padding-left: 1.5rem;
+        }
+
+        .cta-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-main {
+            background: var(--red);
+            color: white;
+            padding: 1.2rem 2.5rem;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            border: 3px solid var(--red);
+            transition: all 0.2s;
+        }
+
+        .btn-main:hover {
+            background: transparent;
+            color: var(--red);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--black);
+            padding: 1.2rem 2.5rem;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            border: 3px solid var(--black);
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: var(--black);
+            color: var(--bg);
+        }
+
+        /* Right side */
+        .hero-side {
+            padding-top: 4rem;
+        }
+
+        .stat-block {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--black);
+        }
+
+        .stat-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 5rem;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.5rem;
+        }
+
+        .features {
+            list-style: none;
+        }
+
+        .features li {
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--black);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .features li::before {
+            content: '→';
+            font-weight: bold;
+        }
+
+        @media (max-width: 1024px) {
+            #hero { grid-template-columns: 1fr; }
+            h1 { font-size: 5rem; }
+            .hero-main { border-right: none; padding-right: 0; border-bottom: 3px solid var(--black); padding-bottom: 4rem; }
+            nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- === HEADER === -->
+        <header>
+            <div class="logo">HF.TECH</div>
+            <nav>
+                <a href="#">Услуги</a>
+                <a href="#">Тарифы</a>
+                <a href="#">Кейсы</a>
+                <a href="#">Контакты</a>
+            </nav>
+            <a href="#" class="header-cta">Начать</a>
+        </header>
+
+        <!-- === MAIN === -->
+        <main>
+            <section id="hero">
+                <div class="hero-main">
+                    <div class="discount-tag">Скидка -20% на установку</div>
+                    
+                    <h1>
+                        <span>ВАШ</span>
+                        <span class="outline">ЛИЧНЫЙ</span>
+                        <span>ХЕДЖ-</span>
+                        <span>ФОНД</span>
+                    </h1>
+
+                    <p class="description">
+                        Техническая часть под ключ. Автоматизированная торговая инфраструктура + техсопровождение. Без управления вашими деньгами.
+                    </p>
+
+                    <div class="cta-row">
+                        <a href="#" class="btn-main">Рассчитать стоимость</a>
+                        <a href="#" class="btn-secondary">Консультация</a>
+                    </div>
+                </div>
+
+                <div class="hero-side">
+                    <div class="stat-block">
+                        <div class="stat-number">99.9%</div>
+                        <div class="stat-label">Uptime серверов</div>
+                    </div>
+
+                    <div class="stat-block">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">Мониторинг</div>
+                    </div>
+
+                    <ul class="features">
+                        <li>Готовая инфраструктура</li>
+                        <li>Автоматический мониторинг</li>
+                        <li>Регулярная оптимизация</li>
+                        <li>Понятные отчёты</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>
+

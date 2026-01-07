@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Variants V4 - 2024/2025 Trends</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: system-ui, sans-serif; 
+            padding: 3rem; 
+            background: #09090b;
+            min-height: 100vh;
+            color: white;
+        }
+        .header {
+            margin-bottom: 3rem;
+        }
+        h1 { 
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem; 
+            font-weight: 700;
+        }
+        .subtitle {
+            color: #71717a;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+        .trends {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .trend-tag {
+            background: rgba(139, 92, 246, 0.1);
+            color: #8b5cf6;
+            padding: 0.35rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); 
+            gap: 1.5rem; 
+        }
+        a { 
+            display: block; 
+            padding: 2rem; 
+            background: #18181b;
+            border: 1px solid #27272a;
+            border-radius: 20px; 
+            text-decoration: none; 
+            color: white; 
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        a:hover { 
+            transform: translateY(-4px); 
+            border-color: #3f3f46;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        a:hover::before { opacity: 1; }
+        .card-1 { --accent-1: #ffe600; --accent-2: #ff3366; }
+        .card-2 { --accent-1: #0a84ff; --accent-2: #bf5af2; }
+        .card-3 { --accent-1: #ff6b35; --accent-2: #ff9f6b; }
+        .card-4 { --accent-1: #8b5cf6; --accent-2: #22d3ee; }
+        .title { font-size: 1.4rem; margin-bottom: 0.75rem; font-weight: 700; }
+        .desc { font-size: 0.95rem; color: #a1a1aa; line-height: 1.6; margin-bottom: 1.25rem; }
+        .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .tag { 
+            padding: 0.35rem 0.85rem; 
+            border-radius: 8px; 
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .tag-yellow { background: rgba(255, 230, 0, 0.15); color: #ffe600; }
+        .tag-blue { background: rgba(10, 132, 255, 0.15); color: #0a84ff; }
+        .tag-orange { background: rgba(255, 107, 53, 0.15); color: #ff6b35; }
+        .tag-violet { background: rgba(139, 92, 246, 0.15); color: #8b5cf6; }
+        .tag-pink { background: rgba(255, 51, 102, 0.15); color: #ff3366; }
+        .tag-cyan { background: rgba(34, 211, 238, 0.15); color: #22d3ee; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Hero Variants V4</h1>
+        <p class="subtitle">Актуальные тренды веб-дизайна 2024-2025</p>
+        <div class="trends">
+            <span class="trend-tag">Neobrutalism</span>
+            <span class="trend-tag">Bento Grid</span>
+            <span class="trend-tag">Grain Texture</span>
+            <span class="trend-tag">AI Aesthetic</span>
+            <span class="trend-tag">Glassmorphism</span>
+        </div>
+    </div>
+    <div class="grid">
+        <a href="variant-neobrutalism.html" class="card-1">
+            <div class="title">Neobrutalism</div>
+            <div class="desc">Яркие цвета, чёрные тени, грубые формы. Тренд вдохновлённый Figma, Notion и Gumroad.</div>
+            <div class="tags">
+                <span class="tag tag-yellow">Bold Colors</span>
+                <span class="tag tag-pink">Hard Shadows</span>
+            </div>
+        </a>
+        <a href="variant-bento.html" class="card-2">
+            <div class="title">Apple Bento Grid</div>
+            <div class="desc">Сетка карточек в стиле Apple. Минимализм, чёткая иерархия, тёмная тема.</div>
+            <div class="tags">
+                <span class="tag tag-blue">SF Pro</span>
+                <span class="tag tag-violet">Grid Layout</span>
+            </div>
+        </a>
+        <a href="variant-grain.html" class="card-3">
+            <div class="title">Grain & Texture</div>
+            <div class="desc">Зернистость, текстуры, serif-акценты. Тёплый и органичный ретро-модерн стиль.</div>
+            <div class="tags">
+                <span class="tag tag-orange">Film Grain</span>
+                <span class="tag tag-yellow">Warm Tones</span>
+            </div>
+        </a>
+        <a href="variant-ai-aesthetic.html" class="card-4">
+            <div class="title">AI Aesthetic</div>
+            <div class="desc">Эстетика искусственного интеллекта: градиентные орбы, точечный паттерн, typing-эффект.</div>
+            <div class="tags">
+                <span class="tag tag-violet">Gradient Orbs</span>
+                <span class="tag tag-cyan">AI-inspired</span>
+            </div>
+        </a>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Variants Gallery — Все варианты</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg: #09090b;
+            --surface: #18181b;
+            --border: #27272a;
+            --text: #fafafa;
+            --muted: #71717a;
+            --accent: #8b5cf6;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        /* Header */
+        .main-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(9, 9, 11, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--accent), #06b6d4);
+            border-radius: 8px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 2rem;
+            font-size: 0.9rem;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stat-value {
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            overflow-x: auto;
+        }
+
+        .nav-tabs-inner {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            gap: 0;
+        }
+
+        .nav-tab {
+            padding: 1rem 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .nav-tab:hover {
+            color: var(--text);
+        }
+
+        .nav-tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Section */
+        .section {
+            margin-bottom: 4rem;
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-desc {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        /* Grid */
+        .variants-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Card */
+        .variant-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .variant-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 0 1px var(--accent);
+        }
+
+        /* Preview Container */
+        .preview-container {
+            position: relative;
+            width: 100%;
+            height: 280px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .preview-iframe {
+            width: 200%;
+            height: 200%;
+            transform: scale(0.5);
+            transform-origin: top left;
+            border: none;
+            pointer-events: none;
+        }
+
+        .preview-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.8));
+            opacity: 0;
+            transition: opacity 0.3s;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .variant-card:hover .preview-overlay {
+            opacity: 1;
+        }
+
+        .preview-btn {
+            background: var(--accent);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.2s;
+        }
+
+        .preview-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Card Info */
+        .card-info {
+            padding: 1.25rem;
+        }
+
+        .card-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .card-tag {
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--accent);
+            padding: 0.25rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* All Variants View */
+        .all-section .variants-grid {
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        }
+
+        .all-section .preview-container {
+            height: 220px;
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.9);
+            padding: 2rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            width: 100%;
+            max-width: 1400px;
+            height: 90vh;
+            background: var(--surface);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-title {
+            font-weight: 600;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .modal-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .modal-btn-secondary {
+            background: var(--border);
+            color: var(--text);
+            border: none;
+        }
+
+        .modal-btn-secondary:hover {
+            background: #3f3f46;
+        }
+
+        .modal-btn-primary {
+            background: var(--accent);
+            color: white;
+            border: none;
+        }
+
+        .modal-iframe {
+            flex: 1;
+            border: none;
+            width: 100%;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .variants-grid {
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            }
+            .stats { display: none; }
+        }
+
+        @media (max-width: 640px) {
+            .variants-grid {
+                grid-template-columns: 1fr;
+            }
+            .nav-tabs { padding: 0 1rem; }
+            .container { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon"></div>
+                Hero Gallery
+            </div>
+            <div class="stats">
+                <div class="stat-item">
+                    <span>Всего вариантов:</span>
+                    <span class="stat-value">26</span>
+                </div>
+                <div class="stat-item">
+                    <span>Коллекций:</span>
+                    <span class="stat-value">6</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="nav-tabs">
+        <div class="nav-tabs-inner">
+            <div class="nav-tab active" data-tab="all">Все варианты</div>
+            <div class="nav-tab" data-tab="v1">V1 — Базовые</div>
+            <div class="nav-tab" data-tab="v2">V2 — Альтернативные</div>
+            <div class="nav-tab" data-tab="v3">V3 — Продвинутые</div>
+            <div class="nav-tab" data-tab="v4">V4 — Тренды 2024</div>
+            <div class="nav-tab" data-tab="v5">V5 — Shadcn</div>
+            <div class="nav-tab" data-tab="v6">V6 — JS Анимации</div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- All Variants -->
+        <section class="section all-section active" id="all">
+            <div class="section-header">
+                <h2 class="section-title">Все варианты</h2>
+                <p class="section-desc">26 уникальных Hero-секций для вашего лендинга</p>
+            </div>
+            <div class="variants-grid" id="all-grid"></div>
+        </section>
+
+        <!-- V1 -->
+        <section class="section" id="v1">
+            <div class="section-header">
+                <h2 class="section-title">V1 — Базовые референсы</h2>
+                <p class="section-desc">Варианты по референсам: Neverhack, Prestige, Sent, SuperEx</p>
+            </div>
+            <div class="variants-grid">
+                <div class="variant-card" data-src="hero-variants/variant-neverhack.html">
+                    <div class="preview-container">
+                        <iframe class="preview-iframe" src="hero-variants/variant-neverhack.html" loading="lazy"></iframe>
+                        <div class="preview-overlay">
+                            <a href="hero-variants/variant-neverhack.html" target="_blank" class="preview-btn">
+                                Открыть
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">Neverhack Style</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Minimal</span>
+                            <span class="card-tag">3D Cube</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="variant-card" data-src="hero-variants/variant-prestige.html">
+                    <div class="preview-container">
+                        <iframe class="preview-iframe" src="hero-variants/variant-prestige.html" loading="lazy"></iframe>
+                        <div class="preview-overlay">
+                            <a href="hero-variants/variant-prestige.html" target="_blank" class="preview-btn">Открыть</a>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">Prestige Style</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Dashboard</span>
+                            <span class="card-tag">Clean</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="variant-card" data-src="hero-variants/variant-sent.html">
+                    <div class="preview-container">
+                        <iframe class="preview-iframe" src="hero-variants/variant-sent.html" loading="lazy"></iframe>
+                        <div class="preview-overlay">
+                            <a href="hero-variants/variant-sent.html" target="_blank" class="preview-btn">Открыть</a>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">Sent Style</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Space</span>
+                            <span class="card-tag">App Interface</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="variant-card" data-src="hero-variants/variant-superex.html">
+                    <div class="preview-container">
+                        <iframe class="preview-iframe" src="hero-variants/variant-superex.html" loading="lazy"></iframe>
+                        <div class="preview-overlay">
+                            <a href="hero-variants/variant-superex.html" target="_blank" class="preview-btn">Открыть</a>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">SuperEx Style</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Gold</span>
+                            <span class="card-tag">Glow</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- V2 -->
+        <section class="section" id="v2">
+            <div class="section-header">
+                <h2 class="section-title">V2 — Альтернативные стили</h2>
+                <p class="section-desc">Terminal, Aurora, Brutalist, Mesh градиенты</p>
+            </div>
+            <div class="variants-grid">
+                <div class="variant-card">
+                    <div class="preview-container">
+                        <iframe class="preview-iframe" src="hero-variants-v2/variant-cyber-noir.html" loading="lazy"></iframe>
+                        <div class="preview-overlay">
+                            <a href="hero-variants-v2/variant-cyber-noir.html" target="_blank" class="preview-btn">Открыть</a>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">Cyber Noir</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Terminal</span>
+                            <span class="card-tag">JetBrains Mono</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="variant-card">
+                    <div class="preview-container">
+                        <iframe class="preview-iframe" src="hero-variants-v2/variant-aurora.html" loading="lazy"></iframe>
+                        <div class="preview-overlay">
+                            <a href="hero-variants-v2/variant-aurora.html" target="_blank" class="preview-btn">Открыть</a>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">Aurora Gradient</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Animated Blobs</span>
+                            <span class="card-tag">Float Cards</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="variant-card">
+                    <div class="preview-container">
+                        <iframe class="preview-iframe" src="hero-variants-v2/variant-brutalist.html" loading="lazy"></iframe>
+                        <div class="preview-overlay">
+                            <a href="hero-variants-v2/variant-brutalist.html" target="_blank" class="preview-btn">Открыть</a>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">Brutalist</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Light Theme</span>
+                            <span class="card-tag">Bebas Neue</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="variant-card">
+                    <div class="preview-container">
+                        <iframe class="preview-iframe" src="hero-variants-v2/variant-mesh.html" loading="lazy"></iframe>
+                        <div class="preview-overlay">
+                            <a href="hero-variants-v2/variant-mesh.html" target="_blank" class="preview-btn">Открыть</a>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">Mesh Gradient</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Bento Grid</span>
+                            <span class="card-tag">Dot Pattern</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- V3 -->
+        <section class="section" id="v3">
+            <div class="section-header">
+                <h2 class="section-title">V3 — Продвинутые эффекты</h2>
+                <p class="section-desc">Holographic, Liquid, Geometric, Neon — сложные анимации</p>
+            </div>
+            <div class="variants-grid">
+                <div class="variant-card">
+                    <div class="preview-container">
+                        <iframe class="preview-iframe" src="hero-variants-v3/variant-holographic.html" loading="lazy"></iframe>
+                        <div class="preview-overlay">
+                            <a href="hero-variants-v3/variant-holographic.html" target="_blank" class="preview-btn">Открыть</a>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">Holographic Interface</div>
+                        <div class="card-tags">
+                            <span class="card-tag">3D Card</span>
+                            <span class="card-tag">Orbit</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="variant-card">
+                    <div class="preview-container">
+                        <iframe class="preview-iframe" src="hero-variants-v3/variant-liquid.html" loading="lazy"></iframe>
+                        <div class="preview-overlay">
+                            <a href="hero-variants-v3/variant-liquid.html" target="_blank" class="preview-btn">Открыть</a>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">Liquid Morphism</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Glassmorphism</span>
+                            <span class="card-tag">Dashboard</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="variant-card">
+                    <div class="preview-container">
+                        <iframe class="preview-iframe" src="hero-variants-v3/variant-geometric.html" loading="lazy"></iframe>
+                        <div class="preview-overlay">
+                            <a href="hero-variants-v3/variant-geometric.html" target="_blank" class="preview-btn">Открыть</a>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">Geometric Art</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Light Theme</span>
+                            <span class="card-tag">Card Stack</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="variant-card">
+                    <div class="preview-container">
+                        <iframe class="preview-iframe" src="hero-variants-v3/variant-neon.html" loading="lazy"></iframe>
+                        <div class="preview-overlay">
+                            <a href="hero-variants-v3/variant-neon.html" target="_blank" class="preview-btn">Открыть</a>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">Neon Pulse</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Glow Effect</span>
+                            <span class="card-tag">Terminal</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- V4 -->
+        <section class="section" id="v4">
+            <div class="section-header">
+                <h2 class="section-title">V4 — Тренды 2024-2025</h2>
+                <p class="section-desc">Neobrutalism, Apple Bento, Grain Texture, AI Aesthetic</p>
+            </div>
+            <div class="variants-grid">
+                <div class="variant-card">
+                    <div class="preview-container">
+                        <iframe class="preview-iframe" src="hero-variants-v4/variant-neobrutalism.html" loading="lazy"></iframe>
+                        <div class="preview-overlay">
+                            <a href="hero-variants-v4/variant-neobrutalism.html" target="_blank" class="preview-btn">Открыть</a>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">Neobrutalism</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Bold Colors</span>
+                            <span class="card-tag">Hard Shadows</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="variant-card">
+                    <div class="preview-container">
+                        <iframe class="preview-iframe" src="hero-variants-v4/variant-bento.html" loading="lazy"></iframe>
+                        <div class="preview-overlay">
+                            <a href="hero-variants-v4/variant-bento.html" target="_blank" class="preview-btn">Открыть</a>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">Apple Bento Grid</div>
+                        <div class="card-tags">
+                            <span class="card-tag">SF Pro</span>
+                            <span class="card-tag">Grid Layout</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="variant-card">
+                    <div class="preview-container">
+                        <iframe class="preview-iframe" src="hero-variants-v4/variant-grain.html" loading="lazy"></iframe>
+                        <div class="preview-overlay">
+                            <a href="hero-variants-v4/variant-grain.html" target="_blank" class="preview-btn">Открыть</a>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">Grain & Texture</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Film Grain</span>
+                            <span class="card-tag">Warm Tones</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="variant-card">
+                    <div class="preview-container">
+                        <iframe class="preview-iframe" src="hero-variants-v4/variant-ai-aesthetic.html" loading="lazy"></iframe>
+                        <div class="preview-overlay">
+                            <a href="hero-variants-v4/variant-ai-aesthetic.html" target="_blank" class="preview-btn">Открыть</a>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">AI Aesthetic</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Gradient Orbs</span>
+                            <span class="card-tag">AI-inspired</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- V5 -->
+        <section class="section" id="v5">
+            <div class="section-header">
+                <h2 class="section-title">V5 — Shadcn/ui Style</h2>
+                <p class="section-desc">Варианты в стиле shadcn/ui с Tailwind CSS</p>
+            </div>
+            <div class="variants-grid">
+                <div class="variant-card">
+                    <div class="preview-container">
+                        <iframe class="preview-iframe" src="hero-variants-v5/hero-shadcn-minimal.html" loading="lazy"></iframe>
+                        <div class="preview-overlay">
+                            <a href="hero-variants-v5/hero-shadcn-minimal.html" target="_blank" class="preview-btn">Открыть</a>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">Shadcn Minimal</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Centered</span>
+                            <span class="card-tag">Gradient Text</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="variant-card">
+                    <div class="preview-container">
+                        <iframe class="preview-iframe" src="hero-variants-v5/hero-shadcn-cards.html" loading="lazy"></iframe>
+                        <div class="preview-overlay">
+                            <a href="hero-variants-v5/hero-shadcn-cards.html" target="_blank" class="preview-btn">Открыть</a>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">Shadcn Cards</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Two Column</span>
+                            <span class="card-tag">Live Badge</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="variant-card">
+                    <div class="preview-container">
+                        <iframe class="preview-iframe" src="hero-variants-v5/hero-shadcn-bento.html" loading="lazy"></iframe>
+                        <div class="preview-overlay">
+                            <a href="hero-variants-v5/hero-shadcn-bento.html" target="_blank" class="preview-btn">Открыть</a>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">Shadcn Bento</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Grid</span>
+                            <span class="card-tag">Icons</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="variant-card">
+                    <div class="preview-container">
+                        <iframe class="preview-iframe" src="hero-variants-v5/hero-shadcn-split.html" loading="lazy"></iframe>
+                        <div class="preview-overlay">
+                            <a href="hero-variants-v5/hero-shadcn-split.html" target="_blank" class="preview-btn">Открыть</a>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">Shadcn Split</div>
+                        <div class="card-tags">
+                            <span class="card-tag">50/50</span>
+                            <span class="card-tag">Dashboard</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="variant-card">
+                    <div class="preview-container">
+                        <iframe class="preview-iframe" src="hero-variants-v5/hero-shadcn-gradient.html" loading="lazy"></iframe>
+                        <div class="preview-overlay">
+                            <a href="hero-variants-v5/hero-shadcn-gradient.html" target="_blank" class="preview-btn">Открыть</a>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">Shadcn Gradient</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Animated Blobs</span>
+                            <span class="card-tag">Glass</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- V6 -->
+        <section class="section" id="v6">
+            <div class="section-header">
+                <h2 class="section-title">V6 — JavaScript Анимации</h2>
+                <p class="section-desc">Интерактивные варианты с продвинутыми JS-эффектами</p>
+            </div>
+            <div class="variants-grid">
+                <div class="variant-card">
+                    <div class="preview-container">
+                        <iframe class="preview-iframe" src="hero-variants-v6/hero-interactive-cursor.html" loading="lazy"></iframe>
+                        <div class="preview-overlay">
+                            <a href="hero-variants-v6/hero-interactive-cursor.html" target="_blank" class="preview-btn">Открыть</a>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">Interactive Cursor</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Custom Cursor</span>
+                            <span class="card-tag">Magnetic</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="variant-card">
+                    <div class="preview-container">
+                        <iframe class="preview-iframe" src="hero-variants-v6/hero-particles-3d.html" loading="lazy"></iframe>
+                        <div class="preview-overlay">
+                            <a href="hero-variants-v6/hero-particles-3d.html" target="_blank" class="preview-btn">Открыть</a>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">Particles & 3D Card</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Canvas</span>
+                            <span class="card-tag">3D Transform</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="variant-card">
+                    <div class="preview-container">
+                        <iframe class="preview-iframe" src="hero-variants-v6/hero-gsap-scroll.html" loading="lazy"></iframe>
+                        <div class="preview-overlay">
+                            <a href="hero-variants-v6/hero-gsap-scroll.html" target="_blank" class="preview-btn">Открыть</a>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">GSAP Scroll</div>
+                        <div class="card-tags">
+                            <span class="card-tag">GSAP</span>
+                            <span class="card-tag">ScrollTrigger</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="variant-card">
+                    <div class="preview-container">
+                        <iframe class="preview-iframe" src="hero-variants-v6/hero-morphing-blobs.html" loading="lazy"></iframe>
+                        <div class="preview-overlay">
+                            <a href="hero-variants-v6/hero-morphing-blobs.html" target="_blank" class="preview-btn">Открыть</a>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">Morphing Blobs</div>
+                        <div class="card-tags">
+                            <span class="card-tag">SVG Morph</span>
+                            <span class="card-tag">Parallax</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="variant-card">
+                    <div class="preview-container">
+                        <iframe class="preview-iframe" src="hero-variants-v6/hero-text-scramble.html" loading="lazy"></iframe>
+                        <div class="preview-overlay">
+                            <a href="hero-variants-v6/hero-text-scramble.html" target="_blank" class="preview-btn">Открыть</a>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">Text Scramble</div>
+                        <div class="card-tags">
+                            <span class="card-tag">Matrix Rain</span>
+                            <span class="card-tag">Terminal</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal for preview -->
+    <div class="modal" id="preview-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title" id="modal-title">Preview</span>
+                <div class="modal-actions">
+                    <a href="#" target="_blank" class="modal-btn modal-btn-primary" id="modal-open">
+                        Открыть в новой вкладке
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+                    </a>
+                    <button class="modal-btn modal-btn-secondary" id="modal-close">Закрыть</button>
+                </div>
+            </div>
+            <iframe class="modal-iframe" id="modal-iframe" src=""></iframe>
+        </div>
+    </div>
+
+    <script>
+        // Tab Navigation
+        const tabs = document.querySelectorAll('.nav-tab');
+        const sections = document.querySelectorAll('.section');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.dataset.tab;
+                
+                tabs.forEach(t => t.classList.remove('active'));
+                sections.forEach(s => s.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(target).classList.add('active');
+            });
+        });
+
+        // Populate "All" section
+        const allGrid = document.getElementById('all-grid');
+        const allVariants = [
+            { src: 'hero-variants/variant-neverhack.html', title: 'Neverhack', tags: ['V1', 'Minimal'] },
+            { src: 'hero-variants/variant-prestige.html', title: 'Prestige', tags: ['V1', 'Dashboard'] },
+            { src: 'hero-variants/variant-sent.html', title: 'Sent', tags: ['V1', 'Space'] },
+            { src: 'hero-variants/variant-superex.html', title: 'SuperEx', tags: ['V1', 'Gold'] },
+            { src: 'hero-variants-v2/variant-cyber-noir.html', title: 'Cyber Noir', tags: ['V2', 'Terminal'] },
+            { src: 'hero-variants-v2/variant-aurora.html', title: 'Aurora', tags: ['V2', 'Gradient'] },
+            { src: 'hero-variants-v2/variant-brutalist.html', title: 'Brutalist', tags: ['V2', 'Light'] },
+            { src: 'hero-variants-v2/variant-mesh.html', title: 'Mesh', tags: ['V2', 'Bento'] },
+            { src: 'hero-variants-v3/variant-holographic.html', title: 'Holographic', tags: ['V3', '3D'] },
+            { src: 'hero-variants-v3/variant-liquid.html', title: 'Liquid', tags: ['V3', 'Glass'] },
+            { src: 'hero-variants-v3/variant-geometric.html', title: 'Geometric', tags: ['V3', 'Light'] },
+            { src: 'hero-variants-v3/variant-neon.html', title: 'Neon', tags: ['V3', 'Glow'] },
+            { src: 'hero-variants-v4/variant-neobrutalism.html', title: 'Neobrutalism', tags: ['V4', 'Bold'] },
+            { src: 'hero-variants-v4/variant-bento.html', title: 'Bento', tags: ['V4', 'Apple'] },
+            { src: 'hero-variants-v4/variant-grain.html', title: 'Grain', tags: ['V4', 'Texture'] },
+            { src: 'hero-variants-v4/variant-ai-aesthetic.html', title: 'AI Aesthetic', tags: ['V4', 'AI'] },
+            { src: 'hero-variants-v5/hero-shadcn-minimal.html', title: 'Shadcn Minimal', tags: ['V5', 'Clean'] },
+            { src: 'hero-variants-v5/hero-shadcn-cards.html', title: 'Shadcn Cards', tags: ['V5', 'Cards'] },
+            { src: 'hero-variants-v5/hero-shadcn-bento.html', title: 'Shadcn Bento', tags: ['V5', 'Grid'] },
+            { src: 'hero-variants-v5/hero-shadcn-split.html', title: 'Shadcn Split', tags: ['V5', '50/50'] },
+            { src: 'hero-variants-v5/hero-shadcn-gradient.html', title: 'Shadcn Gradient', tags: ['V5', 'Blobs'] },
+            { src: 'hero-variants-v6/hero-interactive-cursor.html', title: 'Cursor', tags: ['V6', 'JS'] },
+            { src: 'hero-variants-v6/hero-particles-3d.html', title: 'Particles 3D', tags: ['V6', 'Canvas'] },
+            { src: 'hero-variants-v6/hero-gsap-scroll.html', title: 'GSAP Scroll', tags: ['V6', 'GSAP'] },
+            { src: 'hero-variants-v6/hero-morphing-blobs.html', title: 'Morphing', tags: ['V6', 'SVG'] },
+            { src: 'hero-variants-v6/hero-text-scramble.html', title: 'Scramble', tags: ['V6', 'Matrix'] },
+        ];
+
+        allVariants.forEach(v => {
+            const card = document.createElement('div');
+            card.className = 'variant-card';
+            card.innerHTML = `
+                <div class="preview-container">
+                    <iframe class="preview-iframe" src="${v.src}" loading="lazy"></iframe>
+                    <div class="preview-overlay">
+                        <a href="${v.src}" target="_blank" class="preview-btn">Открыть</a>
+                    </div>
+                </div>
+                <div class="card-info">
+                    <div class="card-title">${v.title}</div>
+                    <div class="card-tags">
+                        ${v.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}
+                    </div>
+                </div>
+            `;
+            allGrid.appendChild(card);
+        });
+
+        // Modal functionality
+        const modal = document.getElementById('preview-modal');
+        const modalIframe = document.getElementById('modal-iframe');
+        const modalTitle = document.getElementById('modal-title');
+        const modalOpen = document.getElementById('modal-open');
+        const modalClose = document.getElementById('modal-close');
+
+        document.querySelectorAll('.variant-card').forEach(card => {
+            card.addEventListener('dblclick', () => {
+                const src = card.querySelector('.preview-iframe').src;
+                const title = card.querySelector('.card-title').textContent;
+                
+                modalIframe.src = src;
+                modalTitle.textContent = title;
+                modalOpen.href = src;
+                modal.classList.add('active');
+            });
+        });
+
+        modalClose.addEventListener('click', () => {
+            modal.classList.remove('active');
+            modalIframe.src = '';
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+                modalIframe.src = '';
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                modal.classList.remove('active');
+                modalIframe.src = '';
+            }
+        });
+    </script>
+</body>
+</html>
+

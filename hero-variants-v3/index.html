@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Variants V3 - Premium</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: system-ui, sans-serif; 
+            padding: 3rem; 
+            background: #0a0a0a;
+            min-height: 100vh;
+            color: white;
+        }
+        h1 { 
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem; 
+            background: linear-gradient(135deg, #00f0ff, #ff00aa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        p { color: #666; margin-bottom: 3rem; font-size: 1.1rem; }
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
+            gap: 2rem; 
+        }
+        a { 
+            display: block; 
+            padding: 2.5rem; 
+            background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 24px; 
+            text-decoration: none; 
+            color: white; 
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+        a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        a:hover { 
+            transform: translateY(-8px); 
+            border-color: rgba(255,255,255,0.15);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        }
+        a:hover::before { opacity: 1; }
+        .title { font-size: 1.5rem; margin-bottom: 0.75rem; font-weight: 600; }
+        .desc { font-size: 0.95rem; color: #888; line-height: 1.6; margin-bottom: 1.5rem; }
+        .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .tag { 
+            padding: 0.4rem 1rem; 
+            border-radius: 100px; 
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .tag-cyan { background: rgba(0, 240, 255, 0.1); color: #00f0ff; }
+        .tag-pink { background: rgba(255, 0, 128, 0.1); color: #ff0080; }
+        .tag-green { background: rgba(57, 255, 20, 0.1); color: #39ff14; }
+        .tag-orange { background: rgba(255, 87, 34, 0.1); color: #ff5722; }
+    </style>
+</head>
+<body>
+    <h1>Hero Variants V3</h1>
+    <p>Продвинутые варианты с комплексными анимациями и эффектами</p>
+    <div class="grid">
+        <a href="variant-holographic.html">
+            <div class="title">Holographic Interface</div>
+            <div class="desc">Футуристический дизайн с 3D-картой, орбитальными элементами, анимированным графиком и сеткой перспективы</div>
+            <div class="tags">
+                <span class="tag tag-cyan">Orbitron</span>
+                <span class="tag tag-pink">3D Effects</span>
+            </div>
+        </a>
+        <a href="variant-liquid.html">
+            <div class="title">Liquid Morphism</div>
+            <div class="desc">Живые морфирующие градиенты, стеклянные элементы, детальный дашборд с анимированными барами</div>
+            <div class="tags">
+                <span class="tag tag-pink">Glassmorphism</span>
+                <span class="tag tag-cyan">Animated Blobs</span>
+            </div>
+        </a>
+        <a href="variant-geometric.html">
+            <div class="title">Geometric Art</div>
+            <div class="desc">Светлая тема, плавающие карточки с данными, контрастная типографика с serif-акцентом</div>
+            <div class="tags">
+                <span class="tag tag-orange">Light Theme</span>
+                <span class="tag tag-green">Card Stack</span>
+            </div>
+        </a>
+        <a href="variant-neon.html">
+            <div class="title">Neon Pulse</div>
+            <div class="desc">Яркие неоновые свечения, эффект мерцания, терминальная секция с курсором, киберпанк эстетика</div>
+            <div class="tags">
+                <span class="tag tag-green">Neon Glow</span>
+                <span class="tag tag-cyan">Terminal</span>
+            </div>
+        </a>
+    </div>
+</body>
+</html>
+

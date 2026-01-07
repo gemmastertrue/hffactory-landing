@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero - Shadcn Gradient</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        border: "hsl(240 3.7% 15.9%)",
+                        background: "hsl(240 10% 3.9%)",
+                        foreground: "hsl(0 0% 98%)",
+                        primary: { DEFAULT: "hsl(0 0% 98%)", foreground: "hsl(240 5.9% 10%)" },
+                        secondary: { DEFAULT: "hsl(240 3.7% 15.9%)", foreground: "hsl(0 0% 98%)" },
+                        muted: { DEFAULT: "hsl(240 3.7% 15.9%)", foreground: "hsl(240 5% 64.9%)" },
+                    },
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        @keyframes gradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .animate-gradient {
+            background-size: 200% 200%;
+            animation: gradient 8s ease infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-float-delay { animation: float 6s ease-in-out infinite; animation-delay: -3s; }
+    </style>
+</head>
+<body class="bg-background text-foreground min-h-screen antialiased overflow-x-hidden">
+
+    <!-- Background Gradients -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-0 -left-40 w-96 h-96 bg-violet-500/20 rounded-full blur-3xl animate-float"></div>
+        <div class="absolute top-1/3 -right-40 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-float-delay"></div>
+        <div class="absolute bottom-0 left-1/3 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl animate-float"></div>
+    </div>
+
+    <!-- Dot Pattern -->
+    <div class="fixed inset-0 opacity-30 pointer-events-none" style="background-image: radial-gradient(circle at 1px 1px, hsl(240 3.7% 20.9%) 1px, transparent 0); background-size: 32px 32px;"></div>
+
+    <div class="relative z-10">
+        <!-- Header -->
+        <header class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="font-bold text-lg">HedgeFund</div>
+                <nav class="hidden md:flex items-center gap-1 bg-secondary/50 backdrop-blur-sm rounded-full px-2 py-1 border border-border/50">
+                    <a href="#" class="px-4 py-1.5 text-sm text-muted-foreground hover:text-foreground rounded-full hover:bg-secondary transition-colors">Возможности</a>
+                    <a href="#" class="px-4 py-1.5 text-sm text-muted-foreground hover:text-foreground rounded-full hover:bg-secondary transition-colors">Тарифы</a>
+                    <a href="#" class="px-4 py-1.5 text-sm text-muted-foreground hover:text-foreground rounded-full hover:bg-secondary transition-colors">Документация</a>
+                </nav>
+                <div class="flex items-center gap-2">
+                    <button class="h-9 px-4 text-sm text-muted-foreground hover:text-foreground">Войти</button>
+                    <button class="h-9 px-4 rounded-full bg-primary text-primary-foreground text-sm font-medium">Начать</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero -->
+        <main class="container mx-auto px-4 pt-20 pb-32">
+            <div class="flex flex-col items-center text-center">
+                
+                <!-- Badge -->
+                <div class="inline-flex items-center gap-3 rounded-full border border-border/50 bg-secondary/50 backdrop-blur-sm px-4 py-2 mb-8">
+                    <span class="flex h-2 w-2 relative">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                    </span>
+                    <span class="text-sm text-muted-foreground">Лимитированное предложение</span>
+                    <span class="rounded-full bg-gradient-to-r from-violet-500 to-blue-500 px-3 py-0.5 text-xs font-semibold text-white">-20%</span>
+                </div>
+
+                <!-- Heading -->
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight max-w-4xl mb-6">
+                    Ваш личный хедж-фонд
+                    <span class="bg-gradient-to-r from-violet-400 via-blue-400 to-emerald-400 bg-clip-text text-transparent animate-gradient">
+                        под ключ
+                    </span>
+                </h1>
+
+                <!-- Subtitle -->
+                <p class="text-lg md:text-xl text-muted-foreground max-w-2xl mb-10">
+                    Автоматизированная торговая инфраструктура + техсопровождение. 
+                    Без управления вашими деньгами.
+                </p>
+
+                <!-- CTA -->
+                <div class="flex flex-col sm:flex-row gap-4 mb-16">
+                    <button class="h-12 px-8 rounded-full bg-gradient-to-r from-violet-500 to-blue-500 text-white font-semibold inline-flex items-center justify-center gap-2 shadow-lg shadow-violet-500/25 hover:shadow-violet-500/40 transition-shadow">
+                        Рассчитать стоимость
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                    <button class="h-12 px-8 rounded-full border border-border bg-background/50 backdrop-blur-sm font-semibold hover:bg-secondary transition-colors inline-flex items-center justify-center gap-2">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        Смотреть демо
+                    </button>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-3xl">
+                    <div class="rounded-2xl border border-border/50 bg-secondary/30 backdrop-blur-sm p-5 text-center">
+                        <div class="text-3xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">99.9%</div>
+                        <div class="text-sm text-muted-foreground mt-1">Uptime</div>
+                    </div>
+                    <div class="rounded-2xl border border-border/50 bg-secondary/30 backdrop-blur-sm p-5 text-center">
+                        <div class="text-3xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">24/7</div>
+                        <div class="text-sm text-muted-foreground mt-1">Мониторинг</div>
+                    </div>
+                    <div class="rounded-2xl border border-border/50 bg-secondary/30 backdrop-blur-sm p-5 text-center">
+                        <div class="text-3xl font-bold bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">12</div>
+                        <div class="text-sm text-muted-foreground mt-1">Ботов</div>
+                    </div>
+                    <div class="rounded-2xl border border-border/50 bg-secondary/30 backdrop-blur-sm p-5 text-center">
+                        <div class="text-3xl font-bold bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">+24%</div>
+                        <div class="text-sm text-muted-foreground mt-1">ROI</div>
+                    </div>
+                </div>
+
+                <!-- Trusted By -->
+                <div class="mt-20 text-center">
+                    <p class="text-sm text-muted-foreground mb-6">Работаем с ведущими биржами</p>
+                    <div class="flex flex-wrap justify-center gap-8 opacity-50">
+                        <div class="text-xl font-bold">Binance</div>
+                        <div class="text-xl font-bold">ByBit</div>
+                        <div class="text-xl font-bold">OKX</div>
+                        <div class="text-xl font-bold">KuCoin</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>
+

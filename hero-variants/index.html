@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Variants Preview</title>
+    <style>
+        body { font-family: system-ui, sans-serif; padding: 2rem; background: #f0f0f0; }
+        h1 { margin-bottom: 1.5rem; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; }
+        a { 
+            display: block; 
+            padding: 1.5rem; 
+            background: white; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            color: #333; 
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        a:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .tag { display: inline-block; padding: 0.2rem 0.5rem; background: #eee; border-radius: 4px; font-size: 0.8rem; margin-top: 0.5rem; }
+    </style>
+</head>
+<body>
+    <h1>Варианты Hero Секции</h1>
+    <div class="grid">
+        <a href="variant-neverhack.html">
+            NEVERHACK Style
+            <br>
+            <span class="tag">Minimal / Left-aligned / 3D Abstract</span>
+        </a>
+        <a href="variant-prestige.html">
+            Prestige Style
+            <br>
+            <span class="tag">Centered / Dashboard / Clean</span>
+        </a>
+        <a href="variant-sent.html">
+            Sent Style
+            <br>
+            <span class="tag">Space / High Contrast / App Interface</span>
+        </a>
+        <a href="variant-superex.html">
+            SuperEx Style
+            <br>
+            <span class="tag">Gold Accent / Glow / Portal Effect</span>
+        </a>
+    </div>
+</body>
+</html>
+

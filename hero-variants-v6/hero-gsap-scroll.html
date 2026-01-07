@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero - GSAP Scroll</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg: #0c0c0c;
+            --text: #ffffff;
+            --muted: #6b7280;
+            --accent: #f97316;
+            --accent-2: #22c55e;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Syne', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            mix-blend-mode: difference;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.25rem;
+        }
+
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            margin-left: 2rem;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        nav a:hover { opacity: 1; }
+
+        /* Hero Section */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 30% 50%, rgba(249, 115, 22, 0.15), transparent 60%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+        }
+
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            color: var(--accent);
+            overflow: hidden;
+        }
+
+        .hero-eyebrow span {
+            display: inline-block;
+        }
+
+        h1 {
+            font-size: clamp(4rem, 12vw, 10rem);
+            font-weight: 800;
+            line-height: 0.95;
+            letter-spacing: -0.04em;
+            margin-bottom: 2rem;
+        }
+
+        .title-word {
+            display: inline-block;
+            overflow: hidden;
+        }
+
+        .title-word span {
+            display: inline-block;
+        }
+
+        .hero-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 4rem;
+        }
+
+        .hero-desc {
+            font-size: 1.1rem;
+            color: var(--muted);
+            max-width: 400px;
+            line-height: 1.7;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 1.25rem 2.5rem;
+            border-radius: 100px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(249, 115, 22, 0.3);
+        }
+
+        .btn-outline {
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        /* Marquee */
+        .marquee-section {
+            padding: 4rem 0;
+            overflow: hidden;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .marquee {
+            display: flex;
+            gap: 4rem;
+            animation: marquee 20s linear infinite;
+        }
+
+        .marquee-item {
+            font-size: 5rem;
+            font-weight: 800;
+            white-space: nowrap;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255,255,255,0.2);
+        }
+
+        .marquee-item.filled {
+            color: var(--text);
+            -webkit-text-stroke: none;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Stats Section */
+        #stats {
+            padding: 8rem 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 24px;
+            padding: 2.5rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value.orange { color: var(--accent); }
+        .stat-value.green { color: var(--accent-2); }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, var(--accent), transparent);
+            animation: scrollPulse 2s infinite;
+        }
+
+        @keyframes scrollPulse {
+            0%, 100% { transform: scaleY(1); opacity: 1; }
+            50% { transform: scaleY(0.5); opacity: 0.5; }
+        }
+
+        @media (max-width: 1024px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            h1 { font-size: clamp(3rem, 10vw, 6rem); }
+            nav { display: none; }
+            .hero-row { flex-direction: column; gap: 2rem; align-items: flex-start; }
+        }
+
+        @media (max-width: 640px) {
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">HedgeFund</div>
+        <nav>
+            <a href="#">Возможности</a>
+            <a href="#">Тарифы</a>
+            <a href="#">Документация</a>
+        </nav>
+    </header>
+
+    <section id="hero">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-eyebrow">
+                    <span>●</span>
+                    <span>Скидка -20% на установку</span>
+                </div>
+
+                <h1>
+                    <div class="title-word"><span>Ваш</span></div>
+                    <div class="title-word"><span>личный</span></div><br>
+                    <div class="title-word"><span style="color: var(--accent)">хедж-фонд</span></div>
+                </h1>
+
+                <div class="hero-row">
+                    <p class="hero-desc">
+                        Техническая часть под ключ. Автоматизированная торговая инфраструктура без управления вашими деньгами.
+                    </p>
+                    <div class="hero-cta">
+                        <a href="#" class="btn btn-primary">Рассчитать</a>
+                        <a href="#" class="btn btn-outline">Демо</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <div class="marquee-section">
+        <div class="marquee">
+            <span class="marquee-item">АВТОМАТИЗАЦИЯ</span>
+            <span class="marquee-item filled">24/7</span>
+            <span class="marquee-item">МОНИТОРИНГ</span>
+            <span class="marquee-item filled">ROI +24%</span>
+            <span class="marquee-item">АВТОМАТИЗАЦИЯ</span>
+            <span class="marquee-item filled">24/7</span>
+            <span class="marquee-item">МОНИТОРИНГ</span>
+            <span class="marquee-item filled">ROI +24%</span>
+        </div>
+    </div>
+
+    <section id="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value orange">99.9%</div>
+                    <div class="stat-label">Uptime серверов</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">24/7</div>
+                    <div class="stat-label">Мониторинг</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value green">+24%</div>
+                    <div class="stat-label">Средний ROI</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">Активных ботов</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Hero animations
+        const tl = gsap.timeline({ defaults: { ease: "power4.out" }});
+
+        tl.from('.hero-eyebrow span', {
+            y: 30,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.1
+        })
+        .from('.title-word span', {
+            y: 120,
+            opacity: 0,
+            duration: 1.2,
+            stagger: 0.15
+        }, "-=0.5")
+        .from('.hero-desc', {
+            y: 30,
+            opacity: 0,
+            duration: 0.8
+        }, "-=0.6")
+        .from('.hero-cta .btn', {
+            y: 30,
+            opacity: 0,
+            duration: 0.6,
+            stagger: 0.1
+        }, "-=0.4")
+        .from('.scroll-indicator', {
+            opacity: 0,
+            duration: 0.6
+        }, "-=0.2");
+
+        // Stats cards animation
+        gsap.from('.stat-card', {
+            scrollTrigger: {
+                trigger: '#stats',
+                start: 'top 80%',
+                toggleActions: 'play none none reverse'
+            },
+            y: 60,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.15
+        });
+
+        // Counter animation
+        const statValues = document.querySelectorAll('.stat-value');
+        statValues.forEach(el => {
+            const text = el.textContent;
+            const num = parseFloat(text.replace(/[^0-9.]/g, ''));
+            
+            if (!isNaN(num)) {
+                ScrollTrigger.create({
+                    trigger: el,
+                    start: 'top 80%',
+                    onEnter: () => {
+                        gsap.fromTo(el, 
+                            { innerHTML: 0 },
+                            {
+                                innerHTML: num,
+                                duration: 2,
+                                snap: { innerHTML: text.includes('.') ? 0.1 : 1 },
+                                onUpdate: function() {
+                                    let val = parseFloat(el.innerHTML);
+                                    if (text.includes('%')) el.innerHTML = val.toFixed(text.includes('.') ? 1 : 0) + '%';
+                                    else if (text.includes('+')) el.innerHTML = '+' + val.toFixed(text.includes('.') ? 1 : 0) + '%';
+                                    else el.innerHTML = Math.floor(val);
+                                }
+                            }
+                        );
+                    },
+                    once: true
+                });
+            }
+        });
+
+        // Parallax on hero bg
+        gsap.to('.hero-bg', {
+            scrollTrigger: {
+                trigger: '#hero',
+                start: 'top top',
+                end: 'bottom top',
+                scrub: 1
+            },
+            y: 200,
+            opacity: 0
+        });
+    </script>
+</body>
+</html>
+
